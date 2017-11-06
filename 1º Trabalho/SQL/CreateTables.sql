@@ -50,6 +50,7 @@ CREATE TABLE Alojamento(
 	descrição NVARCHAR(30),
 	preçoBase INT,
 	númeroMáximoPessoas tinyInt,
+	tipoAlojamento VARCHAR(8) NOT NULL CHECK(tipoAlojamento in('bungalow', 'tenda')),
 	CONSTRAINT pk_Alojamento PRIMARY KEY(nome, localização)
 )
 
