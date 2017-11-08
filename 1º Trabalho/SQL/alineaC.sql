@@ -25,10 +25,15 @@ GO
 CREATE PROCEDURE dbo.deleteHospede 
 @NIFHospede int
 as
-DELETE FROM HóspedeEstada WHERE NIF=@NIFHospede
-DELETE FROM Hóspede WHERE NIF=@NIFHospede
-
-
+BEGIN TRY
+    BEGIN TRANSACTION
+    DELETE FROM HóspedeEstada WHERE NIF=@NIFHospede
+	DELETE FROM Hóspede WHERE NIF=@NIFHospede
+    COMMIT
+END TRY
+BEGIN CATCH
+ ROLLBACK
+END CATCH
 
 /*** TESTE ***********/
 

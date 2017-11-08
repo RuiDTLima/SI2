@@ -31,9 +31,17 @@ UPDATE Alojamento SET preçoBase = 80 WHERE nome='Parque 1' and localização='Lote
 GO
 CREATE PROC dbo.deleteAlojamento @nome nvarchar(30), @localização nvarchar(30), @nomeParque nvarchar(30)
 as
-DELETE FROM AlojamentoEstada WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
-DELETE FROM AlojamentoExtra WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
-DELETE FROM Alojamento WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
+BEGIN TRY
+    BEGIN TRANSACTION
+    DELETE FROM AlojamentoEstada WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
+	DELETE FROM AlojamentoExtra WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
+	DELETE FROM Alojamento WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
+    COMMIT
+END TRY
+BEGIN CATCH
+ ROLLBACK
+END CATCH
+
 
 /******** Teste ********************************************/
 

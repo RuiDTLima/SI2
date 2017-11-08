@@ -2,6 +2,18 @@
 **	Nome               alineaD
 **	
 **	Objectivo         O objectivo deste script é inserir, remover e actualizar 
+**					  informação de um extra pessoal
+**
+**	Criado por         Grupo 4 
+**	Data de Criação    08/11/17
+**
+******************************************************************************/
+USE Glampinho
+
+/*******************************************************************************
+**	Nome               alineaD
+**	
+**	Objectivo         O objectivo deste script é inserir, remover e actualizar 
 **					  informação de um extra alojamento 
 **
 **	Criado por         Grupo 4 
@@ -11,11 +23,10 @@
 USE Glampinho
 
 
-
 /**************INSERT *******************************************************/
 
 INSERT INTO Extra(id, descrição, preçoDia, associado)
-	VALUES(2,'descricao',10,'alojamento')
+	VALUES(3,'descricao',12,'pessoa')
 
 /**************UPDATE *******************************************************/
 
@@ -24,24 +35,23 @@ UPDATE Extra SET preçoDia=preçoDia-2 WHERE id=2
 /**************DELETE *******************************************************/
 
 GO 
-CREATE PROC dbo.deleteExtra @identi int,@nome nvarchar(30),@nomeParque nvarchar(30), @localização nvarchar(30), @idEstada int 
+CREATE PROC dbo.deleteExtraPessoa @identi int,@nome nvarchar(30),@nomeParque nvarchar(30), @localização nvarchar(30), @idEstada int 
 AS
 BEGIN TRY
-   BEGIN TRANSACTION
+    BEGIN TRANSACTION
     DELETE FROM AlojamentoExtra WHERE id=@identi and nome=@nome and nomeParque=@nomeParque and localização=@localização
 	DELETE FROM EstadaExtra WHERE estadaId=@identi and estadaId=@idEstada
 	DELETE FROM Extra WHERE id=@identi
     COMMIT
-   END TRY
+END TRY
 BEGIN CATCH
  ROLLBACK
 END CATCH
 
-
 /*************** TESTE ******************************************************/
 
 INSERT INTO Extra(id, descrição, preçoDia, associado)
-	VALUES(1,'descricao',12,'alojamento')
+	VALUES(1,'descricao',12,'pessoa')
 INSERT INTO Alojamento(nomeParque,nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
 	VALUES('Glampinho','verde','12EA1','bonito',12,4,'tenda')
 INSERT INTO Estada(id, dataInício, dataFim)
@@ -53,4 +63,4 @@ INSERT INTO EstadaExtra(estadaId, ExtraId)
 	VALUES(1,1)
 
 
-exec dbo.deleteExtra 1,'verde','Glampinho','12EA1',1
+exec dbo.deleteExtraAlojamento 1,'verde','Glampinho','12EA1',1
