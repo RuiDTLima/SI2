@@ -45,31 +45,34 @@ CREATE TABLE Estada(
 
 /*****************************************************************************/
 CREATE TABLE Alojamento(
-	nome NVARCHAR(30) NOT NULL FOREIGN KEY REFERENCES ParqueCampismo(nome),
+	nomeParque NVARCHAR(30) NOT NULL FOREIGN KEY REFERENCES ParqueCampismo(nome),
+	nome NVARCHAR(30),
 	localização NVARCHAR(30),
 	descrição NVARCHAR(30),
 	preçoBase INT,
 	númeroMáximoPessoas tinyInt,
 	tipoAlojamento VARCHAR(8) NOT NULL CHECK(tipoAlojamento in('bungalow', 'tenda')),
-	CONSTRAINT pk_Alojamento PRIMARY KEY(nome, localização)
+	CONSTRAINT pk_Alojamento PRIMARY KEY(nome,nomeParque, localização)
 )
 
 /*****************************************************************************/
 CREATE TABLE Bungalow(
 	nome NVARCHAR(30),
+	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	tipologia CHAR(2),
-	CONSTRAINT pk_Bungalow PRIMARY KEY(nome, localização),
-	CONSTRAINT fk_Bungalow FOREIGN KEY(nome, localização) REFERENCES Alojamento(nome, localização)
+	CONSTRAINT pk_Bungalow PRIMARY KEY(nome,nomeParque, localização),
+	CONSTRAINT fk_Bungalow FOREIGN KEY(nome,nomeParque, localização) REFERENCES Alojamento(nome,nomeParque, localização)
 )
 
 /*****************************************************************************/
 CREATE TABLE Tenda(
 	nome NVARCHAR(30),
+	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	área int, 
-	CONSTRAINT pk_Tenda PRIMARY KEY(nome, localização),
-	CONSTRAINT fk_Tenda FOREIGN KEY(nome, localização) REFERENCES Alojamento(nome, localização)
+	CONSTRAINT pk_Tenda PRIMARY KEY(nome,nomeParque, localização),
+	CONSTRAINT fk_Tenda FOREIGN KEY(nome,nomeParque, localização) REFERENCES Alojamento(nome,nomeParque, localização)
 )
 
 /*****************************************************************************/
@@ -122,7 +125,18 @@ CREATE TABLE EstadaExtra(
 /*****************************************************************************/
 CREATE TABLE AlojamentoEstada(
 	nome NVARCHAR(30),
+	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	id INT FOREIGN KEY REFERENCES Estada(id),
-	CONSTRAINT pk_AlojamentoEstada PRIMARY KEY(nome, localização, id)
+	CONSTRAINT pk_AlojamentoEstada PRIMARY KEY(nome,nomeParque, localização, id)
 )
+
+/*****************************************************************************/
+CREATE TABLE AlojamentoExtra(
+	nome NVARCHAR(30),
+	nomeParque NVARCHAR(30),
+	localização NVARCHAR(30),
+	id INT FOREIGN KEY REFERENCES Extra(id),
+	CONSTRAINT pk_AlojamentoExtra PRIMARY KEY(nome,nomeParque, localização, id)
+)
+

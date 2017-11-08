@@ -10,12 +10,37 @@
 ******************************************************************************/
 USE Glampinho
 
+/****** INSERT *************************************************************/
+
 INSERT INTO Hóspede(NIF, nome, morada, email, númeroIdentificação)
 	VALUES (112233445, 'José', 'Rua 1', 'jose@gmail.com', 11223344),
 		   (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788)
 
-DELETE FROM Hóspede WHERE NIF = 112233445
+/****** UPDATE ************************************************************/
 
 UPDATE Hóspede SET morada = 'Rua Teste' WHERE NIF = 112233445
 
-SELECT * FROM Hóspede 
+/****** DELETE ***********************************************************  (duvida)-posso apagar um responsável? se sim, apago a estada tambem e a fatura?*/
+GO
+CREATE PROCEDURE dbo.deleteHospede 
+@NIFHospede int
+as
+DELETE FROM HóspedeEstada WHERE NIF=@NIFHospede
+DELETE FROM Hóspede WHERE NIF=@NIFHospede
+
+
+
+/*** TESTE ***********/
+
+INSERT INTO ESTADA(id, dataInício, dataFim)
+	VALUES(1,'03-15-17 10:30',null)
+
+INSERT INTO HóspedeEstada(NIF, id, hóspede)
+	VALUES(112233445,1,'true')
+
+
+SELECT * FROM dbo.Hóspede
+
+SELECT * FROM HóspedeEstada
+
+exec dbo.deleteHospede 112233445
