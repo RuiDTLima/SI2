@@ -13,8 +13,6 @@ DROP TABLE dbo.Tenda
 DROP TABLE dbo.Bungalow
 DROP TABLE dbo.Actividades
 DROP TABLE dbo.AlojamentoExtra
-DROP TABLE dbo.Alojamento
-DROP TABLE dbo.ParqueCampismo
 DROP TABLE dbo.Factura
 DROP TABLE dbo.EstadaExtra
 DROP TABLE dbo.Extra
@@ -23,3 +21,5 @@ DROP TABLE dbo.HóspedeEstada
 DROP TABLE dbo.Hóspede
 DROP TABLE dbo.AlojamentoEstada
 DROP TABLE dbo.Estada
+DROP TABLE dbo.Alojamento
+DROP TABLE dbo.ParqueCampismo
