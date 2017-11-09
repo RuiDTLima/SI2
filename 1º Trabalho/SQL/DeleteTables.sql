@@ -10,16 +10,17 @@
 ******************************************************************************/
 USE Glampinho
 
-DELETE FROM Tenda
-DELETE FROM Bungalow
-DELETE FROM Actividades
-DELETE FROM Alojamento
-DELETE FROM ParqueCampismo
-DELETE FROM Factura
-DELETE FROM EstadaExtra
-DELETE FROM Extra
-DELETE FROM Paga
-DELETE FROM HóspedeEstada
-DELETE FROM Hóspede
-DELETE FROM AlojamentoEstada
-DELETE FROM Estada 
+DELETE FROM dbo.Tenda
+DELETE FROM dbo.Bungalow
+DELETE FROM dbo.Actividades
+DELETE FROM dbo.AlojamentoExtra
+DELETE FROM dbo.Alojamento
+DELETE FROM dbo.ParqueCampismo
+DELETE FROM dbo.Factura
+DELETE FROM dbo.EstadaExtra
+DELETE FROM dbo.Extra
+DELETE FROM dbo.Paga
+DELETE FROM dbo.HóspedeEstada
+DELETE FROM dbo.Hóspede
+DELETE FROM dbo.AlojamentoEstada
+DELETE FROM dbo.Estada 

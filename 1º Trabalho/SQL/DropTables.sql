@@ -9,16 +9,17 @@
 ******************************************************************************/
 USE Glampinho
 
-DROP TABLE Tenda
-DROP TABLE Bungalow
-DROP TABLE Actividades
-DROP TABLE Alojamento
-DROP TABLE ParqueCampismo
-DROP TABLE Factura
-DROP TABLE EstadaExtra
-DROP TABLE Extra
-DROP TABLE Paga
-DROP TABLE HóspedeEstada
-DROP TABLE Hóspede
-DROP TABLE AlojamentoEstada
-DROP TABLE Estada
+DROP TABLE dbo.Tenda
+DROP TABLE dbo.Bungalow
+DROP TABLE dbo.Actividades
+DROP TABLE dbo.AlojamentoExtra
+DROP TABLE dbo.Alojamento
+DROP TABLE dbo.ParqueCampismo
+DROP TABLE dbo.Factura
+DROP TABLE dbo.EstadaExtra
+DROP TABLE dbo.Extra
+DROP TABLE dbo.Paga
+DROP TABLE dbo.HóspedeEstada
+DROP TABLE dbo.Hóspede
+DROP TABLE dbo.AlojamentoEstada
+DROP TABLE dbo.Estada

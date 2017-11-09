@@ -45,7 +45,7 @@ CREATE TABLE dbo.Estada(
 
 /*****************************************************************************/
 CREATE TABLE dbo.Alojamento(
-	nomeParque NVARCHAR(30) NOT NULL FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome),
+	nomeParque NVARCHAR(30) NOT NULL FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome) ON DELETE CASCADE,
 	nome NVARCHAR(30) NOT NULL UNIQUE,
 	localização NVARCHAR(30),
 	descrição NVARCHAR(30),
@@ -61,7 +61,7 @@ CREATE TABLE dbo.Bungalow(
 	localização NVARCHAR(30),
 	tipologia CHAR(2),
 	CONSTRAINT pk_Bungalow PRIMARY KEY(nomeParque, localização),
-	CONSTRAINT fk_Bungalow FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização)
+	CONSTRAINT fk_Bungalow FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização) ON DELETE CASCADE
 )
 
 /*****************************************************************************/
@@ -70,12 +70,12 @@ CREATE TABLE dbo.Tenda(
 	localização NVARCHAR(30),
 	área int, 
 	CONSTRAINT pk_Tenda PRIMARY KEY(nomeParque, localização),
-	CONSTRAINT fk_Tenda FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização)
+	CONSTRAINT fk_Tenda FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização) ON DELETE CASCADE
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.Actividades(
-	nomeParque NVARCHAR(30) FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome),
+	nomeParque NVARCHAR(30) FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome) ON DELETE CASCADE,
 	númeroSequencial INT,
 	nome NVARCHAR(30),
 	descrição NVARCHAR(30),
