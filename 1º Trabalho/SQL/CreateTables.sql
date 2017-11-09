@@ -10,7 +10,7 @@
 ******************************************************************************/
 USE Glampinho
 
-CREATE TABLE ParqueCampismo(
+CREATE TABLE dbo.ParqueCampismo(
 	nome NVARCHAR(30) NOT NULL PRIMARY KEY,
 	morada NVARCHAR(50),
 	estrelas TINYINT NOT NULL CHECK(estrelas IN(1, 2, 3, 4, 5)),
@@ -19,7 +19,7 @@ CREATE TABLE ParqueCampismo(
 )
 
 /*****************************************************************************/
-CREATE TABLE Extra(
+CREATE TABLE dbo.Extra(
 	id INT NOT NULL PRIMARY KEY,
 	descrição NVARCHAR(30),
 	preçoDia INT,
@@ -27,7 +27,7 @@ CREATE TABLE Extra(
 )
 
 /*****************************************************************************/
-CREATE TABLE Hóspede(
+CREATE TABLE dbo.Hóspede(
 	NIF INT NOT NULL PRIMARY KEY,
 	nome NVARCHAR(30) NOT NULL,
 	morada NVARCHAR(50),
@@ -36,7 +36,7 @@ CREATE TABLE Hóspede(
 )
 
 /*****************************************************************************/
-CREATE TABLE Estada(
+CREATE TABLE dbo.Estada(
 	id INT PRIMARY KEY,
 	dataInício DATETIME,
 	dataFim DATETIME,
@@ -44,40 +44,38 @@ CREATE TABLE Estada(
 )
 
 /*****************************************************************************/
-CREATE TABLE Alojamento(
-	nomeParque NVARCHAR(30) NOT NULL FOREIGN KEY REFERENCES ParqueCampismo(nome),
-	nome NVARCHAR(30),
+CREATE TABLE dbo.Alojamento(
+	nomeParque NVARCHAR(30) NOT NULL FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome),
+	nome NVARCHAR(30) NOT NULL UNIQUE,
 	localização NVARCHAR(30),
 	descrição NVARCHAR(30),
 	preçoBase INT,
 	númeroMáximoPessoas tinyInt,
 	tipoAlojamento VARCHAR(8) NOT NULL CHECK(tipoAlojamento in('bungalow', 'tenda')),
-	CONSTRAINT pk_Alojamento PRIMARY KEY(nome,nomeParque, localização)
+	CONSTRAINT pk_Alojamento PRIMARY KEY(nomeParque, localização)
 )
 
 /*****************************************************************************/
-CREATE TABLE Bungalow(
-	nome NVARCHAR(30),
+CREATE TABLE dbo.Bungalow(
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	tipologia CHAR(2),
-	CONSTRAINT pk_Bungalow PRIMARY KEY(nome,nomeParque, localização),
-	CONSTRAINT fk_Bungalow FOREIGN KEY(nome,nomeParque, localização) REFERENCES Alojamento(nome,nomeParque, localização)
+	CONSTRAINT pk_Bungalow PRIMARY KEY(nomeParque, localização),
+	CONSTRAINT fk_Bungalow FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização)
 )
 
 /*****************************************************************************/
-CREATE TABLE Tenda(
-	nome NVARCHAR(30),
+CREATE TABLE dbo.Tenda(
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	área int, 
-	CONSTRAINT pk_Tenda PRIMARY KEY(nome,nomeParque, localização),
-	CONSTRAINT fk_Tenda FOREIGN KEY(nome,nomeParque, localização) REFERENCES Alojamento(nome,nomeParque, localização)
+	CONSTRAINT pk_Tenda PRIMARY KEY(nomeParque, localização),
+	CONSTRAINT fk_Tenda FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização)
 )
 
 /*****************************************************************************/
-CREATE TABLE Actividades(
-	nomeParque NVARCHAR(30) FOREIGN KEY REFERENCES ParqueCampismo(nome),
+CREATE TABLE dbo.Actividades(
+	nomeParque NVARCHAR(30) FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome),
 	númeroSequencial INT,
 	nome NVARCHAR(30),
 	descrição NVARCHAR(30),
@@ -88,55 +86,55 @@ CREATE TABLE Actividades(
 )
 
 /*****************************************************************************/
-CREATE TABLE Factura(
-	identificadorEstada INT FOREIGN KEY REFERENCES Estada(id), 
+CREATE TABLE dbo.Factura(
+	identificadorEstada INT FOREIGN KEY REFERENCES dbo.Estada(id), 
 	identificador INT,
 	nomeHóspede NVARCHAR(30),
-	NIFHóspede INT FOREIGN KEY REFERENCES Hóspede(NIF), 
+	NIFHóspede INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF), 
 	descriçãoAlojamentos NVARCHAR(50),
 	extras INT,
 	actividades INT, 
-	preços INT
+	preços INT,
+	CONSTRAINT pk_Factura PRIMARY KEY(identificadorEstada, identificador)
 )
 
 /*****************************************************************************/
-CREATE TABLE Paga(
+CREATE TABLE dbo.Paga(
 	nomeParque NVARCHAR(30),
 	númeroSequencial INT,
-	NIF INT FOREIGN KEY REFERENCES Hóspede(NIF),
-	CONSTRAINT pk_Paga PRIMARY KEY(nomeParque, númeroSequencial)
+	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
+	CONSTRAINT pk_Paga PRIMARY KEY(nomeParque, númeroSequencial, NIF)
 )
 
 /*****************************************************************************/
-CREATE TABLE HóspedeEstada(
-	NIF INT FOREIGN KEY REFERENCES Hóspede(NIF),
-	id INT FOREIGN KEY REFERENCES Estada(id),
+CREATE TABLE dbo.HóspedeEstada(
+	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
+	id INT FOREIGN KEY REFERENCES dbo.Estada(id),
 	hóspede VARCHAR(5) NOT NULL CHECK(hóspede IN('true', 'false')),
 	CONSTRAINT pk_HóspedeEstada PRIMARY KEY(NIF, id)
 )
 
 /*****************************************************************************/
-CREATE TABLE EstadaExtra(
-	estadaId INT FOREIGN KEY REFERENCES Estada(id),
-	extraId INT FOREIGN KEY REFERENCES Extra(id),
+CREATE TABLE dbo.EstadaExtra(
+	estadaId INT FOREIGN KEY REFERENCES dbo.Estada(id),
+	extraId INT FOREIGN KEY REFERENCES dbo.Extra(id),
 	CONSTRAINT pk_EstadaExtra PRIMARY KEY(estadaId, ExtraId)
 )
 
 /*****************************************************************************/
-CREATE TABLE AlojamentoEstada(
-	nome NVARCHAR(30),
+CREATE TABLE dbo.AlojamentoEstada(
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	id INT FOREIGN KEY REFERENCES Estada(id),
-	CONSTRAINT pk_AlojamentoEstada PRIMARY KEY(nome,nomeParque, localização, id)
+	CONSTRAINT pk_AlojamentoEstada PRIMARY KEY(nomeParque, localização, id),
+	CONSTRAINT fk_AlojamentoEstada FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)
 )
 
 /*****************************************************************************/
-CREATE TABLE AlojamentoExtra(
-	nome NVARCHAR(30),
+CREATE TABLE dbo.AlojamentoExtra(
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	id INT FOREIGN KEY REFERENCES Extra(id),
-	CONSTRAINT pk_AlojamentoExtra PRIMARY KEY(nome,nomeParque, localização, id)
+	CONSTRAINT pk_AlojamentoExtra PRIMARY KEY(nomeParque, localização, id),
+	CONSTRAINT fk_AlojamentoExtra FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)
 )
-
