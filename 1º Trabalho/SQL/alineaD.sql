@@ -10,56 +10,84 @@
 ******************************************************************************/
 USE Glampinho
 
-SELECT * FROM Alojamento
-SELECT * FROM ParqueCampismo
-
-INSERT INTO ParqueCampismo(nome, morada, estrelas, telefones, email)
-	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
-
-
-/******** INSERT ***********************************************************/
-
-INSERT INTO Alojamento(nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
-	VALUES('Parque 1', 'Lote 1', 'primeira tenda do parque', 60, 12, 'bungalow')
-
-/******** UPDATE ***********************************************************/
-
-UPDATE Alojamento SET preçoBase = 80 WHERE nome='Parque 1' and localização='Lote 1'
-
-/******** DELETE ***********************************************************/
-
+/******************************* INSERTS ***********************************************************/
+/******************************* INSERT Bungalow ***************************************************/
 GO
-CREATE PROC dbo.deleteAlojamento @nome nvarchar(30), @localização nvarchar(30), @nomeParque nvarchar(30)
-as
+CREATE PROCEDURE dbo.InsertAlojamentoBungalow @nomeParque NVARCHAR(30), @nome NVARCHAR(30), @localização NVARCHAR(30), 
+											  @descrição NVARCHAR(30), @preçoBase INT, @númeroMáximoPessoas TINYINT, @tipologia CHAR(2) AS
 BEGIN TRY
-    BEGIN TRANSACTION
-    DELETE FROM AlojamentoEstada WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
-	DELETE FROM AlojamentoExtra WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
-	DELETE FROM Alojamento WHERE nome=@nome and localização=@localização and nomeParque=@nomeParque
-    COMMIT
+	BEGIN TRANSACTION
+		INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
+			VALUES(@nomeParque, @nome, @localização, @descrição, @preçoBase, @númeroMáximoPessoas, 'bungalow')
+		INSERT INTO dbo.Bungalow(nomeParque, localização, tipologia)
+			VALUES(@nomeParque, @localização, @tipologia)
+		COMMIT
 END TRY
 BEGIN CATCH
- ROLLBACK
+	ROLLBACK
 END CATCH
 
+/******************************* INSERT Tenda ***************************************************/
+GO
+CREATE PROCEDURE dbo.InsertAlojamentoTenda @nomeParque NVARCHAR(30), @nome NVARCHAR(30), @localização NVARCHAR(30), 
+										   @descrição NVARCHAR(30), @preçoBase INT, @númeroMáximoPessoas TINYINT, @área INT AS
+BEGIN TRY
+	BEGIN TRANSACTION
+		INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
+			VALUES(@nomeParque, @nome, @localização, @descrição, @preçoBase, @númeroMáximoPessoas, 'tenda')
+		INSERT INTO dbo.Tenda(nomeParque, localização, área)
+			VALUES(@nomeParque, @localização, @área)
+		COMMIT
+END TRY
+BEGIN CATCH
+	ROLLBACK
+END CATCH
 
-/******** Teste ********************************************/
+/******************************* UPDATE ***********************************************************/
 
-INSERT INTO Extra(id, descrição, preçoDia, associado)
+UPDATE dbo.Alojamento SET preçoBase = 80 WHERE nome='Parque 1' and localização='Lote 1'
+
+/****************************** DELETE ***********************************************************/
+
+GO
+CREATE PROC dbo.deleteAlojamento @localização NVARCHAR(30), @nomeParque NVARCHAR(30) AS
+BEGIN TRY
+    BEGIN TRANSACTION
+		DELETE FROM AlojamentoEstada WHERE localização=@localização and nomeParque=@nomeParque
+		DELETE FROM AlojamentoExtra WHERE localização=@localização and nomeParque=@nomeParque
+		DELETE FROM Alojamento WHERE localização=@localização and nomeParque=@nomeParque
+	COMMIT
+END TRY
+BEGIN CATCH
+	ROLLBACK
+END CATCH
+
+/********************************** Teste ********************************************/
+
+EXEC dbo.deleteAlojamento 'Lote 1','Glampinho'
+EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Parque 1', 'Lote 1', 'primeira tenda do parque', 60, 12, 'T3'
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'verde', '12EA1', 'bonito', 12, 4, 50
+
+INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
+	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
+
+INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES(1,'descricao',12,'pessoa')
-INSERT INTO Alojamento(nomeParque,nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
-	VALUES('Glampinho','verde','12EA1','bonito',12,4,'tenda')
-INSERT INTO AlojamentoEstada(nome,nomeParque, localização, id)
-	VALUES('verde','Glampinho','12EA1',1)
-INSERT INTO AlojamentoExtra(nome,nomeParque, localização, id)
-	VALUES('verde','Glampinho','12EA1',1)
 
-exec dbo.deleteAlojamento 'verde','12EA1','Glampinho'
+INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id)
+	VALUES('Glampinho','12EA1',1)
 
+INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
+	VALUES('Glampinho','12EA1',1)
 
-/*
--- fazer trigger introduzir na tabela bungalow ou tenda conforme o atributo tipoAlojamento, e colocar a funcionar o trigger para deletes e updates relacionados com as tabelas extras
-CREATE TRIGGER triggerAlojamento ON DBO.Alojamento AFTER INSERT AS
-	INSERT INTO (SELECT tipoAlojamento FROM inserted)
+INSERT INTO Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
+	VALUES('Glampinho', 'teste', 'testeS', 'teste teste', 50, 10, 'bungalow')
 
-*/
+SELECT * FROM dbo.Estada
+SELECT * FROM dbo.Extra
+SELECT * FROM dbo.AlojamentoEstada
+SELECT * FROM dbo.AlojamentoExtra
+SELECT * FROM dbo.Alojamento
+SELECT * FROM dbo.ParqueCampismo
+SELECT * FROM dbo.Bungalow
+SELECT * FROM dbo.Tenda
