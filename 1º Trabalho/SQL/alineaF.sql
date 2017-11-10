@@ -12,23 +12,23 @@ USE Glampinho
 
 /**************INSERT *******************************************************/
 
-INSERT INTO Extra(id, descrição, preçoDia, associado)
+INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES(3, 'descricao', 12, 'pessoa')
 
 /**************UPDATE *******************************************************/
 
-UPDATE Extra SET preçoDia = preçoDia - 2 WHERE id = 2
+UPDATE dbo.Extra SET preçoDia = preçoDia - 2 WHERE id = 2
 
 /**************DELETE *******************************************************/
 
 GO 
-CREATE PROC dbo.deleteExtraPessoa @id INT
+CREATE PROCEDURE dbo.deleteExtraPessoa @id INT
 AS
 BEGIN TRY
     BEGIN TRANSACTION
-		DELETE FROM AlojamentoExtra WHERE id=@id
-		DELETE FROM EstadaExtra WHERE estadaId=@id
-		DELETE FROM Extra WHERE id=@id
+		DELETE FROM dbo.AlojamentoExtra WHERE id=@id
+		DELETE FROM dbo.EstadaExtra WHERE estadaId=@id
+		DELETE FROM dbo.Extra WHERE id=@id
     COMMIT
 END TRY
 BEGIN CATCH
@@ -37,19 +37,27 @@ END CATCH
 
 /*************** TESTE ******************************************************/
 
-EXEC dbo.deleteExtraAlojamento 1,'verde','Glampinho','12EA1',1
+INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
+	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
 
 INSERT INTO Extra(id, descrição, preçoDia, associado)
-	VALUES(1,'descricao',12,'pessoa')
+	VALUES(1, 'descricao', 12, 'pessoa')
 
-INSERT INTO Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
-	VALUES('Glampinho','verde','12EA1','bonito',12,4,'tenda')
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'verde', '12EA1', 'bonito', 12, 4, 50
 
 INSERT INTO Estada(id, dataInício, dataFim)
-	VALUES(1,'03-15-17 10:30',null)
+	VALUES(1, '03-15-17 10:30', null)
 
-INSERT INTO AlojamentoExtra(nome, nomeParque, localização, id)
-	VALUES('verde','Glampinho','12EA1',1)
+INSERT INTO AlojamentoExtra(nomeParque, localização, id)
+	VALUES('Glampinho', '12EA1', 1)
 
 INSERT INTO EstadaExtra(estadaId, ExtraId)
-	VALUES(1,1)
+	VALUES(1, 1)
+
+EXEC dbo.deleteExtraPessoa 1
+
+SELECT * FROM dbo.Extra
+SELECT * FROM dbo.Alojamento
+SELECT * FROM dbo.Estada
+SELECT * FROM dbo.AlojamentoExtra
+SELECT * FROM dbo.EstadaExtra
