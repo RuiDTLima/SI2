@@ -22,7 +22,7 @@ UPDATE dbo.Extra SET preçoDia = preçoDia - 2 WHERE id = 2
 /**************DELETE *******************************************************/
 
 GO 
-CREATE PROC dbo.deleteExtraPessoa @id INT
+CREATE PROCEDURE dbo.deleteExtraPessoa @id INT
 AS
 BEGIN TRY
     BEGIN TRANSACTION

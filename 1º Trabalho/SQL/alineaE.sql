@@ -22,7 +22,7 @@ UPDATE dbo.Extra SET preçoDia = preçoDia - 2 WHERE id = 2
 /**************DELETE *******************************************************/
 
 GO 
-CREATE PROC dbo.deleteExtra @id INT
+CREATE PROCEDURE dbo.deleteExtra @id INT
 AS
 BEGIN TRY
 	BEGIN TRANSACTION
@@ -41,7 +41,7 @@ INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
 	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
 
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
-	VALUES(1,'descricao',12,'alojamento')
+	VALUES(1,'descricao', 12, 'alojamento')
 
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'vermelho', '12EA1', 'bonito', 12, 4, 50
 

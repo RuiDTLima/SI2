@@ -45,12 +45,12 @@ END CATCH
 
 /******************************* UPDATE ***********************************************************/
 
-UPDATE dbo.Alojamento SET preçoBase = 80 WHERE nome='Parque 1' and localização='Lote 1'
+UPDATE dbo.Alojamento SET preçoBase = 80 WHERE nome = 'Parque 1' and localização = 'Lote 1'
 
 /****************************** DELETE ***********************************************************/
 
 GO
-CREATE PROC dbo.deleteAlojamento @localização NVARCHAR(30), @nomeParque NVARCHAR(30) AS
+CREATE PROCEDURE dbo.deleteAlojamento @localização NVARCHAR(30), @nomeParque NVARCHAR(30) AS
 BEGIN TRY
     BEGIN TRANSACTION
 		DELETE FROM AlojamentoEstada WHERE localização=@localização and nomeParque=@nomeParque
@@ -72,13 +72,13 @@ INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
 	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
 
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
-	VALUES(1,'descricao',12,'pessoa')
+	VALUES(1, 'descricao', 12, 'pessoa')
 
 INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id)
-	VALUES('Glampinho','12EA1',1)
+	VALUES('Glampinho', '12EA1', 1)
 
 INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
-	VALUES('Glampinho','12EA1',1)
+	VALUES('Glampinho', '12EA1', 1)
 
 INSERT INTO Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
 	VALUES('Glampinho', 'teste', 'testeS', 'teste teste', 50, 10, 'bungalow')
