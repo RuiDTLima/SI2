@@ -17,10 +17,10 @@ CREATE PROCEDURE dbo.InsertAlojamentoBungalow @nomeParque NVARCHAR(30), @nome NV
 											  @descrição NVARCHAR(30), @preçoBase INT, @númeroMáximoPessoas TINYINT, @tipologia CHAR(2) AS
 BEGIN TRY
 	BEGIN TRANSACTION
-		INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
+		/*INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
 			VALUES(@nomeParque, @nome, @localização, @descrição, @preçoBase, @númeroMáximoPessoas, 'bungalow')
-		INSERT INTO dbo.Bungalow(nomeParque, localização, tipologia)
-			VALUES(@nomeParque, @localização, @tipologia)
+		INSERT INTO dbo.Bungalow(nomeParque,nome, localização, tipologia)
+			VALUES(@nomeParque,@nome, @localização, @tipologia)*/
 		COMMIT
 END TRY
 BEGIN CATCH
@@ -35,8 +35,8 @@ BEGIN TRY
 	BEGIN TRANSACTION
 		INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
 			VALUES(@nomeParque, @nome, @localização, @descrição, @preçoBase, @númeroMáximoPessoas, 'tenda')
-		INSERT INTO dbo.Tenda(nomeParque, localização, área)
-			VALUES(@nomeParque, @localização, @área)
+		INSERT INTO dbo.Tenda(nomeParque,nome, localização, área)
+			VALUES(@nomeParque,@nome, @localização, @área)
 		COMMIT
 END TRY
 BEGIN CATCH
