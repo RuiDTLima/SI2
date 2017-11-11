@@ -78,7 +78,7 @@ CREATE TABLE dbo.Tenda(
 /*****************************************************************************/
 CREATE TABLE dbo.Actividades(
 	nomeParque NVARCHAR(30) FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome) ON DELETE CASCADE,
-	númeroSequencial INT,
+	númeroSequencial NVARCHAR(30),
 	nome NVARCHAR(30),
 	descrição NVARCHAR(30),
 	lotaçãoMáxima INT,
