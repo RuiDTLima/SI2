@@ -18,17 +18,6 @@ uma estada;
 ******************************************************************************/
 USE Glampinho
 
-GO
-CREATE PROC dbo.addHospede @NIF int, @id int
-AS
-BEGIN TRY
-    BEGIN TRANSACTION
-    INSERT INTO HóspedeEstada(NIF,id,hóspede) VALUES (@NIF,@id,'true')
-    COMMIT
-END TRY
-BEGIN CATCH
- ROLLBACK
-END CATCH  
 
 GO
 CREATE PROC dbo.addExtraPessoa @idExtra int,@idEstada int 
@@ -39,44 +28,54 @@ BEGIN TRY
     COMMIT
 END TRY
 BEGIN CATCH
+RAISERROR('ERRO add Extra Pessoa',20,1)
  ROLLBACK
 END CATCH 
 
 GO
-CREATE PROC dbo.createEstada @NIF int, @periodoTemporal int, @idEstada int,@lotação int, @idExtraAlojamento int,@idExtraPessoa int, @tipo VARCHAR(8),@nomeAlojamento nvarchar(30),@nomeParque nvarchar(30), @localização nvarchar(30)
+CREATE PROC dbo.createEstada @NIF int, @periodoTemporal int, @idEstada int,@lotação int, @idExtraAlojamento int,@idExtraPessoa int,@tipo varchar(9)
 AS
 BEGIN TRY
     BEGIN TRANSACTION
 
 	DECLARE @actualDate DATETIME = GETDATE()
 	DECLARE @endDate DATE = DATEADD(DAY,@periodoTemporal,@actualDate)
+	DECLARE @nomeAlojamento nvarchar(30)
+	DECLARE @nomeParque nvarchar(30)
+	DECLARE @localização nvarchar(30)
+
 	INSERT INTO Estada(id,dataInício,dataFim) VALUES(@idEstada,@actualDate,@endDate)
 	INSERT INTO HóspedeEstada(NIF,id,hóspede) VALUES (@NIF,@idEstada,'true')
 
-		SELECT nome,nomeParque,localização FROM AlojamentoEstada
+		IF NOT EXISTS (SELECT tipoAlojamento,númeroMáximoPessoas FROM Alojamento WHERE tipoAlojamento=@tipo and númeroMáximoPessoas=@lotação )
+		RAISERROR ('Não há alojamentos nessas condições',20,1) 
+		ELSE 
+		BEGIN
+		SELECT @nomeAlojamento=A.nome,@nomeParque=A.nomeParque,@localização=A.localização FROM AlojamentoEstada INNER JOIN (
+		SELECT nome,nomeParque,localização FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo) as A ON AlojamentoEstada.nome=A.nome and AlojamentoEstada.nomeParque=A.nomeParque and AlojamentoEstada.localização=A.localização
 		IF @@ROWCOUNT = 0 
 		BEGIN
-		SELECT númeroMáximoPessoas,tipoAlojamento FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo
-		IF @@ROWCOUNT > 0 
+		SELECT  TOP 1 @nomeAlojamento=nome,@nomeParque=nomeParque,@localização=localização FROM Alojamento WHERE tipoAlojamento=@tipo and númeroMáximoPessoas=@lotação
 		INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES (@nomeAlojamento,@nomeParque,@localização,@idEstada)
-		ELSE RAISERROR('Não há alojamentos nessas condições',5,1) 
 		END
-		ELSE 
-		BEGIN 
+		ELSE
+		BEGIN
 		SELECT TOP 1 @nomeAlojamento=A.nome,@nomeParque=A.nomeParque,@localização=A.localização FROM ( 
 		(SELECT nome,nomeParque,localização FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo) as A
 		INNER JOIN (SELECT nome,nomeParque,localização,AlojamentoEstada.id FROM AlojamentoEstada INNER JOIN 
 		(SELECT id FROM Estada WHERE dataFim<@actualDate) AS EstadasDisponiveis ON EstadasDisponiveis.id=AlojamentoEstada.id ) as B ON A.nome=B.nome and A.localização=B.localização and A.nomeParque=B.nomeParque)
-		if @nomeAlojamento is null /* impossivel ter um a null e os outros nao ? */
-		RAISERROR('Não há alojamentos nessas condições',5,1)
+		IF @nomeAlojamento is null /* impossivel ter um a null e os outros nao ? */
+		RAISERROR('Não há alojamentos nessas condições',20,1)
 		INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES (@nomeAlojamento,@nomeParque,@localização,@idEstada)
 		END
+		END
+		
 		COMMIT
 
-	exec dbo.addHospede @NIF,@idEstada
-	exec dbo.addExtraPessoa @idExtraPessoa,@idEstada
-	exec dbo.addExtraPessoa @idExtraAlojamento,@idEstada
+		exec dbo.addExtraPessoa @idExtraPessoa,@idEstada
+		exec dbo.addExtraPessoa @idExtraAlojamento,@idEstada
 
+		
    
 END TRY
 BEGIN CATCH
@@ -86,7 +85,7 @@ END CATCH
 
 /*************** TESTE ********************************************************************************************/
 
-exec dbo.createEstada 112233445,7,1,6,2,3,'bungalow','Preto','Glampinho','12E2'
+exec dbo.createEstada 112233445,7,1,2,2,3,'bungalow'
 
 SELECT * FROM Hóspede
 SELECT * FROM Alojamento
@@ -115,8 +114,6 @@ INSERT INTO Extra(id, descrição, preçoDia, associado)
 
 
 drop proc createEstada
-drop proc addAlojamento
-drop proc addExtraAlojamento
 drop proc addExtraPessoa
 drop proc addHospede
 
