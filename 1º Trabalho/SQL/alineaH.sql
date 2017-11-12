@@ -51,22 +51,22 @@ BEGIN TRY
 		RAISERROR ('Não há alojamentos nessas condições',20,1) 
 		ELSE 
 		BEGIN
-		SELECT @nomeAlojamento=A.nome,@nomeParque=A.nomeParque,@localização=A.localização FROM AlojamentoEstada INNER JOIN (
-		SELECT nome,nomeParque,localização FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo) as A ON AlojamentoEstada.nome=A.nome and AlojamentoEstada.nomeParque=A.nomeParque and AlojamentoEstada.localização=A.localização
+		SELECT @nomeParque=A.nomeParque,@localização=A.localização FROM AlojamentoEstada INNER JOIN (
+		SELECT nomeParque,localização FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo) as A ON AlojamentoEstada.nomeParque=A.nomeParque and AlojamentoEstada.localização=A.localização
 		IF @@ROWCOUNT = 0 
 		BEGIN
-		SELECT  TOP 1 @nomeAlojamento=nome,@nomeParque=nomeParque,@localização=localização FROM Alojamento WHERE tipoAlojamento=@tipo and númeroMáximoPessoas=@lotação
-		INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES (@nomeAlojamento,@nomeParque,@localização,@idEstada)
+		SELECT  TOP 1 @nomeParque=nomeParque,@localização=localização FROM Alojamento WHERE tipoAlojamento=@tipo and númeroMáximoPessoas=@lotação
+		INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id) VALUES (@nomeParque,@localização,@idEstada)
 		END
 		ELSE
 		BEGIN
-		SELECT TOP 1 @nomeAlojamento=A.nome,@nomeParque=A.nomeParque,@localização=A.localização FROM ( 
-		(SELECT nome,nomeParque,localização FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo) as A
-		INNER JOIN (SELECT nome,nomeParque,localização,AlojamentoEstada.id FROM AlojamentoEstada INNER JOIN 
-		(SELECT id FROM Estada WHERE dataFim<@actualDate) AS EstadasDisponiveis ON EstadasDisponiveis.id=AlojamentoEstada.id ) as B ON A.nome=B.nome and A.localização=B.localização and A.nomeParque=B.nomeParque)
+		SELECT TOP 1 @nomeParque=A.nomeParque,@localização=A.localização FROM ( 
+		(SELECT nomeParque,localização FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo) as A
+		INNER JOIN (SELECT nomeParque,localização,AlojamentoEstada.id FROM AlojamentoEstada INNER JOIN 
+		(SELECT id FROM Estada WHERE dataFim<@actualDate) AS EstadasDisponiveis ON EstadasDisponiveis.id=AlojamentoEstada.id ) as B ON  A.localização=B.localização and A.nomeParque=B.nomeParque)
 		IF @nomeAlojamento is null /* impossivel ter um a null e os outros nao ? */
 		RAISERROR('Não há alojamentos nessas condições',20,1)
-		INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES (@nomeAlojamento,@nomeParque,@localização,@idEstada)
+		INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id) VALUES (@nomeParque,@localização,@idEstada)
 		END
 		END
 		
@@ -85,7 +85,7 @@ END CATCH
 
 /*************** TESTE ********************************************************************************************/
 
-exec dbo.createEstada 112233445,7,1,2,2,3,'bungalow'
+exec dbo.createEstada 112233445,7,1,4,2,3,'tenda'
 
 SELECT * FROM Hóspede
 SELECT * FROM Alojamento
@@ -118,7 +118,7 @@ drop proc addExtraPessoa
 drop proc addHospede
 
 
-INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES ('Preto','Glampinho','12E2',2)
-INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES ('Azul','Glampinho','12E2',3)
+INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id) VALUES ('Glampinho','12E2',2)
+INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id) VALUES ('Glampinho','12E2',3)
 INSERT INTO Estada(id,dataInício,dataFim) VALUES(2,'2017-02-02','2017-02-03')
 INSERT INTO Estada(id,dataInício,dataFim) VALUES(3,'2017-02-02','2017-02-03')

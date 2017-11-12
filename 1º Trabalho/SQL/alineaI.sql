@@ -23,7 +23,7 @@ BEGIN TRY
 	DECLARE @idEstada int
 
 	SELECT @idEstada=id FROM AlojamentoEstada INNER JOIN (
-	SELECT nome,nomeParque,localização FROM Alojamento WHERE nomeParque=@nomeParque) AS A ON A.nome=AlojamentoEstada.nome and A.nomeParque=AlojamentoEstada.nomeParque and AlojamentoEstada.localização=A.localização
+	SELECT nomeParque,localização FROM Alojamento WHERE nomeParque=@nomeParque) AS A ON A.nomeParque=AlojamentoEstada.nomeParque and AlojamentoEstada.localização=A.localização
 	IF @@ROWCOUNT = 0 RAISERROR('Não existe nenhuma Estada no Parque referido',20,1) 
 
 	SELECT @idEstada FROM Estada INNER JOIN (
