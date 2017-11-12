@@ -45,40 +45,38 @@ CREATE TABLE dbo.Estada(
 
 /*****************************************************************************/
 CREATE TABLE dbo.Alojamento(
-	nomeParque NVARCHAR(30) NOT NULL FOREIGN KEY REFERENCES ParqueCampismo(nome),
-	nome NVARCHAR(30),
+	nomeParque NVARCHAR(30) NOT NULL FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome) ON DELETE CASCADE,
+	nome NVARCHAR(30) NOT NULL UNIQUE,
 	localização NVARCHAR(30),
 	descrição NVARCHAR(30),
 	preçoBase INT,
-	númeroMáximoPessoas tinyInt,
+	númeroMáximoPessoas TINYINT,
 	tipoAlojamento VARCHAR(8) NOT NULL CHECK(tipoAlojamento in('bungalow', 'tenda')),
-	CONSTRAINT pk_Alojamento PRIMARY KEY(nome,nomeParque, localização)
+	CONSTRAINT pk_Alojamento PRIMARY KEY(nomeParque, localização)
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.Bungalow(
-	nome NVARCHAR(30),
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	tipologia CHAR(2),
-	CONSTRAINT pk_Bungalow PRIMARY KEY(nome,nomeParque, localização),
-	CONSTRAINT fk_Bungalow FOREIGN KEY(nome,nomeParque, localização) REFERENCES Alojamento(nome,nomeParque, localização)
+	CONSTRAINT pk_Bungalow PRIMARY KEY(nomeParque, localização),
+	CONSTRAINT fk_Bungalow FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização) ON DELETE CASCADE
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.Tenda(
-	nome NVARCHAR(30),
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
-	área int, 
-	CONSTRAINT pk_Tenda PRIMARY KEY(nome,nomeParque, localização),
-	CONSTRAINT fk_Tenda FOREIGN KEY(nome,nomeParque, localização) REFERENCES Alojamento(nome,nomeParque, localização)
+	área INT, 
+	CONSTRAINT pk_Tenda PRIMARY KEY(nomeParque, localização),
+	CONSTRAINT fk_Tenda FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização) ON DELETE CASCADE
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.Actividades(
 	nomeParque NVARCHAR(30) FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome) ON DELETE CASCADE,
-	númeroSequencial NVARCHAR(30),
+	númeroSequencial INT,
 	nome NVARCHAR(30),
 	descrição NVARCHAR(30),
 	lotaçãoMáxima INT,
@@ -124,22 +122,19 @@ CREATE TABLE dbo.EstadaExtra(
 )
 
 /*****************************************************************************/
-
-CREATE TABLE AlojamentoEstada(
-	nome NVARCHAR(30),
+CREATE TABLE dbo.AlojamentoEstada(
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	id INT FOREIGN KEY REFERENCES Estada(id),
-	CONSTRAINT pk_AlojamentoEstada PRIMARY KEY(nome,nomeParque, localização, id),
-	CONSTRAINT fk_AlojamentoEstada FOREIGN KEY(nome,nomeParque, localização) REFERENCES Alojamento(nome,nomeParque, localização)
+	CONSTRAINT pk_AlojamentoEstada PRIMARY KEY(nomeParque, localização, id),
+	CONSTRAINT fk_AlojamentoEstada FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.AlojamentoExtra(
-	nome NVARCHAR(30), 
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	id INT FOREIGN KEY REFERENCES Extra(id),
-	CONSTRAINT pk_AlojamentoExtra PRIMARY KEY(nome,nomeParque, localização, id),
-	CONSTRAINT fk_AlojamentoExtra FOREIGN KEY(nome,nomeParque, localização) REFERENCES Alojamento(nome,nomeParque, localização)
+	CONSTRAINT pk_AlojamentoExtra PRIMARY KEY(nomeParque, localização, id),
+	CONSTRAINT fk_AlojamentoExtra FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)
 )
