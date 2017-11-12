@@ -1,5 +1,5 @@
 /*******************************************************************************
-**	Nome               alineaD
+**	Nome               alineaE
 **	
 **	Objectivo         O objectivo deste script é inserir, remover e actualizar 
 **					  informação de um extra de alojamento 
@@ -10,16 +10,16 @@
 ******************************************************************************/
 USE Glampinho
 
-/**************INSERT *******************************************************/
+/********************************** INSERT *******************************************************/
 
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES(2, 'descricao', 10, 'alojamento')
 
-/**************UPDATE *******************************************************/
+/********************************** UPDATE *******************************************************/
 
 UPDATE dbo.Extra SET preçoDia = preçoDia - 2 WHERE id = 2
 
-/**************DELETE *******************************************************/
+/********************************** DELETE *******************************************************/
 
 GO 
 CREATE PROCEDURE dbo.deleteExtra @id INT
@@ -35,7 +35,7 @@ BEGIN CATCH
 	ROLLBACK
 END CATCH
 
-/*************** TESTE ******************************************************/
+/********************************* TESTE ******************************************************/
 
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
 	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
@@ -46,7 +46,7 @@ INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'vermelho', '12EA1', 'bonito', 12, 4, 50
 
 INSERT INTO dbo.Estada(id, dataInício, dataFim)
-	VALUES(1, '03-15-17 10:30', null)
+	VALUES(1, '2017-03-15 10:03:00', null)
 
 INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
 	VALUES('Glampinho', '12EA1', 1)

@@ -1,124 +1,202 @@
 /*******************************************************************************
-**	Nome               alineaC
+**	Nome               alineaH
 **	
-**	Objectivo          O objectivo deste script é o de criar uma estada com todas as RI correspondentes
-
-1. Criar uma estada dado o NIF do hóspede responsável e o período temporal
-pretendido;
-2. Adicionar um alojamento de um dado tipo com uma determinada lotação a
-uma estada;
-3. Adicionar um hóspede a uma estada;
-4. Adicionar um extra a um alojamento de uma estada;
-5. Adicionar um extra pessoal a uma estada; 
-
+**	Objectivo          O objectivo deste script é o de criar uma estada, seguindo os seguintes sub-processamentos:
+**
+**					   1. Criar uma estada dado o NIF do hóspede responsável e o período temporal
+**						pretendido;
+**					   2. Adicionar um alojamento de um dado tipo com uma determinada lotação a
+**						uma estada;
+**					   3. Adicionar um hóspede a uma estada;
+**					   4. Adicionar um extra a um alojamento de uma estada;
+**					   5. Adicionar um extra pessoal a uma estada; 
 **
 **	Criado por         Grupo 4 
-**	Data de Criação    08/11/17
+**	Data de Criação    09/11/17
 **
 ******************************************************************************/
 USE Glampinho
+/*************************************** Criar uma estada *************************************************************/
+GO  
+CREATE PROCEDURE dbo.createEstada @NIFResponsável INT, @tempoEstada INT, @idNumber INT OUTPUT AS -- em minutos
+	BEGIN TRY
+		BEGIN TRANSACTION
+			SELECT @idNumber = COUNT(id) + 1 FROM dbo.Estada
+			
+			INSERT INTO dbo.Estada(id, dataInício, dataFim)
+				VALUES(@idNumber, GETDATE(), DATEADD(MINUTE, @tempoEstada, GETDATE()))
 
+			INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
+				VALUES(@NifResponsável, @idNumber, 'true')
 
-GO
-CREATE PROC dbo.addExtraPessoa @idExtra int,@idEstada int 
-AS
-BEGIN TRY
-    BEGIN TRANSACTION
-    INSERT INTO EstadaExtra VALUES(@idEstada,@idExtra)
-    COMMIT
-END TRY
-BEGIN CATCH
-RAISERROR('ERRO add Extra Pessoa',20,1)
- ROLLBACK
-END CATCH 
-
-GO
-CREATE PROC dbo.createEstada @NIF int, @periodoTemporal int, @idEstada int,@lotação int, @idExtraAlojamento int,@idExtraPessoa int,@tipo varchar(9)
-AS
-BEGIN TRY
-    BEGIN TRANSACTION
-
-	DECLARE @actualDate DATETIME = GETDATE()
-	DECLARE @endDate DATE = DATEADD(DAY,@periodoTemporal,@actualDate)
-	DECLARE @nomeAlojamento nvarchar(30)
-	DECLARE @nomeParque nvarchar(30)
-	DECLARE @localização nvarchar(30)
-
-	INSERT INTO Estada(id,dataInício,dataFim) VALUES(@idEstada,@actualDate,@endDate)
-	INSERT INTO HóspedeEstada(NIF,id,hóspede) VALUES (@NIF,@idEstada,'true')
-
-		IF NOT EXISTS (SELECT tipoAlojamento,númeroMáximoPessoas FROM Alojamento WHERE tipoAlojamento=@tipo and númeroMáximoPessoas=@lotação )
-		RAISERROR ('Não há alojamentos nessas condições',20,1) 
-		ELSE 
-		BEGIN
-		SELECT @nomeAlojamento=A.nome,@nomeParque=A.nomeParque,@localização=A.localização FROM AlojamentoEstada INNER JOIN (
-		SELECT nome,nomeParque,localização FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo) as A ON AlojamentoEstada.nome=A.nome and AlojamentoEstada.nomeParque=A.nomeParque and AlojamentoEstada.localização=A.localização
-		IF @@ROWCOUNT = 0 
-		BEGIN
-		SELECT  TOP 1 @nomeAlojamento=nome,@nomeParque=nomeParque,@localização=localização FROM Alojamento WHERE tipoAlojamento=@tipo and númeroMáximoPessoas=@lotação
-		INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES (@nomeAlojamento,@nomeParque,@localização,@idEstada)
-		END
-		ELSE
-		BEGIN
-		SELECT TOP 1 @nomeAlojamento=A.nome,@nomeParque=A.nomeParque,@localização=A.localização FROM ( 
-		(SELECT nome,nomeParque,localização FROM Alojamento WHERE númeroMáximoPessoas=@lotação and tipoAlojamento=@tipo) as A
-		INNER JOIN (SELECT nome,nomeParque,localização,AlojamentoEstada.id FROM AlojamentoEstada INNER JOIN 
-		(SELECT id FROM Estada WHERE dataFim<@actualDate) AS EstadasDisponiveis ON EstadasDisponiveis.id=AlojamentoEstada.id ) as B ON A.nome=B.nome and A.localização=B.localização and A.nomeParque=B.nomeParque)
-		IF @nomeAlojamento is null /* impossivel ter um a null e os outros nao ? */
-		RAISERROR('Não há alojamentos nessas condições',20,1)
-		INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES (@nomeAlojamento,@nomeParque,@localização,@idEstada)
-		END
-		END
-		
 		COMMIT
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Erro na criação da estada', 5, 1)
+		ROLLbACK
+	END CATCH
 
-		exec dbo.addExtraPessoa @idExtraPessoa,@idEstada
-		exec dbo.addExtraPessoa @idExtraAlojamento,@idEstada
+/*************************************** Adicionar alojamento ***********************************************************/
+GO
+CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT, @idEstada INT AS	--recebo id ou incremento ultimo?
+	BEGIN TRY
+		BEGIN TRANSACTION	-- select e insert tem de ser seguido 
+			DECLARE @nomeParque NVARCHAR(30)
+			DECLARE @localização NVARCHAR(30)
 
+			SELECT @nomeParque = AlojEst.nomeParque, @localização = AlojEst.localização FROM dbo.Alojamento AS Aloj LEFT JOIN dbo.AlojamentoEstada AS AlojEst 
+			ON Aloj.nomeParque = AlojEst.nomeParque AND Aloj.localização = AlojEst.localização 
+			JOIN dbo.Estada as Est ON Est.id = AlojEst.id
+			WHERE Aloj.tipoAlojamento = @tipoAlojamento AND Aloj.númeroMáximoPessoas = @lotação AND Est.dataFim < GETDATE()
+
+			INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id)
+				VALUES(@nomeParque, @localização, @idEstada)
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Erro na adição do alojamento a estada', 5, 2)
+		ROLLBACK
+	END CATCH
+
+/*************************************** Adicionar hóspede a Estada ***********************************************************/
+GO
+CREATE PROCEDURE dbo.addHóspede @NIF INT, @id INT AS
+	BEGIN TRY
+		BEGIN TRANSACTION
+			INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
+				VALUES(@NIF, @id, 'false')
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Erro na adição do hóspede a estada', 5, 3)
+		ROLLBACK
+	END CATCH
+
+/*************************************** Adicionar extra a um alojamento de uma Estada ***********************************************************/
+GO	
+CREATE PROCEDURE dbo.addExtraToAlojamento @idExtra INT, @idEstada INT AS
+	BEGIN TRY
+		BEGIN TRANSACTION
+			DECLARE @nomeParque NVARCHAR(30)
+			DECLARE @localização NVARCHAR(30)
+			DECLARE @associado VARCHAR(10)
+
+			SELECT @associado = associado FROM dbo.Extra WHERE id = @idExtra
+			
+			IF(@associado <> 'alojamento')
+				RAISERROR('Extra não é de pessoal', 15, 5)
+			ELSE
+				BEGIN
+					SELECT @nomeParque = nomeParque, @localização = localização FROM dbo.AlojamentoEstada WHERE id = @idEstada
+
+					INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
+						VALUES(@nomeParque, @localização, @idExtra)
+				END
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Erro na adição de um extra a um alojamento de uma estada', 5, 4)
+		ROLLBACK
+	END CATCH 
 		
-   
-END TRY
-BEGIN CATCH
- IF @@TRANCOUNT > 0 ROLLBACK; 
-END CATCH 
+/*************************************** Adicionar extra pessoal a uma Estada ***********************************************************/
+GO
+CREATE PROCEDURE dbo.addExtraToEstada @idExtra INT, @idEstada INT AS
+	BEGIN TRY
+		BEGIN TRANSACTION
+			DECLARE @associado VARCHAR(10)
 
+			SELECT @associado = associado FROM dbo.Extra WHERE id = @idExtra
 
-/*************** TESTE ********************************************************************************************/
+			IF(@associado <> 'pessoa')
+				RAISERROR('Extra não é de pessoal', 15, 5)
+			ELSE
+				INSERT INTO dbo.EstadaExtra(estadaId, extraId)
+					VALUES(@idEstada, @idExtra)
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Erro na adição de um extra pessoal a uma estada', 5, 6)
+		ROLLBACK
+	END CATCH 
 
-exec dbo.createEstada 112233445,7,1,2,2,3,'bungalow'
+/*************************************** Adicionar extra pessoal a uma Estada ***********************************************************/
+GO
+CREATE PROCEDURE dbo.createEstadaInTime @NIFResponsável INT, @NIFHóspede INT, @tempoEstada INT, @tipoAlojamento VARCHAR(8), @lotação TINYINT, @idExtraPessoal INT, @idExtraAlojamento INT AS
+	BEGIN TRY
+		BEGIN TRANSACTION
+			DECLARE @id INT
+			EXEC dbo.createEstada @NIFResponsável, @tempoEstada, @idNumber = @id OUTPUT
 
-SELECT * FROM Hóspede
-SELECT * FROM Alojamento
-SELECT * FROM ParqueCampismo
-SELECT * FROM Extra
-SELECT * FROM Tenda
-SELECT * FROM Estada
-SELECT * FROM EstadaExtra
-SELECT * FROM AlojamentoEstada
-SELECT * FROM HóspedeEstada
+			EXEC dbo.addAlojamento @tipoAlojamento, @lotação, @id
 
-exec dbo.InsertAlojamentoTenda 'Glampinho','Preto', '12E2','boa qualidade',12,4,25
+			EXEC dbo.addHóspede @NIFHóspede, @id
+
+			EXEC dbo.addExtraToAlojamento @idExtraAlojamento, @id
+
+			EXEC dbo.addExtraToEstada @idExtraPessoal, @id
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		RAISERROR('Erro na adição de uma estada', 5, 7)
+		ROLLBACK
+	END CATCH
+
+/*************************************** Teste ************************************************************************/
 
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
 	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
+
 INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
-	VALUES (112233445, 'José', 'Rua 1', 'jose@gmail.com', 11223344),
-		   (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788)
-INSERT INTO Actividades (nomeParque,númeroSequencial, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
-	VALUES('Glampinho',1,'FUT7','Jogo de futebol 7vs7','14',3,'03-15-17 10:30')
+	VALUES(112233445, 'Teste', 'Rua teste', 'teste@teste.com', 11223344),
+	       (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788)
+	
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda pequena', 'Rua 1', 'bonito', 12, 4, 50
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda grande', 'Rua 2', 'grande', 15, 10, 50
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda tempo', 'Rua 3', 'tempo', 15, 11, 50
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda vazia', 'Rua 4', 'vazia', 15, 10, 50
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda nova', 'Rua 5', 'por estrear', 15, 10, 50
+EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow hoje', 'Rua 6', 'primeiro bungalow', 15, 10, 'T5'
+EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow ontem', 'Rua 7', 'segundo bungalow', 15, 9, 'T5'
 
-INSERT INTO Extra(id, descrição, preçoDia, associado)
-	VALUES(3, 'descricao', 12, 'pessoa')
-INSERT INTO Extra(id, descrição, preçoDia, associado)
-	VALUES(2, 'descricao', 10, 'alojamento')
+INSERT INTO dbo.Estada(id, dataInício, dataFim)
+	VALUES (1, '2017-03-15 13:00:00', '2017-03-16 13:00:00'),
+		   (2, '2017-11-12 13:00:00', '2018-11-14 13:00:00'),
+		   (3, '2017-10-05 10:00:00', '2017-11-12 13:00:00'),
+		   (4, '2017-09-12 10:00:00', '2017-09-13 13:00:00'),
+		   (5, '2017-08-10 10:00:00', '2017-09-11 10:00:00')
 
+INSERT INTO AlojamentoEstada(nomeParque, localização, id)
+	VALUES ('Glampinho', 'Rua 1', 1),
+		   ('Glampinho', 'Rua 2', 2),
+		   ('Glampinho', 'Rua 4', 3),
+		   ('Glampinho', 'Rua 7', 4)
 
-drop proc createEstada
-drop proc addExtraPessoa
-drop proc addHospede
+INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
+	VALUES(1, 'descricao', 10, 'alojamento'), 
+		  (2, 'teste', 15, 'pessoa')
 
+SELECT * FROM dbo.ParqueCampismo
+SELECT * FROM dbo.Alojamento
+SELECT * FROM dbo.Tenda
+SELECT * FROM dbo.Bungalow
+SELECT * FROM dbo.Estada
+SELECT * FROM dbo.AlojamentoEstada
+SELECT * FROM dbo.Extra
+SELECT * FROM dbo.HóspedeEstada
+SELECT * FROM dbo.AlojamentoExtra
+SELECT * FROM dbo.EstadaExtra
 
-INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES ('Preto','Glampinho','12E2',2)
-INSERT INTO dbo.AlojamentoEstada(nome,nomeParque, localização, id) VALUES ('Azul','Glampinho','12E2',3)
-INSERT INTO Estada(id,dataInício,dataFim) VALUES(2,'2017-02-02','2017-02-03')
-INSERT INTO Estada(id,dataInício,dataFim) VALUES(3,'2017-02-02','2017-02-03')
+DECLARE @idTemp INT
+
+EXEC dbo.createEstada 112233445, 60, @idTemp
+
+EXEC dbo.addAlojamento 'tenda', 10, 6
+
+EXEC dbo.addHóspede 566778899, 6
+
+EXEC dbo.addExtraToAlojamento 1, 6
+
+EXEC dbo.addExtraToEstada 2, 6
+
+EXEC dbo.createEstadaInTime 112233445, 566778899, 60, 'tenda', 10, 2, 1

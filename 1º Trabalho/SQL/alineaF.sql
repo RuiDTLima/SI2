@@ -10,16 +10,16 @@
 ******************************************************************************/
 USE Glampinho
 
-/**************INSERT *******************************************************/
+/************************************** INSERT *******************************************************/
 
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES(3, 'descricao', 12, 'pessoa')
 
-/**************UPDATE *******************************************************/
+/************************************** UPDATE *******************************************************/
 
 UPDATE dbo.Extra SET preçoDia = preçoDia - 2 WHERE id = 2
 
-/**************DELETE *******************************************************/
+/************************************** DELETE *******************************************************/
 
 GO 
 CREATE PROCEDURE dbo.deleteExtraPessoa @id INT
@@ -35,23 +35,23 @@ BEGIN CATCH
 	ROLLBACK
 END CATCH
 
-/*************** TESTE ******************************************************/
+/************************************** TESTE ******************************************************/
 
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
 	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
 
-INSERT INTO Extra(id, descrição, preçoDia, associado)
+INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES(1, 'descricao', 12, 'pessoa')
 
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'verde', '12EA1', 'bonito', 12, 4, 50
 
-INSERT INTO Estada(id, dataInício, dataFim)
-	VALUES(1, '03-15-17 10:30', null)
+INSERT INTO dbo.Estada(id, dataInício, dataFim)
+	VALUES(1, '2017-11-09 13:00:00', null)
 
-INSERT INTO AlojamentoExtra(nomeParque, localização, id)
+INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
 	VALUES('Glampinho', '12EA1', 1)
 
-INSERT INTO EstadaExtra(estadaId, ExtraId)
+INSERT INTO dbo.EstadaExtra(estadaId, ExtraId)
 	VALUES(1, 1)
 
 EXEC dbo.deleteExtraPessoa 1

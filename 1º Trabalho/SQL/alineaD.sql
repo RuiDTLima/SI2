@@ -17,10 +17,11 @@ CREATE PROCEDURE dbo.InsertAlojamentoBungalow @nomeParque NVARCHAR(30), @nome NV
 											  @descrição NVARCHAR(30), @preçoBase INT, @númeroMáximoPessoas TINYINT, @tipologia CHAR(2) AS
 BEGIN TRY
 	BEGIN TRANSACTION
-		/*INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
+		INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
 			VALUES(@nomeParque, @nome, @localização, @descrição, @preçoBase, @númeroMáximoPessoas, 'bungalow')
-		INSERT INTO dbo.Bungalow(nomeParque,nome, localização, tipologia)
-			VALUES(@nomeParque,@nome, @localização, @tipologia)*/
+
+		INSERT INTO dbo.Bungalow(nomeParque, localização, tipologia)
+			VALUES(@nomeParque, @localização, @tipologia)
 		COMMIT
 END TRY
 BEGIN CATCH
@@ -35,8 +36,9 @@ BEGIN TRY
 	BEGIN TRANSACTION
 		INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
 			VALUES(@nomeParque, @nome, @localização, @descrição, @preçoBase, @númeroMáximoPessoas, 'tenda')
-		INSERT INTO dbo.Tenda(nomeParque,nome, localização, área)
-			VALUES(@nomeParque,@nome, @localização, @área)
+
+		INSERT INTO dbo.Tenda(nomeParque, localização, área)
+			VALUES(@nomeParque, @localização, @área)
 		COMMIT
 END TRY
 BEGIN CATCH
@@ -53,9 +55,9 @@ GO
 CREATE PROCEDURE dbo.deleteAlojamento @localização NVARCHAR(30), @nomeParque NVARCHAR(30) AS
 BEGIN TRY
     BEGIN TRANSACTION
-		DELETE FROM AlojamentoEstada WHERE localização=@localização and nomeParque=@nomeParque
-		DELETE FROM AlojamentoExtra WHERE localização=@localização and nomeParque=@nomeParque
-		DELETE FROM Alojamento WHERE localização=@localização and nomeParque=@nomeParque
+		DELETE FROM dbo.AlojamentoEstada WHERE localização=@localização and nomeParque=@nomeParque
+		DELETE FROM dbo.AlojamentoExtra WHERE localização=@localização and nomeParque=@nomeParque
+		DELETE FROM dbo.Alojamento WHERE localização=@localização and nomeParque=@nomeParque
 	COMMIT
 END TRY
 BEGIN CATCH
@@ -65,23 +67,24 @@ END CATCH
 /********************************** Teste ********************************************/
 
 EXEC dbo.deleteAlojamento 'Lote 1','Glampinho'
-EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Parque 1', 'Lote 1', 'primeira tenda do parque', 60, 12, 'T3'
-EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'verde', '12EA1', 'bonito', 12, 4, 50
 
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
 	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
 
+INSERT INTO	dbo.Estada(id, dataInício, dataFim)
+	VALUES(1, '2017-11-09 13:00:00', '2017-11-11 13:00:00')
+
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES(1, 'descricao', 12, 'pessoa')
+	
+EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Parque 1', 'Lote 1', 'primeira tenda do parque', 60, 12, 'T3'
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'verde', '12EA1', 'bonito', 12, 4, 50
 
 INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id)
 	VALUES('Glampinho', '12EA1', 1)
 
 INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
 	VALUES('Glampinho', '12EA1', 1)
-
-INSERT INTO Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
-	VALUES('Glampinho', 'teste', 'testeS', 'teste teste', 50, 10, 'bungalow')
 
 SELECT * FROM dbo.Estada
 SELECT * FROM dbo.Extra
