@@ -187,6 +187,7 @@ SELECT * FROM dbo.HóspedeEstada
 SELECT * FROM dbo.AlojamentoExtra
 SELECT * FROM dbo.EstadaExtra
 
+/* Para testar cada procedure individualmente */
 DECLARE @idTemp INT
 
 EXEC dbo.createEstada 112233445, 60, @idTemp
@@ -199,4 +200,5 @@ EXEC dbo.addExtraToAlojamento 1, 6
 
 EXEC dbo.addExtraToEstada 2, 6
 
+/* Testar procedure final */
 EXEC dbo.createEstadaInTime 112233445, 566778899, 60, 'tenda', 10, 2, 1
