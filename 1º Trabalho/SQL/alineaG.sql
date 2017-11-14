@@ -32,6 +32,7 @@ BEGIN TRY
 	COMMIT
 END TRY
 BEGIN CATCH
+	RAISERROR('Erro na eliminação de uma actividade', 5, 1)
 	ROLLBACK
 END CATCH
 

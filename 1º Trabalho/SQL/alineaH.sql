@@ -38,7 +38,7 @@ CREATE PROCEDURE dbo.createEstada @NIFResponsável INT, @tempoEstada INT, @idNumb
 
 /*************************************** Adicionar alojamento ***********************************************************/
 GO
-CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT, @idEstada INT AS	--recebo id ou incremento ultimo?
+CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT, @idEstada INT AS
 	BEGIN TRY
 		BEGIN TRANSACTION	-- select e insert tem de ser seguido 
 			DECLARE @nomeParque NVARCHAR(30)
@@ -51,6 +51,9 @@ CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT,
 
 			INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id)
 				VALUES(@nomeParque, @localização, @idEstada)
+
+			INSERT INTO dbo.EstadaExtra(estadaId, extraId)
+				SELECT @idEstada, id FROM dbo.AlojamentoExtra WHERE nomeParque = @nomeParque AND localização = @localização
 		COMMIT
 	END TRY
 	BEGIN CATCH
@@ -166,15 +169,19 @@ INSERT INTO dbo.Estada(id, dataInício, dataFim)
 		   (4, '2017-09-12 10:00:00', '2017-09-13 13:00:00'),
 		   (5, '2017-08-10 10:00:00', '2017-09-11 10:00:00')
 
-INSERT INTO AlojamentoEstada(nomeParque, localização, id)
+INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id)
 	VALUES ('Glampinho', 'Rua 1', 1),
 		   ('Glampinho', 'Rua 2', 2),
 		   ('Glampinho', 'Rua 4', 3),
 		   ('Glampinho', 'Rua 7', 4)
 
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
-	VALUES(1, 'descricao', 10, 'alojamento'), 
-		  (2, 'teste', 15, 'pessoa')
+	VALUES (1, 'descricao', 10, 'alojamento'), 
+		   (2, 'teste', 15, 'pessoa'), 
+		   (3, 'metodo', 20, 'alojamento')
+
+INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
+	VALUES ('Glampinho', 'Rua 4', 1)
 
 SELECT * FROM dbo.ParqueCampismo
 SELECT * FROM dbo.Alojamento
@@ -201,4 +208,4 @@ EXEC dbo.addExtraToAlojamento 1, 6
 EXEC dbo.addExtraToEstada 2, 6
 
 /* Testar procedure final */
-EXEC dbo.createEstadaInTime 112233445, 566778899, 60, 'tenda', 10, 2, 1
+EXEC dbo.createEstadaInTime 112233445, 566778899, 60, 'tenda', 10, 2, 3
