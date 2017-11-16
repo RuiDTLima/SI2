@@ -14,7 +14,6 @@ CREATE TABLE dbo.ParqueCampismo(
 	nome NVARCHAR(30) NOT NULL PRIMARY KEY,
 	morada NVARCHAR(50),
 	estrelas TINYINT NOT NULL CHECK(estrelas IN(1, 2, 3, 4, 5)),
-	telefones INT,
 	email NVARCHAR(30)
 )
 
@@ -87,15 +86,30 @@ CREATE TABLE dbo.Actividades(
 
 /*****************************************************************************/
 CREATE TABLE dbo.Factura(
-	identificadorEstada INT FOREIGN KEY REFERENCES dbo.Estada(id), 
-	identificador INT,
+	idEstada INT FOREIGN KEY REFERENCES dbo.Estada(id), 
+	id INT,
 	nomeHóspede NVARCHAR(30),
-	NIFHóspede INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF), 
-	descriçãoAlojamentos NVARCHAR(50),
-	extras INT,
-	actividades INT, 
-	preços INT,
-	CONSTRAINT pk_Factura PRIMARY KEY(identificadorEstada, identificador)
+	NIFHóspede INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
+	CONSTRAINT pk_Factura PRIMARY KEY(idEstada, id)
+)
+
+/*****************************************************************************/
+CREATE TABLE dbo.Telefones(
+	nomeParque NVARCHAR(30) FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome) ON DELETE CASCADE,
+	telefone INT,
+	CONSTRAINT pk_Telefones PRIMARY KEY(nomeParque, telefone)
+)
+
+/*****************************************************************************/
+CREATE TABLE dbo.Item(
+	idEstada INT,
+	idFactura INT,
+	linha INT,
+	quantidade INT NOT NULL,
+	preço INT NOT NULL,
+	descrição NVARCHAR(50) NOT NULL,
+	CONSTRAINT pk_Item PRIMARY KEY(idEstada, idFactura, linha),
+	CONSTRAINT fk_item FOREIGN KEY(idEstada, idFactura) REFERENCES dbo.Factura(idEstada, id)
 )
 
 /*****************************************************************************/
@@ -103,7 +117,8 @@ CREATE TABLE dbo.Paga(
 	nomeParque NVARCHAR(30),
 	númeroSequencial INT,
 	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
-	CONSTRAINT pk_Paga PRIMARY KEY(nomeParque, númeroSequencial, NIF)
+	CONSTRAINT pk_Paga PRIMARY KEY(nomeParque, númeroSequencial, NIF),
+	CONSTRAINT fk_Paga FOREIGN KEY(nomeParque, númeroSequencial) REFERENCES dbo.Actividades(nomeParque, númeroSequencial)
 )
 
 /*****************************************************************************/

@@ -12,12 +12,14 @@ USE Glampinho
 
 DELETE FROM dbo.Tenda
 DELETE FROM dbo.Bungalow
+DELETE FROM dbo.Paga
 DELETE FROM dbo.Actividades
 DELETE FROM dbo.AlojamentoExtra
+DELETE FROM dbo.Telefones
+DELETE FROM dbo.Item
 DELETE FROM dbo.Factura
 DELETE FROM dbo.EstadaExtra
 DELETE FROM dbo.Extra
-DELETE FROM dbo.Paga
 DELETE FROM dbo.HóspedeEstada
 DELETE FROM dbo.Hóspede
 DELETE FROM dbo.AlojamentoEstada

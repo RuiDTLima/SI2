@@ -152,7 +152,7 @@ INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
 
 INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
 	VALUES(112233445, 'Teste', 'Rua teste', 'teste@teste.com', 11223344),
-	       (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788)
+	      (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788)
 	
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda pequena', 'Rua 1', 'bonito', 12, 4, 50
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda grande', 'Rua 2', 'grande', 15, 10, 50

@@ -11,12 +11,14 @@ USE Glampinho
 
 DROP TABLE dbo.Tenda
 DROP TABLE dbo.Bungalow
+DROP TABLE dbo.Paga
 DROP TABLE dbo.Actividades
 DROP TABLE dbo.AlojamentoExtra
+DROP TABLE dbo.Telefones
+DROP TABLE dbo.Item
 DROP TABLE dbo.Factura
 DROP TABLE dbo.EstadaExtra
 DROP TABLE dbo.Extra
-DROP TABLE dbo.Paga
 DROP TABLE dbo.HóspedeEstada
 DROP TABLE dbo.Hóspede
 DROP TABLE dbo.AlojamentoEstada
