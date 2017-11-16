@@ -58,7 +58,7 @@ CREATE TABLE dbo.Alojamento(
 CREATE TABLE dbo.Bungalow(
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
-	tipologia CHAR(2),
+	tipologia CHAR(2) NOT NULL CHECK(tipologia in('T0', 'T1', 'T2', 'T3')),
 	CONSTRAINT pk_Bungalow PRIMARY KEY(nomeParque, localização),
 	CONSTRAINT fk_Bungalow FOREIGN KEY(nomeParque, localização) REFERENCES dbo.Alojamento(nomeParque, localização) ON DELETE CASCADE
 )
@@ -76,21 +76,23 @@ CREATE TABLE dbo.Tenda(
 CREATE TABLE dbo.Actividades(
 	nomeParque NVARCHAR(30) FOREIGN KEY REFERENCES dbo.ParqueCampismo(nome) ON DELETE CASCADE,
 	númeroSequencial INT,
+	ano INT,
 	nome NVARCHAR(30),
 	descrição NVARCHAR(30),
 	lotaçãoMáxima INT,
 	preçoParticipante INT,
 	dataRealização DATETIME,
-	CONSTRAINT pk_Actividades PRIMARY KEY(nomeParque, númeroSequencial)
+	CONSTRAINT pk_Actividades PRIMARY KEY(nomeParque, númeroSequencial, ano)
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.Factura(
 	idEstada INT FOREIGN KEY REFERENCES dbo.Estada(id), 
 	id INT,
+	ano INT,
 	nomeHóspede NVARCHAR(30),
 	NIFHóspede INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
-	CONSTRAINT pk_Factura PRIMARY KEY(idEstada, id)
+	CONSTRAINT pk_Factura PRIMARY KEY(idEstada, id, ano)
 )
 
 /*****************************************************************************/
@@ -104,21 +106,24 @@ CREATE TABLE dbo.Telefones(
 CREATE TABLE dbo.Item(
 	idEstada INT,
 	idFactura INT,
+	ano INT,
 	linha INT,
 	quantidade INT NOT NULL,
 	preço INT NOT NULL,
-	descrição NVARCHAR(50) NOT NULL,
-	CONSTRAINT pk_Item PRIMARY KEY(idEstada, idFactura, linha),
-	CONSTRAINT fk_item FOREIGN KEY(idEstada, idFactura) REFERENCES dbo.Factura(idEstada, id)
+	descrição NVARCHAR(30) NOT NULL,
+	CONSTRAINT pk_Item PRIMARY KEY(idEstada, idFactura, ano, linha),
+	CONSTRAINT fk_item FOREIGN KEY(idEstada, idFactura, ano) REFERENCES dbo.Factura(idEstada, id, ano)
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.Paga(
 	nomeParque NVARCHAR(30),
 	númeroSequencial INT,
+	ano INT,
 	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
-	CONSTRAINT pk_Paga PRIMARY KEY(nomeParque, númeroSequencial, NIF),
-	CONSTRAINT fk_Paga FOREIGN KEY(nomeParque, númeroSequencial) REFERENCES dbo.Actividades(nomeParque, númeroSequencial)
+	preçoParticipante INT,
+	CONSTRAINT pk_Paga PRIMARY KEY(nomeParque, númeroSequencial, ano, NIF),
+	CONSTRAINT fk_Paga FOREIGN KEY(nomeParque, númeroSequencial, ano) REFERENCES dbo.Actividades(nomeParque, númeroSequencial, ano)
 )
 
 /*****************************************************************************/
@@ -133,6 +138,7 @@ CREATE TABLE dbo.HóspedeEstada(
 CREATE TABLE dbo.EstadaExtra(
 	estadaId INT FOREIGN KEY REFERENCES dbo.Estada(id),
 	extraId INT FOREIGN KEY REFERENCES dbo.Extra(id),
+	preçoDia INT,
 	CONSTRAINT pk_EstadaExtra PRIMARY KEY(estadaId, ExtraId)
 )
 
@@ -141,6 +147,7 @@ CREATE TABLE dbo.AlojamentoEstada(
 	nomeParque NVARCHAR(30),
 	localização NVARCHAR(30),
 	id INT FOREIGN KEY REFERENCES Estada(id),
+	preçoBase INT,
 	CONSTRAINT pk_AlojamentoEstada PRIMARY KEY(nomeParque, localização, id),
 	CONSTRAINT fk_AlojamentoEstada FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)
 )
