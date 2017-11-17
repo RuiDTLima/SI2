@@ -13,7 +13,13 @@ USE Glampinho
 /********************************* INSERT *************************************************************/
 INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
 	VALUES (112233445, 'José', 'Rua 1', 'jose@gmail.com', 11223344),
-	       (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788)
+	       (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788),
+		   (123456789, 'Maria', 'Rua 2', 'maria@gmail.com', 123456789),
+		   (2, 'Maria', 'Rua 2', 'maria@gmail.com', 22),
+		   (3, 'Maria', 'Rua 2', 'maria@gmail.com', 33),
+		   (4, 'Maria', 'Rua 2', 'maria@gmail.com', 44)
+
+
 
 /********************************** UPDATE ************************************************************/
 
