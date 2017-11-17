@@ -17,8 +17,8 @@ GO
 CREATE PROCEDURE dbo.getAlojamentoPreço @idEstada INT, @idFactura INT, @ano INT, @linha INT, @novaLinha INT OUTPUT AS
 	BEGIN TRY
 		BEGIN TRANSACTION
-			INSERT INTO dbo.Item(idEstada, idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idEstada, @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY descrição) + @linha, 1, AlojEst.preçoBase, Aloj.descrição FROM dbo.AlojamentoEstada AS AlojEst JOIN  dbo.Alojamento As Aloj 
+			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY descrição) + @linha, 1, AlojEst.preçoBase, Aloj.descrição FROM dbo.AlojamentoEstada AS AlojEst JOIN  dbo.Alojamento As Aloj 
 					ON AlojEst.localização = Aloj.localização AND AlojEst.nomeParque = Aloj.nomeParque WHERE id = @idEstada
 					
 			SELECT @novaLinha = @@ROWCOUNT + @linha
@@ -39,9 +39,10 @@ CREATE PROCEDURE dbo.getEstadaExtrasPreço @idEstada INT, @idFactura INT, @ano IN
 
 			SELECT @totalDias = DATEDIFF(DAY, dataInício, dataFim) FROM dbo.Estada WHERE id = @idEstada
 
-			INSERT INTO dbo.Item(idEstada, idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idEstada, @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Ext.descrição) + @linha, @totalDias, EstExt.preçoDia * @totalDias, Ext.descrição FROM dbo.EstadaExtra AS EstExt JOIN dbo.Extra AS Ext 
-					ON EstExt.extraId = Ext.id WHERE EstExt.estadaId = @idEstada AND Ext.associado = 'alojamento'
+			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Ext.descrição) + @linha, @totalDias, EstExt.preçoDia * @totalDias, Ext.descrição 
+					FROM dbo.EstadaExtra AS EstExt JOIN dbo.Extra AS Ext ON EstExt.extraId = Ext.id 
+					WHERE EstExt.estadaId = @idEstada AND Ext.associado = 'alojamento'
 
 			SELECT @novaLinha = @@ROWCOUNT + @linha
 		COMMiT
@@ -64,9 +65,9 @@ CREATE PROCEDURE dbo.getPessoalExtrasPreço @idEstada INT, @idFactura INT, @ano I
 
 			SELECT @totalHóspedes = COUNT(NIF) FROM dbo.HóspedeEstada WHERE id = @idEstada
 
-			INSERT INTO dbo.Item(idEstada, idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idEstada, @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Ext.descrição) + @linha, @totalDias * @totalHóspedes, EstExt.preçoDia * @totalDias * @totalHóspedes, Ext.descrição FROM dbo.EstadaExtra AS EstExt JOIN dbo.Extra Ext 
-					ON EstExt.extraId = Ext.id WHERE EstExt.estadaId = @idEstada AND Ext.associado = 'pessoa'
+			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Ext.descrição) + @linha, @totalDias * @totalHóspedes, EstExt.preçoDia * @totalDias * @totalHóspedes, Ext.descrição 
+					FROM dbo.EstadaExtra AS EstExt JOIN dbo.Extra Ext ON EstExt.extraId = Ext.id WHERE EstExt.estadaId = @idEstada AND Ext.associado = 'pessoa'
 			
 			SELECT @novaLinha = @@ROWCOUNT + @linha
 		COMMIT
@@ -82,11 +83,29 @@ GO
 CREATE PROCEDURE dbo.getCustoTotalActividades @idEstada INT, @idFactura INT, @ano INT, @linha INT AS	-- vai buscar o custo total das actividades
 	BEGIN TRY
 		BEGIN TRANSACTION
-			INSERT INTO dbo.Item(idEstada, idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idEstada, @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Act.descrição) + @linha, COUNT(Paga.númeroSequencial), Paga.preçoParticipante * COUNT(Paga.númeroSequencial), Act.descrição FROM dbo.HóspedeEstada AS HosEst JOIN dbo.Paga 
+			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Act.descrição) + @linha, COUNT(Paga.númeroSequencial), Paga.preçoParticipante * COUNT(Paga.númeroSequencial), Act.descrição FROM dbo.HóspedeEstada AS HosEst JOIN dbo.Paga 
 					ON HosEst.NIF = Paga.NIF JOIN dbo.Actividades as Act 
 						ON Paga.nomeParque = Act.nomeParque AND Paga.númeroSequencial = Act.númeroSequencial WHERE HosEst.id = @idEstada
 						GROUP BY Act.descrição, Paga.preçoParticipante
+		COMMIT
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT !=0
+			ROLLBACK;
+		THROW
+	END CATCH
+	
+/*************************************** Adicionar preço total à factura ************************************************************************/
+GO
+CREATE PROCEDURE dbo.addPreçoTotal @idFactura INT, @ano INT AS
+	BEGIN TRY
+		BEGIN TRANSACTION
+			DECLARE @preçoTotal INT
+
+			SELECT @preçoTotal = SUM(preço) FROM Item WHERE idFactura = @idFactura AND ano = @ano
+
+			UPDATE dbo.Factura SET preçoTotal = @preçoTotal WHERE id = @idFactura AND ano = @ano
 		COMMIT
 	END TRY
 	BEGIN CATCH
@@ -107,19 +126,15 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 			DECLARE @data DATE
 			DECLARE @nomeResponsável NVARCHAR(30)
 
-			SELECT @data = GETDATE()
-			SELECT @ano = YEAR(@data)
+			SELECT @ano = YEAR(GETDATE())
 
 			SELECT @NIFResponsável = Hosp.NIF, @nomeResponsável = Hosp.nome FROM dbo.HóspedeEstada AS HospEst JOIN dbo.Hóspede AS Hosp 
 				ON HospEst.NIF = Hosp.NIF WHERE HospEst.id = @idEstada AND HospEst.hóspede = 'true'
 
 			SELECT @idFactura = COUNT(id) + 1 FROM dbo.Factura WHERE ano = @ano
-
-			/*************************************** Actualizar estada  ************************************************************************/
-			UPDATE dbo.Estada SET dataFim = @data WHERE id = @idEstada
-
-			INSERT INTO dbo.Factura(id, idEstada, ano, NIFHóspede, nomeHóspede)
-				VALUES (@idFactura, @idEstada, @ano, @NIFResponsável, @nomeResponsável)	
+			
+			INSERT INTO dbo.Factura(id, ano, idEstada, NIFHóspede, nomeHóspede, preçoTotal)
+				VALUES (@idFactura, @ano, @idEstada, @NIFResponsável, @nomeResponsável, 0)	
 
 			EXEC dbo.getAlojamentoPreço @idEstada, @idFactura, @ano, 0, @novaLinha OUTPUT
 
@@ -129,6 +144,7 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 
 			EXEC dbo.getCustoTotalActividades @idEstada, @idFactura, @ano, @novaLinha
 
+			EXEC dbo.addPreçoTotal @idFactura, @ano
 		COMMIT
 	END TRY
 	BEGIN CATCH
@@ -156,11 +172,11 @@ EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow hoje', 'Rua 6', 'primei
 EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow ontem', 'Rua 7', 'segundo bungalow', 15, 9, 'T3'
 
 INSERT INTO dbo.Estada(id, dataInício, dataFim)
-	VALUES (1, '2017-03-15', '2017-03-16'),
-		   (2, '2017-11-12', null),
-		   (3, '2017-10-05', null),
-		   (4, '2017-09-12', '2017-09-13'),
-		   (5, '2017-08-10', '2017-09-11')
+	VALUES (1, '2017-03-15 13:00:00', '2017-03-16 13:00:00'),
+		   (2, '2017-11-12 13:00:00', '2018-11-14 13:00:00'),
+		   (3, '2017-10-05 10:00:00', '2017-11-12 13:00:00'),
+		   (4, '2017-09-12 10:00:00', '2017-09-13 13:00:00'),
+		   (5, '2017-08-10 10:00:00', '2017-09-11 10:00:00')
 
 INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
 	VALUES ('Glampinho', 'Rua 1', 1, 12),
