@@ -37,8 +37,8 @@ CREATE TABLE dbo.Hóspede(
 /*****************************************************************************/
 CREATE TABLE dbo.Estada(
 	id INT PRIMARY KEY,
-	dataInício DATE,
-	dataFim DATE,
+	dataInício DATETIME2 NOT NULL,
+	dataFim DATETIME2 NOT NULL,
 	CONSTRAINT checkDate CHECK(dataInício < dataFim)
 )
 
@@ -81,18 +81,19 @@ CREATE TABLE dbo.Actividades(
 	descrição NVARCHAR(30),
 	lotaçãoMáxima INT,
 	preçoParticipante INT,
-	dataRealização DATETIME,
+	dataRealização DATETIME2,
 	CONSTRAINT pk_Actividades PRIMARY KEY(nomeParque, númeroSequencial, ano)
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.Factura(
-	idEstada INT FOREIGN KEY REFERENCES dbo.Estada(id), 
 	id INT,
 	ano INT,
+	idEstada INT FOREIGN KEY REFERENCES dbo.Estada(id), 
 	nomeHóspede NVARCHAR(30),
 	NIFHóspede INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
-	CONSTRAINT pk_Factura PRIMARY KEY(idEstada, id, ano)
+	preçoTotal INT,
+	CONSTRAINT pk_Factura PRIMARY KEY(id, ano)
 )
 
 /*****************************************************************************/
@@ -104,15 +105,14 @@ CREATE TABLE dbo.Telefones(
 
 /*****************************************************************************/
 CREATE TABLE dbo.Item(
-	idEstada INT,
 	idFactura INT,
 	ano INT,
 	linha INT,
 	quantidade INT NOT NULL,
 	preço INT NOT NULL,
 	descrição NVARCHAR(30) NOT NULL,
-	CONSTRAINT pk_Item PRIMARY KEY(idEstada, idFactura, ano, linha),
-	CONSTRAINT fk_item FOREIGN KEY(idEstada, idFactura, ano) REFERENCES dbo.Factura(idEstada, id, ano)
+	CONSTRAINT pk_Item PRIMARY KEY(idFactura, ano, linha),
+	CONSTRAINT fk_item FOREIGN KEY(idFactura, ano) REFERENCES dbo.Factura(id, ano)
 )
 
 /*****************************************************************************/

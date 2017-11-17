@@ -155,6 +155,18 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 
 /*************************************** Teste ************************************************************************/
 
+<<<<<<< HEAD
+
+
+
+drop proc dbo.getAlojamentoPreço 
+
+drop proc dbo.getEstadaExtrasPreço 
+
+drop proc dbo.getPessoalExtrasPreço 
+
+drop proc dbo.getCustoTotalActividades 
+=======
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
 	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
 	
@@ -235,6 +247,9 @@ EXEC dbo.getEstadaExtrasPreço 3, 1, 2017, @novaLinha, @novaLinha OUTPUT
 EXEC dbo.getPessoalExtrasPreço 3, 1, 2017, @novaLinha, @novaLinha OUTPUT
 
 EXEc dbo.getCustoTotalActividades 3, 1, 2017, @novaLinha
+>>>>>>> 8ac0f67aab0a9dd75d4b2cbe57582c800aa8e9d7
 
 /* Corre versão final da criação da factura */
 EXEC dbo.finishEstadaWithFactura 3
+
+SELECT * FROM 
