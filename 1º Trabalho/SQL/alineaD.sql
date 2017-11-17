@@ -22,10 +22,12 @@ BEGIN TRY
 
 		INSERT INTO dbo.Bungalow(nomeParque, localização, tipologia)
 			VALUES(@nomeParque, @localização, @tipologia)
-		COMMIT
+	COMMIT
 END TRY
 BEGIN CATCH
-	ROLLBACK
+	IF @@TRANCOUNT !=0
+		ROLLBACK;
+	THROW
 END CATCH
 
 /******************************* INSERT Tenda ***************************************************/
@@ -42,7 +44,9 @@ BEGIN TRY
 		COMMIT
 END TRY
 BEGIN CATCH
-	ROLLBACK
+	IF @@TRANCOUNT !=0
+		ROLLBACK;
+	THROW
 END CATCH
 
 /******************************* UPDATE ***********************************************************/
@@ -50,7 +54,6 @@ END CATCH
 UPDATE dbo.Alojamento SET preçoBase = 80 WHERE nome = 'Parque 1' and localização = 'Lote 1'
 
 /****************************** DELETE ***********************************************************/
-
 GO
 CREATE PROCEDURE dbo.deleteAlojamento @localização NVARCHAR(30), @nomeParque NVARCHAR(30) AS
 BEGIN TRY
@@ -61,15 +64,17 @@ BEGIN TRY
 	COMMIT
 END TRY
 BEGIN CATCH
-	ROLLBACK
+	IF @@TRANCOUNT !=0
+		ROLLBACK;
+	THROW
 END CATCH
 
 /********************************** Teste ********************************************/
 
 EXEC dbo.deleteAlojamento 'Lote 1','Glampinho'
 
-INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
-	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
+INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
+	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
 
 INSERT INTO	dbo.Estada(id, dataInício, dataFim)
 	VALUES(1, '2017-11-09 13:00:00', '2017-11-11 13:00:00')
@@ -80,8 +85,8 @@ INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Parque 1', 'Lote 1', 'primeira tenda do parque', 60, 12, 'T3'
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'verde', '12EA1', 'bonito', 12, 4, 50
 
-INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id)
-	VALUES('Glampinho', '12EA1', 1)
+INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
+	VALUES('Glampinho', '12EA1', 1, 12) 
 
 INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
 	VALUES('Glampinho', '12EA1', 1)

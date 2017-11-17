@@ -37,8 +37,8 @@ CREATE TABLE dbo.Hóspede(
 /*****************************************************************************/
 CREATE TABLE dbo.Estada(
 	id INT PRIMARY KEY,
-	dataInício DATETIME,
-	dataFim DATETIME,
+	dataInício DATE,
+	dataFim DATE,
 	CONSTRAINT checkDate CHECK(dataInício < dataFim)
 )
 

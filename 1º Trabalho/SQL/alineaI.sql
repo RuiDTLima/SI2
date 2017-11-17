@@ -14,26 +14,26 @@ GO
 CREATE PROCEDURE dbo.inscreverHóspede @NIFHóspede INT, @númeroSequencial INT, @nomeParque NVARCHAR(30) AS
 	BEGIN TRY
 		BEGIN TRANSACTION
-			DECLARE @temp INT
-			SELECT  @temp = hosEst.id FROM dbo.HóspedeEstada as hosEst INNER JOIN dbo.Estada as Est ON hosEst.id = Est.id JOIN dbo.AlojamentoEstada as AlojEst ON AlojEst.id = Est.id 
-				WHERE  hosEst.NIF = @NIFHóspede AND Est.dataFim > GETDATE() AND AlojEst.nomeParque = @nomeParque
+			SELECT hosEst.id FROM dbo.HóspedeEstada as hosEst INNER JOIN dbo.Estada as Est ON hosEst.id = Est.id JOIN dbo.AlojamentoEstada as AlojEst ON AlojEst.id = Est.id 
+				WHERE hosEst.NIF = @NIFHóspede AND Est.dataFim > GETDATE() AND AlojEst.nomeParque = @nomeParque
 
 			IF(@@ROWCOUNT = 0)
-				RAISERROR('Hóspede é inválido', 15, 1)
+				THROW 51000, 'Hóspede é inválido', 1 
 
-			INSERT INTO dbo.Paga(nomeParque, númeroSequencial, NIF)
-				VALUES(@nomeParque, @númeroSequencial, @NIFHóspede)
+			INSERT INTO dbo.Paga(nomeParque, númeroSequencial, NIF, preçoParticipante)
+				SELECT @nomeParque, @númeroSequencial, @NIFHóspede, preçoParticipante FROM dbo.Actividades WHERE nomeParque = @nomeParque AND númeroSequencial = @númeroSequencial
 		COMMIT
 	END TRY
 	BEGIN CATCH
-		RAISERROR('Erro na inscrição de um hóspede numa actividade', 5, 2)
-		ROLLBACK
+		IF @@TRANCOUNT !=0
+			ROLLBACK;
+		THROW
 	END CATCH
 	
 /*************************************** Teste ************************************************************************/
 
-INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
-	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
+INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
+	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
 
 INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
 	VALUES(112233445, 'Teste', 'Rua teste', 'teste@teste.com', 11223344),
@@ -54,11 +54,11 @@ INSERT INTO dbo.Estada(id, dataInício, dataFim)
 		   (4, '2017-09-12 10:00:00', '2017-09-13 13:00:00'),
 		   (5, '2017-08-10 10:00:00', '2017-09-11 10:00:00')
 
-INSERT INTO AlojamentoEstada(nomeParque, localização, id)
-	VALUES ('Glampinho', 'Rua 1', 1),
-		   ('Glampinho', 'Rua 2', 2),
-		   ('Glampinho', 'Rua 4', 3),
-		   ('Glampinho', 'Rua 7', 4)
+INSERT INTO AlojamentoEstada(nomeParque, localização, id, preçoBase)
+	VALUES ('Glampinho', 'Rua 1', 1, 12),
+		   ('Glampinho', 'Rua 2', 2, 15),
+		   ('Glampinho', 'Rua 4', 3, 15),
+		   ('Glampinho', 'Rua 7', 4, 15)
 
 INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 	VALUES(112233445, 2, 'false')

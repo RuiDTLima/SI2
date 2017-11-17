@@ -35,7 +35,9 @@ BEGIN TRY
     COMMIT
 END TRY
 BEGIN CATCH
-	ROLLBACK
+	IF @@TRANCOUNT !=0
+		ROLLBACK;
+	THROW
 END CATCH
 
 /******************************* TESTE ***************************************************************/
