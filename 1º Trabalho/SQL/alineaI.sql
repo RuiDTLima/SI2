@@ -11,7 +11,7 @@ USE Glampinho
 
 /*************************************** Inscrever hóspede a actividade  ************************************************************************/
 GO 
-CREATE PROCEDURE dbo.inscreverHóspede @NIFHóspede INT, @númeroSequencial INT, @nomeParque NVARCHAR(30) AS
+CREATE PROCEDURE dbo.inscreverHóspede @NIFHóspede INT,@ano INT, @númeroSequencial INT, @nomeParque NVARCHAR(30) AS
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			SELECT hosEst.id FROM dbo.HóspedeEstada as hosEst INNER JOIN dbo.Estada as Est ON hosEst.id = Est.id JOIN dbo.AlojamentoEstada as AlojEst ON AlojEst.id = Est.id 
@@ -20,8 +20,8 @@ CREATE PROCEDURE dbo.inscreverHóspede @NIFHóspede INT, @númeroSequencial INT, @n
 			IF(@@ROWCOUNT = 0)
 				THROW 51000, 'Hóspede é inválido', 1 
 
-			INSERT INTO dbo.Paga(nomeParque, númeroSequencial, NIF, preçoParticipante)
-				SELECT @nomeParque, @númeroSequencial, @NIFHóspede, preçoParticipante FROM dbo.Actividades WHERE nomeParque = @nomeParque AND númeroSequencial = @númeroSequencial
+			INSERT INTO dbo.Paga(nomeParque, númeroSequencial,ano, NIF, preçoParticipante)
+				SELECT @nomeParque, @númeroSequencial,@ano, @NIFHóspede, preçoParticipante FROM dbo.Actividades WHERE nomeParque = @nomeParque AND númeroSequencial = @númeroSequencial
 		COMMIT
 	END TRY
 	BEGIN CATCH
@@ -63,12 +63,13 @@ INSERT INTO AlojamentoEstada(nomeParque, localização, id, preçoBase)
 INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 	VALUES(112233445, 2, 'false')
 
-INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
-	VALUES('Glampinho', 1, 'FUT7', 'Jogo de futebol 7vs7', '14', 3, '03-15-17 10:30')
+INSERT INTO dbo.Actividades(nomeParque, númeroSequencial,ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
+	VALUES('Glampinho', 1,2017,'FUT7', 'Jogo de futebol 7vs7', '14', 3, '03-15-17 10:30')
 
-SELECT * FROM dbo.Estada
+
+
+EXEC dbo.inscreverHóspede 566778899,2017,1, 'Glampinho' 
+
 SELECT * FROM dbo.Actividades
 SELECT * FROM dbo.Paga
-SELECT * FROM dbo.Hóspede
 
-EXEC dbo.inscreverHóspede 566778899, 1, 'Glampinho' 
