@@ -17,8 +17,12 @@
 ******************************************************************************/
 USE Glampinho
 /*************************************** Criar uma estada *************************************************************/
+GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'createEstada')
+	DROP PROCEDURE dbo.createEstada;
 GO  
 CREATE PROCEDURE dbo.createEstada @NIFResponsável INT, @tempoEstada INT, @idNumber INT OUTPUT AS -- em minutos
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			DECLARE @date DATETIME2
@@ -30,7 +34,7 @@ CREATE PROCEDURE dbo.createEstada @NIFResponsável INT, @tempoEstada INT, @idNumb
 			INSERT INTO dbo.Estada(id, dataInício, dataFim)
 				VALUES(@idNumber, @date, DATEADD(DAY, @tempoEstada, @date))
 
-			SELECT NIF FROM dbo.HóspedeEstada WHERE id = @idNumber AND hóspede = 'true'
+			SELECT 1 FROM dbo.HóspedeEstada WHERE id = @idNumber AND hóspede = 'true'
 
 			IF (@@ROWCOUNT != 0)
 				THROW 51000, 'Só pode existir um hóspede responsável por estada', 1;
@@ -48,19 +52,24 @@ CREATE PROCEDURE dbo.createEstada @NIFResponsável INT, @tempoEstada INT, @idNumb
 
 /*************************************** Adicionar alojamento ***********************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'addAlojamento')
+	DROP PROCEDURE dbo.addAlojamento;
+GO
 CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT, @idEstada INT AS
+	SET NOCOUNT ON
 	BEGIN TRY
-		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED	-- select e insert tem de ser seguido 
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ	-- select e insert tem de ser seguido, para os dados que se vai inserir na tabela nao serem alterados sem saber 
 			DECLARE @nomeParque NVARCHAR(30)
 			DECLARE @localização NVARCHAR(30)
+			DECLARE @preçoBase INT
 
-			SELECT @nomeParque = AlojEst.nomeParque, @localização = AlojEst.localização FROM dbo.Alojamento AS Aloj LEFT JOIN dbo.AlojamentoEstada AS AlojEst 
+			SELECT @nomeParque = AlojEst.nomeParque, @localização = AlojEst.localização, @preçoBase = Aloj.preçoBase FROM dbo.Alojamento AS Aloj LEFT JOIN dbo.AlojamentoEstada AS AlojEst 
 				ON Aloj.nomeParque = AlojEst.nomeParque AND Aloj.localização = AlojEst.localização 
 				JOIN dbo.Estada as Est ON Est.id = AlojEst.id
 				WHERE Aloj.tipoAlojamento = @tipoAlojamento AND Aloj.númeroMáximoPessoas = @lotação AND Est.dataFim < GETDATE()
 
-			INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id)
-				VALUES(@nomeParque, @localização, @idEstada)
+			INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
+				VALUES(@nomeParque, @localização, @idEstada, @preçoBase)
 
 			INSERT INTO dbo.EstadaExtra(estadaId, extraId, preçoDia)
 				SELECT @idEstada, E.id, E.preçoDia FROM dbo.AlojamentoExtra AS AlojExtra JOIN dbo.Extra AS E ON AlojExtra.id = E.id WHERE nomeParque = @nomeParque AND localização = @localização
@@ -74,9 +83,13 @@ CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT,
 
 /*************************************** Adicionar hóspede a Estada ***********************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'addHóspede')
+	DROP PROCEDURE dbo.addHóspede;
+GO
 CREATE PROCEDURE dbo.addHóspede @NIF INT, @id INT AS
+	SET NOCOUNT ON
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 				VALUES(@NIF, @id, 'false')
 		COMMIT
@@ -88,8 +101,12 @@ CREATE PROCEDURE dbo.addHóspede @NIF INT, @id INT AS
 	END CATCH
 
 /*************************************** Adicionar extra a um alojamento de uma Estada ***********************************************************/
+GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'addExtraToAlojamento')
+	DROP PROCEDURE dbo.addExtraToAlojamento;
 GO	
 CREATE PROCEDURE dbo.addExtraToAlojamento @idExtra INT, @idEstada INT AS
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @nomeParque NVARCHAR(30)
@@ -117,7 +134,11 @@ CREATE PROCEDURE dbo.addExtraToAlojamento @idExtra INT, @idEstada INT AS
 		
 /*************************************** Adicionar extra pessoal a uma Estada ***********************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'addExtraToEstada')
+	DROP PROCEDURE dbo.addExtraToEstada;
+GO
 CREATE PROCEDURE dbo.addExtraToEstada @idExtra INT, @idEstada INT AS
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @associado VARCHAR(10)
@@ -140,9 +161,13 @@ CREATE PROCEDURE dbo.addExtraToEstada @idExtra INT, @idEstada INT AS
 
 /*************************************** Adicionar extra pessoal a uma Estada ***********************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'createEstadaInTime')
+	DROP PROCEDURE dbo.createEstadaInTime;
+GO
 CREATE PROCEDURE dbo.createEstadaInTime @NIFResponsável INT, @NIFHóspede INT, @tempoEstada INT, @tipoAlojamento VARCHAR(8), @lotação TINYINT, @idExtraPessoal INT, @idExtraAlojamento INT AS
+	SET NOCOUNT ON
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL SERIALIZABLE	-- durante a criação de uma estada não pode haver nenhuma alteração ao estado da base de dados devido em especial ao preços
 			DECLARE @id INT
 			EXEC dbo.createEstada @NIFResponsável, @tempoEstada, @id OUTPUT
 
@@ -183,7 +208,7 @@ INSERT INTO dbo.Estada(id, dataInício, dataFim)
 		   (2, '2017-11-12 13:00:00', '2018-11-14 13:00:00'),
 		   (3, '2017-10-05 10:00:00', '2017-11-12 13:00:00'),
 		   (4, '2017-09-12 10:00:00', '2017-09-13 13:00:00'),
-		   (5, '2017-08-10 10:00:00', '2017-09-11 10:00:00')
+		   (6, '2017-08-10 10:00:00', '2017-09-11 10:00:00')
 
 INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
 	VALUES ('Glampinho', 'Rua 1', 1, 12),
@@ -213,15 +238,17 @@ SELECT * FROM dbo.EstadaExtra
 /* Para testar cada procedure individualmente */
 DECLARE @idTemp INT
 
-EXEC dbo.createEstada 112233445, 60, @idTemp
+EXEC dbo.createEstada 112233445, 5, @idTemp OUTPUT
 
-EXEC dbo.addAlojamento 'tenda', 10, 6
+EXEC dbo.addAlojamento 'tenda', 10, @idTemp
 
-EXEC dbo.addHóspede 566778899, 6
+EXEC dbo.addHóspede 566778899, @idTemp
 
-EXEC dbo.addExtraToAlojamento 1, 6
+EXEC dbo.addExtraToAlojamento 3, @idTemp
 
-EXEC dbo.addExtraToEstada 2, 6
+EXEC dbo.addExtraToEstada 2, @idTemp
 
 /* Testar procedure final */
-EXEC dbo.createEstadaInTime 112233445, 33333333, 5, 'tenda', 10, 2, 3
+EXEC dbo.createEstadaInTime 112233445, 566778899, 5, 'tenda', 10, 2, 3
+
+SELECT MAX(id) + 1 FROM dbo.Estada

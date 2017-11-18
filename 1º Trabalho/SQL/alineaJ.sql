@@ -14,7 +14,11 @@ USE Glampinho
 
 /*************************************** Retirar preço base  ************************************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'getAlojamentoPreço')
+	DROP PROCEDURE dbo.getAlojamentoPreço;
+GO
 CREATE PROCEDURE dbo.getAlojamentoPreço @idEstada INT, @idFactura INT, @ano INT, @linha INT, @novaLinha INT OUTPUT AS
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
@@ -32,7 +36,11 @@ CREATE PROCEDURE dbo.getAlojamentoPreço @idEstada INT, @idFactura INT, @ano INT,
 	
 /*************************************** Retirar preço total dos extras de alojamento ************************************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'getEstadaExtrasPreço')
+	DROP PROCEDURE dbo.getEstadaExtrasPreço;
+GO
 CREATE PROCEDURE dbo.getEstadaExtrasPreço @idEstada INT, @idFactura INT, @ano INT, @linha INT, @novaLinha INT OUTPUT AS	-- vai buscar o total a pagar de acordo com os extras para estada
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @totalDias INT
@@ -55,7 +63,11 @@ CREATE PROCEDURE dbo.getEstadaExtrasPreço @idEstada INT, @idFactura INT, @ano IN
 
 /*************************************** Retirar preço total dos extras de alojamento ************************************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'getPessoalExtrasPreço')
+	DROP PROCEDURE dbo.getPessoalExtrasPreço;
+GO
 CREATE PROCEDURE dbo.getPessoalExtrasPreço @idEstada INT, @idFactura INT, @ano INT, @linha INT, @novaLinha INT OUTPUT AS  -- vai buscar o total a pagar de acordo com os extras para pessoal
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @totalDias INT
@@ -80,7 +92,11 @@ CREATE PROCEDURE dbo.getPessoalExtrasPreço @idEstada INT, @idFactura INT, @ano I
 
 /*************************************** Retirar preço total dos extras de alojamento ************************************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'getCustoTotalActividades')
+	DROP PROCEDURE dbo.getCustoTotalActividades;
+GO
 CREATE PROCEDURE dbo.getCustoTotalActividades @idEstada INT, @idFactura INT, @ano INT, @linha INT AS	-- vai buscar o custo total das actividades
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
@@ -98,7 +114,11 @@ CREATE PROCEDURE dbo.getCustoTotalActividades @idEstada INT, @idFactura INT, @an
 	
 /*************************************** Adicionar preço total à factura ************************************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'addPreçoTotal')
+	DROP PROCEDURE dbo.addPreçoTotal;
+GO
 CREATE PROCEDURE dbo.addPreçoTotal @idFactura INT, @ano INT AS
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @preçoTotal INT
@@ -116,7 +136,11 @@ CREATE PROCEDURE dbo.addPreçoTotal @idFactura INT, @ano INT AS
 
 /*************************************** Terminar Estada e apresentar factura ************************************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'finishEstadaWithFactura')
+	DROP PROCEDURE dbo.finishEstadaWithFactura;
+GO
 CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
+	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @NIFResponsável INT
@@ -126,6 +150,9 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 			DECLARE @data DATE
 			DECLARE @nomeResponsável NVARCHAR(30)
 
+			IF NOT EXISTS (SELECT 1 FROM dbo.Estada WHERE id = @idEstada)
+				THROW 51000, 'A estada não existe', 1
+
 			SELECT @ano = YEAR(GETDATE())
 
 			SELECT @NIFResponsável = Hosp.NIF, @nomeResponsável = Hosp.nome FROM dbo.HóspedeEstada AS HospEst JOIN dbo.Hóspede AS Hosp 
@@ -133,8 +160,8 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 
 			SELECT @idFactura = COUNT(id) + 1 FROM dbo.Factura WHERE ano = @ano
 			
-			INSERT INTO dbo.Factura(id, ano, idEstada, NIFHóspede, nomeHóspede, preçoTotal)
-				VALUES (@idFactura, @ano, @idEstada, @NIFResponsável, @nomeResponsável, 0)	
+			INSERT INTO dbo.Factura(id, ano, NIFHóspede, nomeHóspede, preçoTotal)
+				VALUES (@idFactura, @ano, @NIFResponsável, @nomeResponsável, 0)	
 
 			EXEC dbo.getAlojamentoPreço @idEstada, @idFactura, @ano, 0, @novaLinha OUTPUT
 
@@ -154,7 +181,7 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 	END CATCH
 
 /*************************************** Teste ************************************************************************/
-
+GO
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
 	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
 	

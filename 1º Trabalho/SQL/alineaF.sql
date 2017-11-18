@@ -20,10 +20,16 @@ INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 UPDATE dbo.Extra SET preçoDia = preçoDia - 2 WHERE id = 2
 
 /************************************** DELETE *******************************************************/
+GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'deleteExtraPessoa')
+	DROP PROCEDURE dbo.deleteExtraPessoa;
 GO 
 CREATE PROCEDURE dbo.deleteExtraPessoa @id INT AS
+SET NOCOUNT ON
 BEGIN TRY
     BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+		IF NOT EXISTS(SELECT 1 FROM dbo.Extra WHERE id = @id AND associado = 'pessoa')
+			THROW 51000, 'O extra tem de ser de pessoa', 1
 		DELETE FROM dbo.AlojamentoExtra WHERE id=@id
 		DELETE FROM dbo.EstadaExtra WHERE estadaId=@id
 		DELETE FROM dbo.Extra WHERE id=@id
@@ -38,22 +44,24 @@ END CATCH
 /************************************** TESTE ******************************************************/
 
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
-	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
+	VALUES ('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
 
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
-	VALUES(1, 'descricao', 12, 'pessoa')
+	VALUES (1,'descricao', 12, 'alojamento'),
+		   (2, 'erro', 20, 'pessoa')
 
-EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'verde', '12EA1', 'bonito', 12, 4, 50
+EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'vermelho', '12EA1', 'bonito', 12, 4, 50
 
 INSERT INTO dbo.Estada(id, dataInício, dataFim)
-	VALUES(1, '2017-11-09 13:00:00', null)
+	VALUES (1, '2017-03-15 10:03:00', '2017-03-20 13:00:00')
 
 INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
-	VALUES('Glampinho', '12EA1', 1)
+	VALUES ('Glampinho', '12EA1', 1)
 
 INSERT INTO dbo.EstadaExtra(estadaId, ExtraId, preçoDia)
 	VALUES(1, 1, 12)
 
+EXEC dbo.deleteExtraPessoa 2
 EXEC dbo.deleteExtraPessoa 1
 
 SELECT * FROM dbo.Extra

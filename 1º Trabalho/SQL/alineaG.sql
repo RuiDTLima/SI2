@@ -20,7 +20,11 @@ UPDATE dbo.Actividades SET preçoParticipante = preçoParticipante - 2 WHERE nomeP
 
 /******************************************* DELETE *******************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'deleteAtividades')
+	DROP PROCEDURE dbo.deleteAtividades;
+GO
 CREATE PROCEDURE dbo.deleteAtividades @nomeParque NVARCHAR(30), @númeroSequencial INT AS
+SET NOCOUNT ON
 BEGIN TRY
 	BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 		DELETE FROM dbo.Paga WHERE nomeParque = @nomeParque and númeroSequencial = @númeroSequencial
