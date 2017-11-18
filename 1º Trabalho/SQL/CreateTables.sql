@@ -35,10 +35,23 @@ CREATE TABLE dbo.Hóspede(
 )
 
 /*****************************************************************************/
+CREATE TABLE dbo.Factura(
+	id INT,
+	ano INT, 
+	nomeHóspede NVARCHAR(30),
+	NIFHóspede INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
+	preçoTotal INT,
+	CONSTRAINT pk_Factura PRIMARY KEY(id, ano)
+)
+
+/*****************************************************************************/
 CREATE TABLE dbo.Estada(
 	id INT PRIMARY KEY,
 	dataInício DATETIME2 NOT NULL,
 	dataFim DATETIME2 NOT NULL,
+	idFactura INT,
+	ano INT,
+	CONSTRAINT fk_estada FOREIGN KEY(idFactura, ano) REFERENCES Factura(id, ano),
 	CONSTRAINT checkDate CHECK(dataInício < dataFim)
 )
 
@@ -83,17 +96,6 @@ CREATE TABLE dbo.Actividades(
 	preçoParticipante INT,
 	dataRealização DATETIME2,
 	CONSTRAINT pk_Actividades PRIMARY KEY(nomeParque, númeroSequencial, ano)
-)
-
-/*****************************************************************************/
-CREATE TABLE dbo.Factura(
-	id INT,
-	ano INT,
-	idEstada INT FOREIGN KEY REFERENCES dbo.Estada(id), 
-	nomeHóspede NVARCHAR(30),
-	NIFHóspede INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
-	preçoTotal INT,
-	CONSTRAINT pk_Factura PRIMARY KEY(id, ano)
 )
 
 /*****************************************************************************/

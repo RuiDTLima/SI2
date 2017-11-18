@@ -16,7 +16,7 @@ GO
 CREATE PROCEDURE dbo.InsertAlojamentoBungalow @nomeParque NVARCHAR(30), @nome NVARCHAR(30), @localização NVARCHAR(30), 
 											  @descrição NVARCHAR(30), @preçoBase INT, @númeroMáximoPessoas TINYINT, @tipologia CHAR(2) AS
 BEGIN TRY
-	BEGIN TRANSACTION
+	BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 		INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
 			VALUES(@nomeParque, @nome, @localização, @descrição, @preçoBase, @númeroMáximoPessoas, 'bungalow')
 
@@ -35,7 +35,7 @@ GO
 CREATE PROCEDURE dbo.InsertAlojamentoTenda @nomeParque NVARCHAR(30), @nome NVARCHAR(30), @localização NVARCHAR(30), 
 										   @descrição NVARCHAR(30), @preçoBase INT, @númeroMáximoPessoas TINYINT, @área INT AS
 BEGIN TRY
-	BEGIN TRANSACTION
+	BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 		INSERT INTO dbo.Alojamento(nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento)
 			VALUES(@nomeParque, @nome, @localização, @descrição, @preçoBase, @númeroMáximoPessoas, 'tenda')
 
@@ -57,7 +57,7 @@ UPDATE dbo.Alojamento SET preçoBase = 80 WHERE nome = 'Parque 1' and localização
 GO
 CREATE PROCEDURE dbo.deleteAlojamento @localização NVARCHAR(30), @nomeParque NVARCHAR(30) AS
 BEGIN TRY
-    BEGIN TRANSACTION
+    BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 		DELETE FROM dbo.AlojamentoEstada WHERE localização=@localização and nomeParque=@nomeParque
 		DELETE FROM dbo.AlojamentoExtra WHERE localização=@localização and nomeParque=@nomeParque
 		DELETE FROM dbo.Alojamento WHERE localização=@localização and nomeParque=@nomeParque

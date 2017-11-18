@@ -23,7 +23,7 @@ UPDATE dbo.Extra SET preçoDia = preçoDia - 2 WHERE id = 2
 GO 
 CREATE PROCEDURE dbo.deleteExtra @id INT AS
 BEGIN TRY
-	BEGIN TRANSACTION
+	BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 		DELETE FROM dbo.AlojamentoExtra WHERE id=@id 
 		DELETE FROM dbo.EstadaExtra WHERE estadaId=@id
 		DELETE FROM dbo.Extra WHERE id=@id
@@ -37,8 +37,8 @@ END CATCH
 
 /********************************* TESTE ******************************************************/
 
-INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, telefones, email)
-	VALUES('Glampinho', 'campo dos parques', 3, 964587235, 'parque1@email.com')
+INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
+	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
 
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES(1,'descricao', 12, 'alojamento')
@@ -46,7 +46,7 @@ INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'vermelho', '12EA1', 'bonito', 12, 4, 50
 
 INSERT INTO dbo.Estada(id, dataInício, dataFim)
-	VALUES(1, '2017-03-15 10:03:00', null)
+	VALUES(1, '2017-03-15 10:03:00', '2017-03-20 13:00:00')
 
 INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
 	VALUES('Glampinho', '12EA1', 1)

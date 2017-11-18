@@ -20,12 +20,12 @@ USE Glampinho
 GO  
 CREATE PROCEDURE dbo.createEstada @NIFResponsável INT, @tempoEstada INT, @idNumber INT OUTPUT AS -- em minutos
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			DECLARE @date DATETIME2
 
 			SELECT @date = GETDATE()
 
-			SELECT @idNumber = COUNT(id) + 1 FROM dbo.Estada
+			SELECT @idNumber = MAX(id) + 1 FROM dbo.Estada --corrigir erros
 			
 			INSERT INTO dbo.Estada(id, dataInício, dataFim)
 				VALUES(@idNumber, @date, DATEADD(DAY, @tempoEstada, @date))
@@ -50,7 +50,7 @@ CREATE PROCEDURE dbo.createEstada @NIFResponsável INT, @tempoEstada INT, @idNumb
 GO
 CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT, @idEstada INT AS
 	BEGIN TRY
-		BEGIN TRANSACTION	-- select e insert tem de ser seguido 
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED	-- select e insert tem de ser seguido 
 			DECLARE @nomeParque NVARCHAR(30)
 			DECLARE @localização NVARCHAR(30)
 
@@ -91,7 +91,7 @@ CREATE PROCEDURE dbo.addHóspede @NIF INT, @id INT AS
 GO	
 CREATE PROCEDURE dbo.addExtraToAlojamento @idExtra INT, @idEstada INT AS
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @nomeParque NVARCHAR(30)
 			DECLARE @localização NVARCHAR(30)
 			DECLARE @associado VARCHAR(10)
@@ -119,7 +119,7 @@ CREATE PROCEDURE dbo.addExtraToAlojamento @idExtra INT, @idEstada INT AS
 GO
 CREATE PROCEDURE dbo.addExtraToEstada @idExtra INT, @idEstada INT AS
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @associado VARCHAR(10)
 			DECLARE @preçoDia INT
 

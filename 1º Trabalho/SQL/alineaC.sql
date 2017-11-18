@@ -21,16 +21,36 @@ UPDATE dbo.Hóspede SET morada = 'Rua Teste' WHERE NIF = 112233445
 
 /********************************** DELETE ************************************************************/
 GO
-CREATE PROCEDURE dbo.deleteHospede @NIFHospede INT AS
+CREATE PROCEDURE dbo.deleteHospede @NIFHospede INT AS 
 BEGIN TRY
-    BEGIN TRANSACTION
-		DECLARE @count INT
-		SELECT @count = COUNT(NIF) FROM dbo.HóspedeEstada 
-			WHERE NIF = @NIFHospede AND hóspede = 'true'
-		if(@count = 0)
+    BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -- para evitar lost updates
+		DECLARE @hóspede VARCHAR(5)
+		DECLARE @idEstada INT
+		DECLARE eliminaEstadaInfo CURSOR FOR SELECT id, hóspede FROM dbo.HóspedeEstada WHERE NIF = @NIFHospede
+
+		OPEN eliminaEstadaInfo
+		FETCH FROM eliminaEstadaInfo INTO @idEstada, @hóspede
+
+		WHILE @@FETCH_STATUS = 0
 			BEGIN
-				DELETE FROM HóspedeEstada WHERE NIF=@NIFHospede
-				DELETE FROM Hóspede WHERE NIF=@NIFHospede
+				if @hóspede = 'true'	-- significa que deve ser elimina a estada e todas as entidades associativas associadas a ela
+					BEGIN
+						DELETE FROM dbo.AlojamentoEstada WHERE id = @idEstada
+						DELETE FROM dbo.EstadaExtra WHERE estadaId = @idEstada
+						DELETE FROM dbo.HóspedeEstada WHERE NIF = @NIFHospede
+
+						EXEC dbo.eliminaHóspedesAssociados @idEstada	-- verifica se a estada é a unica dos seus hóspede, em caso afirmativo elimina esses hóspedes
+
+						DELETE FROM dbo.Estada WHERE id = @idEstada
+						DELETE FROM dbo.Hóspede WHERE NIF = @NIFHospede
+					END
+				ELSE
+					BEGIN
+						DELETE FROM dbo.HóspedeEstada WHERE NIF = @NIFHospede
+						DELETE FROM dbo.Hóspede WHERE NIF = @NIFHospede
+					END
+				
+				FETCH FROM eliminaEstadaInfo INTO @idEstada, @hóspede
 			END
     COMMIT
 END TRY
@@ -42,8 +62,8 @@ END CATCH
 
 /******************************* TESTE ***************************************************************/
 -- executar insert hospede primeiro
-INSERT INTO	dbo.Estada(id, dataInício, dataFim)
-	VALUES(1, '2017-11-09 13:00:00', '2017-11-11 13:00:00')
+INSERT INTO	dbo.Estada(id, dataInício, dataFim, idFactura, ano)
+	VALUES(1, '2017-11-09 13:00:00', '2017-11-11 13:00:00', null, null)
 
 INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 	VALUES(112233445, 1, 'false'),

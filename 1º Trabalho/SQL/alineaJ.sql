@@ -16,7 +16,7 @@ USE Glampinho
 GO
 CREATE PROCEDURE dbo.getAlojamentoPreço @idEstada INT, @idFactura INT, @ano INT, @linha INT, @novaLinha INT OUTPUT AS
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
 				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY descrição) + @linha, 1, AlojEst.preçoBase, Aloj.descrição FROM dbo.AlojamentoEstada AS AlojEst JOIN  dbo.Alojamento As Aloj 
 					ON AlojEst.localização = Aloj.localização AND AlojEst.nomeParque = Aloj.nomeParque WHERE id = @idEstada
@@ -34,7 +34,7 @@ CREATE PROCEDURE dbo.getAlojamentoPreço @idEstada INT, @idFactura INT, @ano INT,
 GO
 CREATE PROCEDURE dbo.getEstadaExtrasPreço @idEstada INT, @idFactura INT, @ano INT, @linha INT, @novaLinha INT OUTPUT AS	-- vai buscar o total a pagar de acordo com os extras para estada
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @totalDias INT
 
 			SELECT @totalDias = DATEDIFF(DAY, dataInício, dataFim) FROM dbo.Estada WHERE id = @idEstada
@@ -57,7 +57,7 @@ CREATE PROCEDURE dbo.getEstadaExtrasPreço @idEstada INT, @idFactura INT, @ano IN
 GO
 CREATE PROCEDURE dbo.getPessoalExtrasPreço @idEstada INT, @idFactura INT, @ano INT, @linha INT, @novaLinha INT OUTPUT AS  -- vai buscar o total a pagar de acordo com os extras para pessoal
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @totalDias INT
 			DECLARE @totalHóspedes INT
 
@@ -82,7 +82,7 @@ CREATE PROCEDURE dbo.getPessoalExtrasPreço @idEstada INT, @idFactura INT, @ano I
 GO
 CREATE PROCEDURE dbo.getCustoTotalActividades @idEstada INT, @idFactura INT, @ano INT, @linha INT AS	-- vai buscar o custo total das actividades
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
 				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Act.descrição) + @linha, COUNT(Paga.númeroSequencial), Paga.preçoParticipante * COUNT(Paga.númeroSequencial), Act.descrição FROM dbo.HóspedeEstada AS HosEst JOIN dbo.Paga 
 					ON HosEst.NIF = Paga.NIF JOIN dbo.Actividades as Act 
@@ -100,7 +100,7 @@ CREATE PROCEDURE dbo.getCustoTotalActividades @idEstada INT, @idFactura INT, @an
 GO
 CREATE PROCEDURE dbo.addPreçoTotal @idFactura INT, @ano INT AS
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @preçoTotal INT
 
 			SELECT @preçoTotal = SUM(preço) FROM Item WHERE idFactura = @idFactura AND ano = @ano
@@ -118,7 +118,7 @@ CREATE PROCEDURE dbo.addPreçoTotal @idFactura INT, @ano INT AS
 GO
 CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			DECLARE @NIFResponsável INT
 			DECLARE @idFactura INT
 			DECLARE @ano INT	

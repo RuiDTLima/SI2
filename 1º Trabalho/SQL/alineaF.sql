@@ -23,7 +23,7 @@ UPDATE dbo.Extra SET preçoDia = preçoDia - 2 WHERE id = 2
 GO 
 CREATE PROCEDURE dbo.deleteExtraPessoa @id INT AS
 BEGIN TRY
-    BEGIN TRANSACTION
+    BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 		DELETE FROM dbo.AlojamentoExtra WHERE id=@id
 		DELETE FROM dbo.EstadaExtra WHERE estadaId=@id
 		DELETE FROM dbo.Extra WHERE id=@id

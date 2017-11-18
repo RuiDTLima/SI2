@@ -17,12 +17,12 @@ DELETE FROM dbo.Actividades
 DELETE FROM dbo.AlojamentoExtra
 DELETE FROM dbo.Telefones
 DELETE FROM dbo.Item
-DELETE FROM dbo.Factura
 DELETE FROM dbo.EstadaExtra
 DELETE FROM dbo.Extra
 DELETE FROM dbo.HóspedeEstada
-DELETE FROM dbo.Hóspede
 DELETE FROM dbo.AlojamentoEstada
 DELETE FROM dbo.Estada 
+DELETE FROM dbo.Factura
+DELETE FROM dbo.Hóspede
 DELETE FROM dbo.Alojamento
 DELETE FROM dbo.ParqueCampismo

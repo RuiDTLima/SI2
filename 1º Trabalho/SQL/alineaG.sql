@@ -22,7 +22,7 @@ UPDATE dbo.Actividades SET preçoParticipante = preçoParticipante - 2 WHERE nomeP
 GO
 CREATE PROCEDURE dbo.deleteAtividades @nomeParque NVARCHAR(30), @númeroSequencial INT AS
 BEGIN TRY
-	BEGIN TRANSACTION
+	BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 		DELETE FROM dbo.Paga WHERE nomeParque = @nomeParque and númeroSequencial = @númeroSequencial
 		DELETE FROM dbo.Actividades WHERE nomeParque = @nomeParque and númeroSequencial = @númeroSequencial
 	COMMIT

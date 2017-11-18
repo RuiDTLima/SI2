@@ -13,7 +13,7 @@ USE Glampinho
 GO 
 CREATE PROCEDURE dbo.inscreverHóspede @NIFHóspede INT, @númeroSequencial INT, @nomeParque NVARCHAR(30) AS
 	BEGIN TRY
-		BEGIN TRANSACTION
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			SELECT hosEst.id FROM dbo.HóspedeEstada as hosEst INNER JOIN dbo.Estada as Est ON hosEst.id = Est.id JOIN dbo.AlojamentoEstada as AlojEst ON AlojEst.id = Est.id 
 				WHERE hosEst.NIF = @NIFHóspede AND Est.dataFim > GETDATE() AND AlojEst.nomeParque = @nomeParque
 
