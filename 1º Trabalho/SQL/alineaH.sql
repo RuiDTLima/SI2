@@ -29,15 +29,10 @@ CREATE PROCEDURE dbo.createEstada @NIFResponsável INT, @tempoEstada INT, @idNumb
 
 			SELECT @date = GETDATE()
 
-			SELECT @idNumber = MAX(id) + 1 FROM dbo.Estada --corrigir erros
+			SELECT @idNumber = MAX(id) + 1 FROM dbo.Estada
 			
 			INSERT INTO dbo.Estada(id, dataInício, dataFim)
 				VALUES(@idNumber, @date, DATEADD(DAY, @tempoEstada, @date))
-
-			SELECT 1 FROM dbo.HóspedeEstada WHERE id = @idNumber AND hóspede = 'true'
-
-			IF (@@ROWCOUNT != 0)
-				THROW 51000, 'Só pode existir um hóspede responsável por estada', 1;
 
 			INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 				VALUES(@NifResponsável, @idNumber, 'true')
@@ -159,7 +154,7 @@ CREATE PROCEDURE dbo.addExtraToEstada @idExtra INT, @idEstada INT AS
 		THROW
 	END CATCH 
 
-/*************************************** Adicionar extra pessoal a uma Estada ***********************************************************/
+/*************************************** Create Estada ***********************************************************/
 GO
 IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'createEstadaInTime')
 	DROP PROCEDURE dbo.createEstadaInTime;
@@ -234,7 +229,6 @@ SELECT * FROM dbo.Extra
 SELECT * FROM dbo.HóspedeEstada
 SELECT * FROM dbo.AlojamentoExtra
 SELECT * FROM dbo.EstadaExtra
-
 /* Para testar cada procedure individualmente */
 DECLARE @idTemp INT
 

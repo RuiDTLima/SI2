@@ -121,13 +121,17 @@ BEGIN TRY
 
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
-			EXEC dbo.eliminaHóspedesAssociados @idEstada
+			IF (SELECT COUNT(id) FROM dbo.AlojamentoEstada WHERE id = @idEstada) = 1
+				BEGIN
+					EXEC dbo.eliminaHóspedesAssociados @idEstada
+					DELETE FROM dbo.AlojamentoEstada WHERE id = @idEstada
+					DELETE FROM dbo.EstadaExtra WHERE estadaId = @idEstada
+					DELETE FROM dbo.Estada WHERE id = @idEstada
 
-			DELETE FROM dbo.EstadaExtra WHERE estadaId = @idEstada
-			DELETE FROM dbo.AlojamentoEstada WHERE id = @idEstada
-			DELETE FROM dbo.Estada WHERE id = @idEstada
-
-			FETCH NEXT FROM eliminaAlojamentoInfo INTO @idEstada
+				END
+				ELSE
+					DELETE FROM dbo.AlojamentoEstada WHERE nomeParque = @nomeParque AND localização = @localização
+				FETCH NEXT FROM eliminaAlojamentoInfo INTO @idEstada
 		END
 
 		CLOSE eliminaAlojamentoInfo
@@ -196,3 +200,5 @@ SELECT * FROM dbo.EstadaExtra
 
 EXEC dbo.deleteAlojamento 'Lote 1','Glampinho'
 EXEC dbo.deleteAlojamento 'Lote 2','Glampinho'
+
+SELECT COUNT(id) FROM dbo.AlojamentoEstada WHERE id = 1

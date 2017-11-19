@@ -122,7 +122,7 @@ CREATE TABLE dbo.Paga(
 	nomeParque NVARCHAR(30),
 	númeroSequencial INT,
 	ano INT,
-	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
+	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF) ON DELETE CASCADE,
 	preçoParticipante INT,
 	CONSTRAINT pk_Paga PRIMARY KEY(nomeParque, númeroSequencial, ano, NIF),
 	CONSTRAINT fk_Paga FOREIGN KEY(nomeParque, númeroSequencial, ano) REFERENCES dbo.Actividades(nomeParque, númeroSequencial, ano)

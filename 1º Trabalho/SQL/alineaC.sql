@@ -158,6 +158,14 @@ INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
 	VALUES ('Glampinho', 'Rua 1', 1, 12),
 		   ('Glampinho', 'Rua 2', 2, 15)
 
+INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
+	VALUES ('Glampinho', 1, 2017, 'FUT7', 'Jogo de futebol 7vs7', '14', 3, '2017-03-15 10:30:00'),
+		   ('Glampinho', 2, 2017, 'FUT5', 'Jogo de futebol 5vs5', '10', 2, '2017-10-07 10:00:00')
+
+INSERT INTO dbo.Paga(nomeParque, númeroSequencial, ano, NIF, preçoParticipante)
+	VALUES ('Glampinho', 1, 2017, 112233445, 3),
+		   ('Glampinho', 1, 2017, 566778899, 3)
+
 SELECT * FROM dbo.ParqueCampismo
 SELECT * FROM dbo.Alojamento
 SELECT * FROM dbo.Extra
@@ -167,6 +175,7 @@ SELECT * FROM dbo.Hóspede
 SELECT * FROM dbo.Estada
 SELECT * FROM dbo.HóspedeEstada
 SELECT * FROM dbo.EstadaExtra
+SELECT * FROM dbo.Paga
 
 EXEC dbo.deleteHospede 112233445
 EXEC dbo.deleteHospede 123456789

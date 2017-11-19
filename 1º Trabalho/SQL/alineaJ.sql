@@ -42,7 +42,7 @@ GO
 CREATE PROCEDURE dbo.getEstadaExtrasPreço @idEstada INT, @idFactura INT, @ano INT, @linha INT, @novaLinha INT OUTPUT AS	-- vai buscar o total a pagar de acordo com os extras para estada
 	SET NOCOUNT ON
 	BEGIN TRY
-		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			DECLARE @totalDias INT
 
 			SELECT @totalDias = DATEDIFF(DAY, dataInício, dataFim) FROM dbo.Estada WHERE id = @idEstada
@@ -90,7 +90,7 @@ CREATE PROCEDURE dbo.getPessoalExtrasPreço @idEstada INT, @idFactura INT, @ano I
 		THROW
 	END CATCH
 
-/*************************************** Retirar preço total dos extras de alojamento ************************************************************************/
+/*************************************** Retirar preço total das actividade ************************************************************************/
 GO
 IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'getCustoTotalActividades')
 	DROP PROCEDURE dbo.getCustoTotalActividades;
@@ -100,8 +100,8 @@ CREATE PROCEDURE dbo.getCustoTotalActividades @idEstada INT, @idFactura INT, @an
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Act.descrição) + @linha, COUNT(Paga.númeroSequencial), Paga.preçoParticipante * COUNT(Paga.númeroSequencial), Act.descrição FROM dbo.HóspedeEstada AS HosEst JOIN dbo.Paga 
-					ON HosEst.NIF = Paga.NIF JOIN dbo.Actividades as Act 
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Act.descrição) + @linha, COUNT(Paga.númeroSequencial), Paga.preçoParticipante * COUNT(Paga.númeroSequencial), Act.descrição 
+					FROM dbo.HóspedeEstada AS HosEst JOIN dbo.Paga ON HosEst.NIF = Paga.NIF JOIN dbo.Actividades as Act 
 						ON Paga.nomeParque = Act.nomeParque AND Paga.númeroSequencial = Act.númeroSequencial WHERE HosEst.id = @idEstada
 						GROUP BY Act.descrição, Paga.preçoParticipante
 		COMMIT
@@ -142,7 +142,7 @@ GO
 CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 	SET NOCOUNT ON
 	BEGIN TRY
-		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
 			DECLARE @NIFResponsável INT
 			DECLARE @idFactura INT
 			DECLARE @ano INT	
