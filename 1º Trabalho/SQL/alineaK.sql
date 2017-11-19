@@ -29,6 +29,8 @@ IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND
 	DROP PROCEDURE dbo.SendEmails;
 GO
 CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT AS
+BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+    BEGIN TRY
 	DECLARE @NIF INT
 	DECLARE @email NVARCHAR(30)
 
@@ -47,7 +49,10 @@ CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT AS
 		END
 	CLOSE iterate_NIFs
 	DEALLOCATE iterate_NIFs
-
+END TRY
+BEGIN CATCH
+ ROLLBACK
+END CATCH 
 
 /*************************************** Teste ************************************************************************/
 
