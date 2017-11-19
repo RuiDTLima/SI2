@@ -183,12 +183,12 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 /*************************************** Teste ************************************************************************/
 GO
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
-	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
+	VALUES ('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
 	
 INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
-	VALUES(112233445, 'Teste', 'Rua teste', 'teste@teste.com', 11223344),
-	      (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788),
-		  (123456789, 'Manel', 'Rua Manel', 'manel@test.com', 99001122)
+	VALUES (112233445, 'Teste', 'Rua teste', 'teste@teste.com', 11223344),
+	       (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788),
+		   (123456789, 'Manel', 'Rua Manel', 'manel@test.com', 99001122)
 
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda pequena', 'Rua 1', 'bonito', 12, 4, 50
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda grande', 'Rua 2', 'grande', 15, 10, 50
@@ -232,8 +232,8 @@ INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 		   (123456789, 1, 'true')
 
 INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
-	VALUES ('Glampinho', 1, 2017, 'FUT7', 'Jogo de futebol 7vs7', '14', 3, '2017-03-15 10:30:00'),
-		   ('Glampinho', 2, 2017, 'FUT5', 'Jogo de futebol 5vs5', '10', 2, '2017-10-07 10:00:00')
+	VALUES ('Glampinho', 1, 2017, 'FUT7', 'Jogo de futebol 7vs7', 14, 3, '2017-03-15 10:30:00'),
+		   ('Glampinho', 2, 2017, 'FUT5', 'Jogo de futebol 5vs5', 10, 2, '2017-10-07 10:00:00')
 
 INSERT INTO dbo.Paga(nomeParque, númeroSequencial, ano, NIF, preçoParticipante)
 	VALUES ('Glampinho', 1, 2017, 112233445, 3),

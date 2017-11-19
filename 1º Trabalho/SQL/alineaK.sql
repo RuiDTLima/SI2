@@ -13,6 +13,9 @@ USE Glampinho
 
 /*************************************** Estrutura do email a enviar  ************************************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'sendEmail')
+	DROP PROCEDURE dbo.sendEmail;
+GO
 CREATE PROCEDURE dbo.sendEmail @NIF INT, @email NVARCHAR(30), @text NVARCHAR(255) AS
 	PRINT 'De: Gerência Glampinho'
 	PRINT 'Para: ' + @email
@@ -22,6 +25,9 @@ CREATE PROCEDURE dbo.sendEmail @NIF INT, @email NVARCHAR(30), @text NVARCHAR(255
 
 /*************************************** Envia email a todos os hóspedes responsáveis por estadas a começar dentro de x temp ************************************************************************/
 GO
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'SendEmails')
+	DROP PROCEDURE dbo.SendEmails;
+GO
 CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT AS
 	DECLARE @NIF INT
 	DECLARE @email NVARCHAR(30)
@@ -29,12 +35,14 @@ CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT AS
 	DECLARE iterate_NIFs CURSOR LOCAL FORWARD_ONLY FOR 
 		SELECT Hosp.NIF, Hosp.email FROM dbo.Hóspede AS Hosp JOIN dbo.HóspedeEstada AS HospEst ON Hosp.NIF = HospEst.NIF 
 			JOIN dbo.Estada AS Est ON HospEst.id = Est.id WHERE HospEst.hóspede = 'true' AND Est.dataInício <= DATEADD(DAY, @periodoTemporal, GETDATE())
+	
 	OPEN iterate_NIFs
-
 	FETCH NEXT FROM iterate_NIFs INTO @NIF, @email
+
 	WHILE @@FETCH_STATUS = 0
 		BEGIN
-			EXEC SendEmail @NIF, @email, 'A sua estada no Parque Glampinho está à sua espera! Para mais informações contacte-nos para glampinho@email.com.' 
+			EXEC dbo.SendEmail @NIF, @email, 'A sua estada no Parque Glampinho está à sua espera! Para mais informações contacte-nos para glampinho@email.com.' 
+			
 			FETCH NEXT FROM iterate_NIFs INTO @NIF, @email
 		END
 	CLOSE iterate_NIFs
@@ -57,4 +65,4 @@ INSERT INTO dbo.Estada(id, dataInício, dataFim)
 
 INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 	VALUES	(112233445, 2, 'true'),
-			(566778899, 2, 'false')
+			(566778899, 3, 'true')
