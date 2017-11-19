@@ -133,10 +133,5 @@ INSERT INTO dbo.Paga(nomeParque, númeroSequencial, ano, NIF, preçoParticipante)
 		   ('Glampinho', 1, 2017, 123456789, 3),
 		   ('Glampinho', 2, 2017, 112233445, 2),
 		   ('Glampinho', 2, 2017, 566778899, 2)
-		
-SELECT * FROM Item
-SELECT descrição FROM ITEM
-ORDER BY descrição DESC
-OFFSET 10 ROWS
 
 EXEC dbo.mediaPagamentos 5

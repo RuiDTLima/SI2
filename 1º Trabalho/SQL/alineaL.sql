@@ -65,9 +65,6 @@ INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
 	       (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788),
 		   (123456789, 'Manel', 'Rua Manel', 'manel@test.com', 99001122)
 
---UPDATE Actividades SET lotaçãoMáxima=4 WHERE númeroSequencial=1
---UPDATE Actividades SET lotaçãoMáxima=2 WHERE númeroSequencial=2
-
 INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
 	VALUES ('Glampinho', 1, 2017, 'FUT7', 'Jogo de futebol 7vs7', 14, 3, '2017-03-15 10:30:00'),
 		   ('Glampinho', 2, 2017, 'FUT5', 'Jogo de futebol 5vs5', 10, 2, '2017-10-07 10:00:00')

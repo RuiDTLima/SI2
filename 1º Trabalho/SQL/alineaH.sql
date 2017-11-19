@@ -244,5 +244,3 @@ EXEC dbo.addExtraToEstada 2, @idTemp
 
 /* Testar procedure final */
 EXEC dbo.createEstadaInTime 112233445, 566778899, 5, 'tenda', 10, 2, 3
-
-SELECT MAX(id) + 1 FROM dbo.Estada

@@ -158,7 +158,7 @@ INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
 		   (123456789, 'Manel', 'Rua 3', 'manel@gmail.com', 99112233),
 		   (123243546, 'António', 'Rua 4', 'antonio@gmail.com', 44556677)
 
-EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Parque 1', 'Lote 1', 'primeira tenda do parque', 60, 12, 'T3'
+EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Parque 1', 'Lote 1', 'primeiro bungalow do parque', 60, 12, 'T3'
 EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'verde', 'Lote 2', 'bonito', 12, 4, 50
 
 INSERT INTO	dbo.Estada(id, dataInício, dataFim, idFactura, ano)
@@ -200,5 +200,3 @@ SELECT * FROM dbo.EstadaExtra
 
 EXEC dbo.deleteAlojamento 'Lote 1','Glampinho'
 EXEC dbo.deleteAlojamento 'Lote 2','Glampinho'
-
-SELECT COUNT(id) FROM dbo.AlojamentoEstada WHERE id = 1

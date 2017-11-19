@@ -21,8 +21,8 @@ CREATE PROCEDURE dbo.getAlojamentoPreço @idEstada INT, @idFactura INT, @ano INT,
 	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
-			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY descrição) + @linha, 1, AlojEst.preçoBase, Aloj.descrição FROM dbo.AlojamentoEstada AS AlojEst JOIN  dbo.Alojamento As Aloj 
+			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição, tipo)
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY descrição) + @linha, 1, AlojEst.preçoBase, Aloj.descrição, 'alojamento' FROM dbo.AlojamentoEstada AS AlojEst JOIN  dbo.Alojamento As Aloj 
 					ON AlojEst.localização = Aloj.localização AND AlojEst.nomeParque = Aloj.nomeParque WHERE id = @idEstada
 					
 			SELECT @novaLinha = @@ROWCOUNT + @linha
@@ -47,8 +47,8 @@ CREATE PROCEDURE dbo.getEstadaExtrasPreço @idEstada INT, @idFactura INT, @ano IN
 
 			SELECT @totalDias = DATEDIFF(DAY, dataInício, dataFim) FROM dbo.Estada WHERE id = @idEstada
 
-			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Ext.descrição) + @linha, @totalDias, EstExt.preçoDia * @totalDias, Ext.descrição 
+			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição, tipo)
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Ext.descrição) + @linha, @totalDias, EstExt.preçoDia * @totalDias, Ext.descrição, 'extra' 
 					FROM dbo.EstadaExtra AS EstExt JOIN dbo.Extra AS Ext ON EstExt.extraId = Ext.id 
 					WHERE EstExt.estadaId = @idEstada AND Ext.associado = 'alojamento'
 
@@ -77,8 +77,8 @@ CREATE PROCEDURE dbo.getPessoalExtrasPreço @idEstada INT, @idFactura INT, @ano I
 
 			SELECT @totalHóspedes = COUNT(NIF) FROM dbo.HóspedeEstada WHERE id = @idEstada
 
-			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Ext.descrição) + @linha, @totalDias * @totalHóspedes, EstExt.preçoDia * @totalDias * @totalHóspedes, Ext.descrição 
+			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição, tipo)
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Ext.descrição) + @linha, @totalDias * @totalHóspedes, EstExt.preçoDia * @totalDias * @totalHóspedes, Ext.descrição, 'extra' 
 					FROM dbo.EstadaExtra AS EstExt JOIN dbo.Extra Ext ON EstExt.extraId = Ext.id WHERE EstExt.estadaId = @idEstada AND Ext.associado = 'pessoa'
 			
 			SELECT @novaLinha = @@ROWCOUNT + @linha
@@ -99,8 +99,8 @@ CREATE PROCEDURE dbo.getCustoTotalActividades @idEstada INT, @idFactura INT, @an
 	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
-			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição)
-				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Act.descrição) + @linha, COUNT(Paga.númeroSequencial), Paga.preçoParticipante * COUNT(Paga.númeroSequencial), Act.descrição 
+			INSERT INTO dbo.Item(idFactura, ano, linha, quantidade, preço, descrição, tipo)
+				SELECT @idFactura, @ano, ROW_NUMBER() OVER (ORDER BY Act.descrição) + @linha, COUNT(Paga.númeroSequencial), Paga.preçoParticipante * COUNT(Paga.númeroSequencial), Act.descrição, 'actividade' 
 					FROM dbo.HóspedeEstada AS HosEst JOIN dbo.Paga ON HosEst.NIF = Paga.NIF JOIN dbo.Actividades as Act 
 						ON Paga.nomeParque = Act.nomeParque AND Paga.númeroSequencial = Act.númeroSequencial WHERE HosEst.id = @idEstada
 						GROUP BY Act.descrição, Paga.preçoParticipante

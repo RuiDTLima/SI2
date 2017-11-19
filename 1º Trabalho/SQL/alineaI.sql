@@ -23,7 +23,6 @@ CREATE PROCEDURE dbo.inscreverHóspede @NIFHóspede INT, @númeroSequencial INT, @n
 
 			IF NOT EXISTS (SELECT 1 FROM dbo.HóspedeEstada as hosEst INNER JOIN dbo.Estada as Est ON hosEst.id = Est.id JOIN dbo.AlojamentoEstada as AlojEst ON AlojEst.id = Est.id
 							WHERE hosEst.NIF = @NIFHóspede AND Est.dataFim > @dataRealização AND Est.dataInício < @dataRealização AND AlojEst.nomeParque = @nomeParque AND Est.dataFim > GETDATE())
-				
 				THROW 51000, 'Hóspede é inválido', 1 
 
 			INSERT INTO dbo.Paga(nomeParque, númeroSequencial, ano, NIF, preçoParticipante)

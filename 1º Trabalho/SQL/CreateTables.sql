@@ -113,6 +113,7 @@ CREATE TABLE dbo.Item(
 	quantidade INT NOT NULL,
 	preço INT NOT NULL,
 	descrição NVARCHAR(30) NOT NULL,
+	tipo VARCHAR(10) NOT NULL CHECK(tipo in('actividade', 'alojamento', 'extra'))
 	CONSTRAINT pk_Item PRIMARY KEY(idFactura, ano, linha),
 	CONSTRAINT fk_item FOREIGN KEY(idFactura, ano) REFERENCES dbo.Factura(id, ano)
 )
