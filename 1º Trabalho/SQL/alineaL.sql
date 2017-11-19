@@ -30,40 +30,15 @@ GO
 
 GO
 CREATE PROC listarAtividades @dataInicio date,@dataFim date
-AS
-BEGIN TRY
-    BEGIN TRANSACTION
-
+AS	
+BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+	BEGIN TRY
 	select * from dbo.listAtividades(@dataInicio ,@dataFim)
 	IF @@ROWCOUNT = 0 RAISERROR('As atividades encontram-se lotadas ou fora do intervalo especificado',20,1)
 	COMMIT
-
-	/*
-	IF @@ROWCOUNT = 0 RAISERROR('As atividades encontram-se lotadas',20,1) 
-	SELECT @númeroAtividade=númeroSequencial FROM Actividades WHERE dataRealização between @dataInicio and @dataFim 
-	IF @@ROWCOUNT = 0 RAISERROR('Não existem atividade dentro do intervalo especificado',20,1) */
-   
-
 END TRY
 BEGIN CATCH
  ROLLBACK
 END CATCH 
 
 
-exec listarAtividades '2016-03-12' ,'2017-03-16' 
-
-INSERT INTO Paga(ano,NIF,nomeParque,númeroSequencial,preçoParticipante)
-	VALUES (2017,2,'Glampinho',2,2)
-	
-
-INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
-	VALUES (2, 'José', 'Rua 1', 'OI@gmail.com', 11223344)
-
-UPDATE Actividades SET lotaçãoMáxima=4 WHERE númeroSequencial=1
-UPDATE Actividades SET lotaçãoMáxima=2 WHERE númeroSequencial=2
-
-INSERT INTO Actividades (nomeParque,númeroSequencial,ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
-	VALUES('Glampinho',2,2017,'Yoga','Relaxing',2,3,'04-15-16 10:30')
-
-SELECT * FROM Paga
-SELECT * FROM Actividades

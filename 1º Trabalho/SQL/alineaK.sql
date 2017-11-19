@@ -23,6 +23,8 @@ CREATE PROCEDURE dbo.sendEmail @NIF INT, @email NVARCHAR(30), @text NVARCHAR(255
 /*************************************** Envia email a todos os hóspedes responsáveis por estadas a começar dentro de x temp ************************************************************************/
 GO
 CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT AS
+BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
+    BEGIN TRY
 	DECLARE @NIF INT
 	DECLARE @email NVARCHAR(30)
 
@@ -39,22 +41,9 @@ CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT AS
 		END
 	CLOSE iterate_NIFs
 	DEALLOCATE iterate_NIFs
+END TRY
+BEGIN CATCH
+ ROLLBACK
+END CATCH 
+	
 
-
-/*************************************** Teste ************************************************************************/
-
-EXEC dbo.sendEmails 7
-
-SELECT * FROM dbo.Estada
-SELECT * FROM dbo.Hóspede
-SELECT * FROM dbo.HóspedeEstada
-
-INSERT INTO dbo.Estada(id, dataInício, dataFim)
-	VALUES	(2, '2017-11-20', '2017-11-27'),
-			(3, '2017-11-20', '2017-11-27'),
-			(4, '2017-11-26', '2017-11-30')
-
-
-INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
-	VALUES	(112233445, 2, 'true'),
-			(566778899, 2, 'false')
