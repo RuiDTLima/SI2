@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using Glampinho.mapper;
 using Glampinho.model;
-using Glampinho.dal;
 using System.Data;
 using System.Data.SqlClient;
-using System.Transactions;
 
 namespace Glampinho.concrete {
     class HóspedeMapper : AbstracMapper<Hóspede, int, List<Hóspede>>, IHóspedeMapper {

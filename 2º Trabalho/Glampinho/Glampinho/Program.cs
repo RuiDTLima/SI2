@@ -20,7 +20,7 @@ namespace Glampinho {
                 }
 
                 Hóspede newHóspede = new Hóspede();
-                /*newHóspede.nome = "teste C#";
+                newHóspede.nome = "teste C#";
                 newHóspede.NIF = 1;
                 newHóspede.morada = "teste";
                 newHóspede.email = "teste@c#.com";
@@ -29,17 +29,18 @@ namespace Glampinho {
                 newHóspede = hóspedeMapper.Create(newHóspede);
 
                 Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", newHóspede.NIF, newHóspede.nome, newHóspede.morada, newHóspede.email, newHóspede.númeroIdentificação);
-                */
+                
                 newHóspede.morada = "update";
                 newHóspede.nome = "teste C#";
-                newHóspede.NIF = 112233445;
+                newHóspede.NIF = 1;
                 newHóspede.email = "teste@c#.com";
                 newHóspede.númeroIdentificação = 12;
                 hóspedeMapper.Update(newHóspede);
 
-                var result = hóspedeMapper.Delete(newHóspede);
+                Hóspede deleteHóspede = new Hóspede();
+                deleteHóspede.NIF = 112233445;
 
-                Console.Write("");
+                var result = hóspedeMapper.Delete(deleteHóspede);
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.SqlClient;
-using Glampinho.dal;
 using System.Transactions;
 
 namespace Glampinho.concrete {
@@ -13,7 +12,7 @@ namespace Glampinho.concrete {
             connection = null;
         }
 
-        public void Open() {
+        public void Open()  {
             if (connection == null) {
                 connection = new SqlConnection(connectionString);
             }
@@ -28,7 +27,7 @@ namespace Glampinho.concrete {
         }
 
         public void Dispose() {
-            if(connection != null) {
+            if (connection != null) {
                 connection.Dispose();
                 connection = null;      // para indicar que a connection não está em uso
             }

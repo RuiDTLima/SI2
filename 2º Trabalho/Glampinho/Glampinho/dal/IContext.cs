@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-namespace Glampinho.dal {
-    interface IContext: IDisposable {
+namespace Glampinho {
+    interface IContext : IDisposable {
         void Open();
         SqlCommand createCommand();
         void EnlistTransaction();
