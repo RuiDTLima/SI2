@@ -57,7 +57,9 @@ namespace Glampinho.concrete
 
         /************************************************ metodos para os procs *****************************************************/
 
-        protected int createEstada(string nifResponsavel, int duração)
+
+
+        public int CreateEstada(int nifResponsavel, int duração)
         {
             EnsureContext();
 
@@ -67,8 +69,10 @@ namespace Glampinho.concrete
                 command.CommandType = CommandType.StoredProcedure;
                 SqlParameter nif = new SqlParameter("@NIFResponsável", nifResponsavel);
                 SqlParameter tempoEstada = new SqlParameter("@tempoEstada", duração);
-                SqlParameter returnParameter = new SqlParameter("@idNumber", SqlDbType.Int);
-                returnParameter.Direction = ParameterDirection.ReturnValue;
+                SqlParameter returnParameter = new SqlParameter("@idNumber", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
 
                 command.Parameters.Add(nif);
                 command.Parameters.Add(tempoEstada);
@@ -80,90 +84,91 @@ namespace Glampinho.concrete
             }
         }
 
-           protected void addAlojamento(string tipo, int lotação, int id)
+        public void AddAlojamento(string tipo, int lotação, int id)
         {
-                EnsureContext();
+            EnsureContext();
 
-                using (IDbCommand command = context.createCommand())
-                {
-                    command.CommandText = "dbo.addAlojamento";
-                    command.CommandType = CommandType.StoredProcedure;
-                    SqlParameter tipoAlojamento = new SqlParameter("@tipoAlojamento", tipo);
-                    SqlParameter lot = new SqlParameter("@lotação", lotação);
-                    SqlParameter iden = new SqlParameter("@idEstada", id);
-
-                    command.Parameters.Add(tipoAlojamento);
-                    command.Parameters.Add(lot);
-                    command.Parameters.Add(iden);
-
-                    command.ExecuteNonQuery();
-
-                }
-            }
-
-        protected void addHospede(string nifHospede, int id)
+            using (IDbCommand command = context.createCommand())
             {
-                EnsureContext();
+                command.CommandText = "dbo.addAlojamento";
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter tipoAlojamento = new SqlParameter("@tipoAlojamento", tipo);
+                SqlParameter lot = new SqlParameter("@lotação", lotação);
+                SqlParameter iden = new SqlParameter("@idEstada", id);
 
-                using (IDbCommand command = context.createCommand())
-                {
-                    command.CommandText = "dbo.addHóspede";
-                    command.CommandType = CommandType.StoredProcedure;
-                    SqlParameter nifHosp = new SqlParameter("@NIF", nifHospede);
-                    SqlParameter iden = new SqlParameter("@id", id);
+                command.Parameters.Add(tipoAlojamento);
+                command.Parameters.Add(lot);
+                command.Parameters.Add(iden);
 
+                command.ExecuteNonQuery();
 
-                    command.Parameters.Add(nifHospede);
-                    command.Parameters.Add(iden);
-
-
-                    command.ExecuteNonQuery();
-
-                }
             }
+        }
 
-        protected void addExtraAlojamento(int idExtraAloj, int id)
+        public void AddHospede(int nifHospede, int id)
+        {
+            EnsureContext();
+
+            using (IDbCommand command = context.createCommand())
             {
-                EnsureContext();
-
-                using (IDbCommand command = context.createCommand())
-                {
-                    command.CommandText = "dbo.addExtraToAlojamento";
-                    command.CommandType = CommandType.StoredProcedure;
-                    SqlParameter idExtr = new SqlParameter("@idExtra", idExtraAloj);
-                    SqlParameter iden = new SqlParameter("@idEstada", id);
+                command.CommandText = "dbo.addHóspede";
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter nifHosp = new SqlParameter("@NIF", nifHospede);
+                SqlParameter iden = new SqlParameter("@id", id);
 
 
-                    command.Parameters.Add(idExtr);
-                    command.Parameters.Add(iden);
+                command.Parameters.Add(nifHosp);
+                command.Parameters.Add(iden);
 
 
-                    command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
 
-                }
             }
+        }
 
-        protected void addExtraEstada(int idExtraEstada, int id)
+        public void AddExtraAlojamento(int idExtraAloj, int id)
+        {
+            EnsureContext();
+
+            using (IDbCommand command = context.createCommand())
             {
-                EnsureContext();
-
-                using (IDbCommand command = context.createCommand())
-                {
-                    command.CommandText = "dbo.addExtraToEstada";
-                    command.CommandType = CommandType.StoredProcedure;
-                    SqlParameter idExtr = new SqlParameter("@idExtra", idExtraEstada);
-                    SqlParameter iden = new SqlParameter("@idEstada", id);
+                command.CommandText = "dbo.addExtraToAlojamento";
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter idExtr = new SqlParameter("@idExtra", idExtraAloj);
+                SqlParameter iden = new SqlParameter("@idEstada", id);
 
 
-                    command.Parameters.Add(idExtr);
-                    command.Parameters.Add(iden);
+                command.Parameters.Add(idExtr);
+                command.Parameters.Add(iden);
 
 
-                    command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
 
-                }
             }
+        }
+
+        public void AddExtraEstada(int idExtraEstada, int id)
+        {
+            EnsureContext();
+
+            using (IDbCommand command = context.createCommand())
+            {
+                command.CommandText = "dbo.addExtraToEstada";
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter idExtr = new SqlParameter("@idExtra", idExtraEstada);
+                SqlParameter iden = new SqlParameter("@idEstada", id);
+
+
+                command.Parameters.Add(idExtr);
+                command.Parameters.Add(iden);
+
+
+                command.ExecuteNonQuery();
+
+            }
+        }
         
+
         protected override string SelectAllCommandText
         {
             get

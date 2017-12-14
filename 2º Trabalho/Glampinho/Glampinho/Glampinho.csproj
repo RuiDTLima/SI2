@@ -50,6 +50,7 @@
     <Compile Include="concrete\EstadaMapper.cs" />
     <Compile Include="concrete\ExtraAlojamentoMapper.cs" />
     <Compile Include="concrete\ExtraPessoaMapper.cs" />
+    <Compile Include="concrete\FaturaMapper.cs" />
     <Compile Include="concrete\HóspedeMapper.cs" />
     <Compile Include="dal\IContext.cs" />
     <Compile Include="mapper\AbstractMapper.cs" />
@@ -57,8 +58,10 @@
     <Compile Include="mapper\IEstadaMapper.cs" />
     <Compile Include="mapper\IExtraAlojamentoMapper.cs" />
     <Compile Include="mapper\IExtraPessoalMapper.cs" />
+    <Compile Include="mapper\IFacturaMapper.cs" />
     <Compile Include="mapper\IHóspedeMapper.cs" />
     <Compile Include="mapper\IMapper.cs" />
+    <Compile Include="mapper\ProcUtils.cs" />
     <Compile Include="model\Actividades.cs" />
     <Compile Include="model\AlojamentoExtra.cs" />
     <Compile Include="model\Alojamento.cs" />

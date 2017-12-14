@@ -1,4 +1,5 @@
 ﻿using Glampinho.concrete;
+using Glampinho.mapper;
 using Glampinho.model;
 using System;
 using System.Configuration;
@@ -43,7 +44,7 @@ namespace Glampinho {
 
 
 
-                ExtraPessoalMapper pessoalMapper = new ExtraPessoalMapper(context);
+                /*ExtraPessoalMapper pessoalMapper = new ExtraPessoalMapper(context);
 
                 Extra extra = new Extra();
                 extra.id = 5;
@@ -52,8 +53,27 @@ namespace Glampinho {
 
 
                 extra = pessoalMapper.Create(extra);
-                extra = pessoalMapper.Delete(extra);
-                
+                extra = pessoalMapper.Delete(extra);*/
+
+                /*EstadaMapper estadaMapper = new EstadaMapper(context);
+
+                int id = estadaMapper.CreateEstada(1, 5);
+                estadaMapper.AddAlojamento("tenda",4,id);
+                estadaMapper.AddHospede(566778899,id);
+                estadaMapper.AddExtraAlojamento(3, id);
+                estadaMapper.AddExtraEstada(2, id);
+                */
+
+                /* hóspedeMapper.InscreverHospede(112233445, 6, "Glampinho", 2017);*/
+
+                /*FaturaMapper faturaMapper = new FaturaMapper(context);
+                faturaMapper.finishEstadaWithFactura(3); */
+
+
+                ProcUtils utils = new ProcUtils(context);
+                utils.SendEmails(7);
+
+
             }
         }
     }
