@@ -48,7 +48,7 @@ namespace Glampinho.concrete
             SqlCommand cmd = con.CreateCommand();
             return cmd;
         }
-        public SqlCommand createProcedure(String s)
+        /*public SqlCommand createProcedure(String s)
         {
             Open();
             SqlCommand cmd = new SqlCommand(s,con);
@@ -56,7 +56,7 @@ namespace Glampinho.concrete
             // 2. set the command object so it knows to execute a stored procedure
             cmd.CommandType = CommandType.StoredProcedure;
             return cmd;
-        }
+        }*/
 
         public void Dispose()
         {
