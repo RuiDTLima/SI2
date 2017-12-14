@@ -45,13 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="concrete\ActividadesMapper.cs" />
     <Compile Include="concrete\Context.cs" />
+    <Compile Include="concrete\HóspedeMapper.cs" />
     <Compile Include="dal\IContext.cs" />
     <Compile Include="mapper\AbstractMapper.cs" />
-    <Compile Include="concrete\AlojamentoMapper.cs" />
-    <Compile Include="mapper\IAlojamentoMapper.cs" />
-    <Compile Include="mapper\IAtividadesMapper.cs" />
+    <Compile Include="mapper\IHóspedeMapper.cs" />
     <Compile Include="mapper\IMapper.cs" />
     <Compile Include="model\Actividades.cs" />
     <Compile Include="model\AlojamentoExtra.cs" />
@@ -75,11 +73,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
