@@ -21,11 +21,28 @@ namespace Glampinho.concrete {
             }
         }
 
+<<<<<<< HEAD
+        public SqlCommand createCommand()
+        {
+            Open();
+            SqlCommand cmd = con.CreateCommand();
+            return cmd;
+        }
+        /*public SqlCommand createProcedure(String s)
+        {
+            Open();
+            SqlCommand cmd = new SqlCommand(s,con);
+
+            // 2. set the command object so it knows to execute a stored procedure
+            cmd.CommandType = CommandType.StoredProcedure;
+            return cmd;
+        }*/
+=======
         public SqlCommand createCommand() {
             Open();
             return connection.CreateCommand();
         }
-        
+>>>>>>> 8b662be8a4280cb4c5e86a8a3bd07a81d859b8dd
 
         public void Dispose() {
             if (connection != null) {

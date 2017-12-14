@@ -19,7 +19,7 @@ namespace Glampinho {
                     Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", h.NIF, h.nome, h.morada, h.email, h.númeroIdentificação);
                 }
 
-                Hóspede newHóspede = new Hóspede();
+                /*Hóspede newHóspede = new Hóspede();
                 newHóspede.nome = "teste C#";
                 newHóspede.NIF = 1;
                 newHóspede.morada = "teste";
@@ -38,9 +38,22 @@ namespace Glampinho {
                 hóspedeMapper.Update(newHóspede);
 
                 Hóspede deleteHóspede = new Hóspede();
-                deleteHóspede.NIF = 112233445;
+                deleteHóspede.NIF = 112233445;*/
 
-                var result = hóspedeMapper.Delete(deleteHóspede);
+
+
+
+                ExtraPessoalMapper pessoalMapper = new ExtraPessoalMapper(context);
+
+                Extra extra = new Extra();
+                extra.id = 5;
+                extra.descrição = "teste c#";
+                extra.preçoDia = 12;
+
+
+                extra = pessoalMapper.Create(extra);
+                extra = pessoalMapper.Delete(extra);
+                
             }
         }
     }

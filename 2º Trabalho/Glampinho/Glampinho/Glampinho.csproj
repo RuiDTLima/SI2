@@ -45,10 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="concrete\ActividadesMapper.cs" />
     <Compile Include="concrete\Context.cs" />
+    <Compile Include="concrete\EstadaMapper.cs" />
+    <Compile Include="concrete\ExtraAlojamentoMapper.cs" />
+    <Compile Include="concrete\ExtraPessoaMapper.cs" />
     <Compile Include="concrete\HóspedeMapper.cs" />
     <Compile Include="dal\IContext.cs" />
     <Compile Include="mapper\AbstractMapper.cs" />
+    <Compile Include="mapper\IAtividadesMapper.cs" />
+    <Compile Include="mapper\IEstadaMapper.cs" />
+    <Compile Include="mapper\IExtraAlojamentoMapper.cs" />
+    <Compile Include="mapper\IExtraPessoalMapper.cs" />
     <Compile Include="mapper\IHóspedeMapper.cs" />
     <Compile Include="mapper\IMapper.cs" />
     <Compile Include="model\Actividades.cs" />

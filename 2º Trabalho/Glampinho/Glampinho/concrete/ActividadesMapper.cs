@@ -73,20 +73,17 @@ namespace Glampinho.concrete
 
             using (TransactionScope ts = new TransactionScope(TransactionScopeOption.Required))
             {
-                EnsureContext();
-                context.EnlistTransaction();
+                using (IDbCommand command = context.createCommand())
+                {
+                    command.CommandText = DeleteCommandText;
+                    command.CommandType = CommandType.StoredProcedure;
 
-                SqlCommand c = context.createProcedure("dbo.deleteAtividades");
+                    DeleteParameters(command, entity);
 
-              
-                c.Parameters.Add(new SqlParameter("@nomeParque", entity.nomeParque));
-                c.Parameters.Add(new SqlParameter("@númeroSequencial", entity.númeroSequencial));
+                    return command.ExecuteNonQuery() == 0 ? null : entity;
+                }
 
-                // execute the command
-                using (SqlDataReader rdr = c.ExecuteReader())
-                    return entity;
             }
-
         }
 
 
@@ -98,7 +95,7 @@ namespace Glampinho.concrete
 
         protected override string UpdateCommandText => "update Actividades set nomeParque=@nomeParque, númeroSequencial=@númeroSequencial, nome=@nome, descrição=@descrição, lotaçãoMáxima=@lotaçãoMáxima, preçoParticipante=@preçoParticipante, dataRealização=@dataRealização where where nomeParque=@nomeParque, númeroSequencial=@númeroSequencial, ano=@ano";
 
-        protected override string DeleteCommandText => throw new NotImplementedException();
+        protected override string DeleteCommandText => "dbo.deleteAtividades";
 
         protected override void DeleteParameters(IDbCommand cmd, Actividades entity)
         {

@@ -1,0 +1,14 @@
+﻿using System;
+using System.Data.SqlClient;
+
+namespace Glampinho {
+    interface IContext : IDisposable {
+        void Open();
+        SqlCommand createCommand();
+<<<<<<< HEAD
+        //SqlCommand createProcedure(String s);
+=======
+>>>>>>> 8b662be8a4280cb4c5e86a8a3bd07a81d859b8dd
+        void EnlistTransaction();
+    }
+}
