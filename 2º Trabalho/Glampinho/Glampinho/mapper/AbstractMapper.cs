@@ -16,7 +16,7 @@ namespace Glampinho.mapper {
         protected IContext context;
 
         protected abstract T Map(IDataRecord record); //How to map entity
-        protected abstract T UpdateEntityID(IDbCommand cmd, T e); //Update the generated ID
+        protected abstract T UpdateEntityID(IDbCommand command, T e); //Update the generated ID
         protected abstract string SelectAllCommandText { get; }
         protected virtual CommandType SelectAllCommandType { get { return System.Data.CommandType.Text; } }
         protected virtual void SelectAllParameters(IDbCommand command) { }

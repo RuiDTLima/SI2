@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using Glampinho.dal;
+using System.Transactions;
 
 namespace Glampinho.concrete {
     class Context : IContext {
@@ -30,6 +31,12 @@ namespace Glampinho.concrete {
             if(connection != null) {
                 connection.Dispose();
                 connection = null;      // para indicar que a connection não está em uso
+            }
+        }
+
+        public void EnlistTransaction() {
+            if (connection != null) {
+                connection.EnlistTransaction(Transaction.Current);
             }
         }
     }

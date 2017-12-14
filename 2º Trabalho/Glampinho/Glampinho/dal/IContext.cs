@@ -5,5 +5,6 @@ namespace Glampinho.dal {
     interface IContext: IDisposable {
         void Open();
         SqlCommand createCommand();
+        void EnlistTransaction();
     }
 }
