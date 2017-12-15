@@ -57,12 +57,29 @@ namespace Glampinho {
 
                 /*EstadaMapper estadaMapper = new EstadaMapper(context);
 
-                int id = estadaMapper.CreateEstada(1, 5);
-                estadaMapper.AddAlojamento("tenda",4,id);
-                estadaMapper.AddHospede(566778899,id);
-                estadaMapper.AddExtraAlojamento(3, id);
-                estadaMapper.AddExtraEstada(2, id);
-                */
+                Estada estada = new Estada();
+              
+                Hóspede h2 = new Hóspede();
+                Hóspede h1 = new Hóspede();
+                h1.NIF = 566778899;
+                h2.NIF = 112233445;
+                Alojamento alojamento = new Alojamento();
+                alojamento.tipoAlojamento = "tenda";
+                alojamento.númeroMáximoPessoas = 10;
+                Extra extra1 = new Extra();
+                extra1.id = 3;
+                Extra extra2 = new Extra();
+                extra2.id = 2;
+
+
+
+
+                int id = estadaMapper.CreateEstada(h2, 5);
+                estadaMapper.AddAlojamento(alojamento,id);
+                estadaMapper.AddHospede(h1,id);
+                estadaMapper.AddExtraAlojamento(extra1, id);
+                estadaMapper.AddExtraEstada(extra2, id);*/
+                
 
                 /* hóspedeMapper.InscreverHospede(112233445, 6, "Glampinho", 2017);*/
 
@@ -71,8 +88,11 @@ namespace Glampinho {
 
 
                 ProcUtils utils = new ProcUtils(context);
+
                 utils.SendEmails(7);
 
+                utils.ListActividades(Convert.ToDateTime("2016-03-12"), Convert.ToDateTime("2017-03-16"));
+                utils.MediaPagamentos(2);
 
             }
         }

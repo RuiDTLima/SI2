@@ -9,5 +9,6 @@ namespace Glampinho.mapper
 {
     interface IAtividadesMapper : IMapper<Actividades, int?, List<Actividades>>
     {
+        void InscreverHospede(Actividades actividade, Hóspede hóspede);
     }
 }

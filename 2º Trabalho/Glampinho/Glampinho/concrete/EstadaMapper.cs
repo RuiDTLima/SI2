@@ -59,7 +59,7 @@ namespace Glampinho.concrete
 
 
 
-        public int CreateEstada(int nifResponsavel, int duração)
+        public int CreateEstada(Hóspede hóspede, int duração)
         {
             EnsureContext();
 
@@ -67,7 +67,7 @@ namespace Glampinho.concrete
             {
                 command.CommandText = "dbo.createEstada";
                 command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nif = new SqlParameter("@NIFResponsável", nifResponsavel);
+                SqlParameter nif = new SqlParameter("@NIFResponsável", hóspede.NIF);
                 SqlParameter tempoEstada = new SqlParameter("@tempoEstada", duração);
                 SqlParameter returnParameter = new SqlParameter("@idNumber", SqlDbType.Int)
                 {
@@ -84,7 +84,7 @@ namespace Glampinho.concrete
             }
         }
 
-        public void AddAlojamento(string tipo, int lotação, int id)
+        public void AddAlojamento(Alojamento alojamento, int id)
         {
             EnsureContext();
 
@@ -92,8 +92,8 @@ namespace Glampinho.concrete
             {
                 command.CommandText = "dbo.addAlojamento";
                 command.CommandType = CommandType.StoredProcedure;
-                SqlParameter tipoAlojamento = new SqlParameter("@tipoAlojamento", tipo);
-                SqlParameter lot = new SqlParameter("@lotação", lotação);
+                SqlParameter tipoAlojamento = new SqlParameter("@tipoAlojamento", alojamento.tipoAlojamento);
+                SqlParameter lot = new SqlParameter("@lotação", alojamento.númeroMáximoPessoas);
                 SqlParameter iden = new SqlParameter("@idEstada", id);
 
                 command.Parameters.Add(tipoAlojamento);
@@ -105,7 +105,7 @@ namespace Glampinho.concrete
             }
         }
 
-        public void AddHospede(int nifHospede, int id)
+        public void AddHospede(Hóspede hóspede, int id)
         {
             EnsureContext();
 
@@ -113,7 +113,7 @@ namespace Glampinho.concrete
             {
                 command.CommandText = "dbo.addHóspede";
                 command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nifHosp = new SqlParameter("@NIF", nifHospede);
+                SqlParameter nifHosp = new SqlParameter("@NIF", hóspede.NIF);
                 SqlParameter iden = new SqlParameter("@id", id);
 
 
@@ -126,7 +126,7 @@ namespace Glampinho.concrete
             }
         }
 
-        public void AddExtraAlojamento(int idExtraAloj, int id)
+        public void AddExtraAlojamento(Extra extra, int id)
         {
             EnsureContext();
 
@@ -134,7 +134,7 @@ namespace Glampinho.concrete
             {
                 command.CommandText = "dbo.addExtraToAlojamento";
                 command.CommandType = CommandType.StoredProcedure;
-                SqlParameter idExtr = new SqlParameter("@idExtra", idExtraAloj);
+                SqlParameter idExtr = new SqlParameter("@idExtra", extra.id);
                 SqlParameter iden = new SqlParameter("@idEstada", id);
 
 
@@ -147,7 +147,7 @@ namespace Glampinho.concrete
             }
         }
 
-        public void AddExtraEstada(int idExtraEstada, int id)
+        public void AddExtraEstada(Extra extra, int id)
         {
             EnsureContext();
 
@@ -155,7 +155,7 @@ namespace Glampinho.concrete
             {
                 command.CommandText = "dbo.addExtraToEstada";
                 command.CommandType = CommandType.StoredProcedure;
-                SqlParameter idExtr = new SqlParameter("@idExtra", idExtraEstada);
+                SqlParameter idExtr = new SqlParameter("@idExtra", extra.id);
                 SqlParameter iden = new SqlParameter("@idEstada", id);
 
 

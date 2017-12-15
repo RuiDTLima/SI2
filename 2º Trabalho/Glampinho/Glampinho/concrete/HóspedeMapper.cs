@@ -128,27 +128,6 @@ namespace Glampinho.concrete
             }
         }
 
-        public void InscreverHospede(int NIFHóspede, int númeroSequencial, string nomeParque, int ano)
-        {
-            EnsureContext();
-
-            using (IDbCommand command = context.createCommand())
-            {
-                command.CommandText = "dbo.inscreverHóspede";
-                command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nifHosp = new SqlParameter("@NIFHóspede", NIFHóspede);
-                SqlParameter numSeq = new SqlParameter("@númeroSequencial", númeroSequencial);
-                SqlParameter nomeParq = new SqlParameter("@nomeParque", nomeParque);
-                SqlParameter year = new SqlParameter("@ano", ano);
-
-                command.Parameters.Add(nifHosp);
-                command.Parameters.Add(numSeq);
-                command.Parameters.Add(nomeParq);
-                command.Parameters.Add(year);
-
-
-                command.ExecuteNonQuery();
-            }
+     
         }
     }
-}

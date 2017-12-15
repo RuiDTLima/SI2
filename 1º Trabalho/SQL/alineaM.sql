@@ -29,7 +29,7 @@ GO
 IF EXISTS(SELECT 1 FROM sys.objects WHERE TYPE_DESC = 'SQL_STORED_PROCEDURE' AND NAME = 'mediaPagamentos')
 	DROP PROCEDURE dbo.mediaPagamentos;
 GO
-CREATE PROCEDURE dbo.mediaPagamentos @n INT AS
+CREATE PROCEDURE dbo.mediaPagamentos @n INT, @pagamento NVARCHAR(30) OUTPUT AS
 	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL SERIALIZABLE 
@@ -53,7 +53,7 @@ CREATE PROCEDURE dbo.mediaPagamentos @n INT AS
 
 			DECLARE @media INT = dbo.media (@valorTotal, @num)
 
-			PRINT 'Média de pagamentos: ' + CAST(@media as VARCHAR(30))
+			SET @pagamento =  'Média de pagamentos: ' + CAST(@media as VARCHAR(30))
 
 			CLOSE iterate_estada
 			DEALLOCATE iterate_estada
@@ -134,4 +134,9 @@ INSERT INTO dbo.Paga(nomeParque, númeroSequencial, ano, NIF, preçoParticipante)
 		   ('Glampinho', 2, 2017, 112233445, 2),
 		   ('Glampinho', 2, 2017, 566778899, 2)
 
-EXEC dbo.mediaPagamentos 5
+
+DECLARE @pagamento NVARCHAR(30)
+EXEC dbo.mediaPagamentos 2,@pagamento OUTPUT
+SELECT @pagamento
+
+

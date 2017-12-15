@@ -10,14 +10,15 @@ namespace Glampinho.mapper
     interface IEstadaMapper : IMapper<Estada, int, List<Estada>>
     {
 
-        int CreateEstada(int nifResponsavel, int duração);
 
-        void AddAlojamento(string tipo, int lotação, int id);
+        int CreateEstada(Hóspede hóspede, int duração);
 
-        void AddHospede(int nifHospede, int id);
+        void AddAlojamento(Alojamento alojamento, int id);
 
-        void AddExtraAlojamento(int idExtraAloj, int id);
+        void AddHospede(Hóspede hóspede, int id);
 
-        void AddExtraEstada(int idExtraEstada, int id);
+        void AddExtraAlojamento(Extra extra, int id);
+        
+        void AddExtraEstada(Extra extra, int id);
     }
 }

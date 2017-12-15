@@ -9,6 +9,6 @@ namespace Glampinho.mapper
 {
     interface IFacturaMapper : IMapper<Factura, int, List<Factura>>
     {
-        void finishEstadaWithFactura(int idEstada);
+        void finishEstadaWithFactura(Factura factura);
     }
 }

@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="concrete\ActividadesMapper.cs" />
+    <Compile Include="concrete\FaturaRepository.cs" />
     <Compile Include="concrete\Context.cs" />
     <Compile Include="concrete\EstadaMapper.cs" />
     <Compile Include="concrete\ExtraAlojamentoMapper.cs" />
@@ -53,6 +54,8 @@
     <Compile Include="concrete\FaturaMapper.cs" />
     <Compile Include="concrete\HóspedeMapper.cs" />
     <Compile Include="dal\IContext.cs" />
+    <Compile Include="dal\IFaturaRepository.cs" />
+    <Compile Include="dal\IRepository.cs" />
     <Compile Include="mapper\AbstractMapper.cs" />
     <Compile Include="mapper\IAtividadesMapper.cs" />
     <Compile Include="mapper\IEstadaMapper.cs" />

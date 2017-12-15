@@ -14,7 +14,7 @@ namespace Glampinho.concrete
     {
         public FaturaMapper(IContext ctx) : base(ctx){}
        
-        public void finishEstadaWithFactura(int idEstada)
+        public void finishEstadaWithFactura(Factura factura)
         {
             EnsureContext();
 
@@ -22,7 +22,7 @@ namespace Glampinho.concrete
             {
                 command.CommandText = "dbo.finishEstadaWithFactura";
                 command.CommandType = CommandType.StoredProcedure;
-                SqlParameter id = new SqlParameter("@idEstada", idEstada);
+                SqlParameter id = new SqlParameter("@idEstada", factura.id);
                 command.Parameters.Add(id);
                 command.ExecuteNonQuery();
             }

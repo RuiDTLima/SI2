@@ -264,4 +264,4 @@ EXEC dbo.getPessoalExtrasPreço 3, 1, 2017, @novaLinha, @novaLinha OUTPUT
 EXEc dbo.getCustoTotalActividades 3, 1, 2017, @novaLinha
 
 /* Corre versão final da criação da factura */
-EXEC dbo.finishEstadaWithFactura 3
+EXEC dbo.finishEstadaWithFactura 1
