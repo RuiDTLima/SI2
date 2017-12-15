@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Glampinho.model {
-    class Alojamento {
+    abstract class Alojamento {
         public virtual String nome { get; set; }    // unique
         public virtual String localização { get; set; } // chave primária
         public virtual String descrição { get; set; }

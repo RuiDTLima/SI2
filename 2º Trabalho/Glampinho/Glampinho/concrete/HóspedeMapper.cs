@@ -6,15 +6,24 @@ using System.Data;
 using System.Data.SqlClient;
 
 namespace Glampinho.concrete {
-    class HóspedeMapper : AbstracMapper<Hóspede, int, List<Hóspede>>, IHóspedeMapper {
+    class HóspedeMapper : AbstractMapper<Hóspede, int, List<Hóspede>>, IHóspedeMapper {
+        protected override CommandType DeleteCommandType {
+            get {
+                return CommandType.StoredProcedure;
+            }
+        }
+
         public HóspedeMapper(IContext ctx) : base(ctx) { }
 
         protected override string DeleteCommandText {
             get {
-                return "dbo.deleteHospede"; // chamar procedimento armazenado
+                return "dbo.deleteHospede"; 
             }
         }
 
+        /**
+         *  Quem usar este commando tem de garantir que depois insere também o hóspede numa estada 
+         */
         protected override string InsertCommandText {
             get {
                 return "INSERT INTO Hóspede(NIF, nome, morada, email, númeroIdentificação) " +
@@ -90,22 +99,6 @@ namespace Glampinho.concrete {
             hóspede.númeroIdentificação = record.GetInt32(4);
 
             return hóspede;
-        }
-
-        public override Hóspede Delete(Hóspede entity) {
-            if (entity == null)
-                throw new ArgumentException("The Hóspede cannot be null to be deleted");
-
-            EnsureContext();
-
-            using(IDbCommand command = context.createCommand()) {
-                command.CommandText = DeleteCommandText;
-                command.CommandType = CommandType.StoredProcedure;
-
-                DeleteParameters(command, entity);
-                
-                return command.ExecuteNonQuery() == 0 ? null : entity;
-            }
         }
     }
 }
