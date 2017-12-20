@@ -96,5 +96,28 @@ namespace Glampinho.concrete {
 
             return s;
         }
+
+        public void InscreverHospede(Actividades actividade, Hóspede hóspede)
+        {
+            EnsureContext();
+
+            using (IDbCommand command = context.createCommand())
+            {
+                command.CommandText = "dbo.inscreverHóspede";
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter nifHosp = new SqlParameter("@NIFHóspede", hóspede.NIF);
+                SqlParameter numSeq = new SqlParameter("@númeroSequencial", actividade.númeroSequencial);
+                SqlParameter nomeParq = new SqlParameter("@nomeParque", actividade.nomeParque);
+                SqlParameter year = new SqlParameter("@ano", actividade.ano);
+
+                command.Parameters.Add(nifHosp);
+                command.Parameters.Add(numSeq);
+                command.Parameters.Add(nomeParq);
+                command.Parameters.Add(year);
+
+
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

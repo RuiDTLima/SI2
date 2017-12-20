@@ -155,7 +155,7 @@ namespace Glampinho {
             }*/
 
             /* ---------- Teste Actividades ---------- */
-            using (Context context = new Context(connectionString)) {
+            /*using (Context context = new Context(connectionString)) {
                 ActividadesMapper actividadesMapper = new ActividadesMapper(context);
 
                 foreach(var actividade in actividadesMapper.ReadAll()) {
@@ -189,6 +189,46 @@ namespace Glampinho {
                 deleteActividade.dataRealização = new DateTime(2017, 03, 15, 10, 30, 0);
 
                 actividadesMapper.Delete(deleteActividade);
+            }*/
+
+            /* --------- Teste EstadaInTime ---------- */
+            using(Context context = new Context(connectionString)) {
+                ProcUtils procedimentos = new ProcUtils(context);
+                Hóspede responsável = new Hóspede();
+                responsável.NIF = 112233445;
+                responsável.nome = "Teste";
+                responsável.morada = "Rua teste";
+                responsável.email = "teste@teste.com";
+                responsável.númeroIdentificação = 11223344;
+
+                Hóspede hóspede = new Hóspede();
+                hóspede.NIF = 566778899;
+                hóspede.nome = "Maria";
+                hóspede.morada = "Rua 2";
+                hóspede.email = "maria@gmail.com";
+                hóspede.númeroIdentificação = 55667788;
+
+                Estada estada = new Estada();
+                estada.id = 5;
+                estada.dataInício = new DateTime(2017, 12, 20, 13, 00, 00);
+                estada.dataFim = new DateTime(2017, 12, 25, 13, 00, 00);
+
+                BungalowMapper bungalowMapper = new BungalowMapper(context);
+                Bungalow bungalow = bungalowMapper.Read(new Tuple<string, string>("Glampinho", "Rua 7"));
+
+                Extra extraPessoal = new Extra();
+                extraPessoal.id = 2;
+                extraPessoal.descrição = "teste";
+                extraPessoal.preçoDia = 15;
+                extraPessoal.associado = "pessoa";
+
+                Extra extraAlojamento = new Extra();
+                extraAlojamento.id = 3;
+                extraAlojamento.descrição = "metodo";
+                extraAlojamento.preçoDia = 20;
+                extraAlojamento.associado = "alojamento";
+
+                procedimentos.createEstadaInTime(responsável, hóspede, estada, bungalow, extraPessoal, extraAlojamento);
             }
 
             /* ---------- Teste Estada ---------- */
@@ -201,6 +241,29 @@ namespace Glampinho {
                 estadaMapper.AddExtraAlojamento(3, id);
                 estadaMapper.AddExtraEstada(2, id);
             }*/
+               /* Estada estada = new Estada();
+              
+                Hóspede h2 = new Hóspede();
+                Hóspede h1 = new Hóspede();
+                h1.NIF = 566778899;
+                h2.NIF = 112233445;
+                Alojamento alojamento = new Alojamento();
+                alojamento.tipoAlojamento = "tenda";
+                alojamento.númeroMáximoPessoas = 10;
+                Extra extra1 = new Extra();
+                extra1.id = 3;
+                Extra extra2 = new Extra();
+                extra2.id = 2;
+
+
+
+
+                int id = estadaMapper.CreateEstada(h2, 5);
+                estadaMapper.AddAlojamento(alojamento,id);
+                estadaMapper.AddHospede(h1,id);
+                estadaMapper.AddExtraAlojamento(extra1, id);
+                estadaMapper.AddExtraEstada(extra2, id);*/
+
 
             /* hóspedeMapper.InscreverHospede(112233445, 6, "Glampinho", 2017);*/
 
@@ -212,6 +275,21 @@ namespace Glampinho {
                 utils.SendEmails(7);
 
                 var result = hóspedeMapper.Delete(deleteHóspede);*/
+                /*ProcUtils utils = new ProcUtils(context);
+
+                utils.SendEmails(7);
+
+                utils.ListActividades(Convert.ToDateTime("2016-03-12"), Convert.ToDateTime("2017-03-16"));
+                utils.MediaPagamentos(2);
+
+                FaturaRepository repository = new FaturaRepository(context);
+                repository.CalcularDespesasHospede(repository.FindFacturas(123456789, Convert.ToDateTime("2017-03-15"), Convert.ToDateTime("2017-10-16"), "Glampinho"), 123456789);
+                */
+
+                /*ParqueCampismoMapper p = new ParqueCampismoMapper(context);
+                ParqueCampismo parque = new ParqueCampismo();
+                parque.nome = "Glampinho";
+                p.Delete(parque);*/
             }
     }
 }

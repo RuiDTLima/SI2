@@ -162,6 +162,8 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 			
 			INSERT INTO dbo.Factura(id, ano, NIFHóspede, nomeHóspede, preçoTotal)
 				VALUES (@idFactura, @ano, @NIFResponsável, @nomeResponsável, 0)	
+			
+			UPDATE Estada SET idFactura=@idFactura, ano = @ano WHERE id=@idEstada
 
 			EXEC dbo.getAlojamentoPreço @idEstada, @idFactura, @ano, 0, @novaLinha OUTPUT
 
@@ -198,12 +200,12 @@ EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda nova', 'Rua 5', 'por estrear'
 EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow hoje', 'Rua 6', 'primeiro bungalow', 15, 10, 'T3'
 EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow ontem', 'Rua 7', 'segundo bungalow', 15, 9, 'T3'
 
-INSERT INTO dbo.Estada(id, dataInício, dataFim)
-	VALUES (1, '2017-03-15 13:00:00', '2017-03-16 13:00:00'),
-		   (2, '2017-11-12 13:00:00', '2018-11-14 13:00:00'),
-		   (3, '2017-10-05 10:00:00', '2017-11-12 13:00:00'),
-		   (4, '2017-09-12 10:00:00', '2017-09-13 13:00:00'),
-		   (5, '2017-08-10 10:00:00', '2017-09-11 10:00:00')
+INSERT INTO dbo.Estada(id, dataInício, dataFim,nomeParque)
+	VALUES (1, '2017-03-15 13:00:00', '2017-03-16 13:00:00','Glampinho'),
+		   (2, '2017-11-12 13:00:00', '2018-11-14 13:00:00','Glampinho'),
+		   (3, '2017-10-05 10:00:00', '2017-11-12 13:00:00','Glampinho'),
+		   (4, '2017-09-12 10:00:00', '2017-09-13 13:00:00','Glampinho'),
+		   (5, '2017-08-10 10:00:00', '2017-09-11 10:00:00','Glampinho')
 
 INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
 	VALUES ('Glampinho', 'Rua 1', 1, 12),
@@ -227,7 +229,7 @@ INSERT INTO dbo.EstadaExtra(estadaId, extraId, preçoDia)
 		   (3, 3, 20)
 
 INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
-	VALUES (112233445, 3, 'true'),
+	VALUES (123456789, 3, 'true'),
 		   (566778899, 3, 'false'),
 		   (123456789, 1, 'true')
 

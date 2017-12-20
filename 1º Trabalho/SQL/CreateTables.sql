@@ -51,7 +51,9 @@ CREATE TABLE dbo.Estada(
 	dataFim DATETIME2 NOT NULL,
 	idFactura INT,
 	ano INT,
-	CONSTRAINT fk_estada FOREIGN KEY(idFactura, ano) REFERENCES Factura(id, ano),
+	nomeParque NVARCHAR(30),
+	CONSTRAINT fk_Parque FOREIGN KEY(nomeParque) REFERENCES ParqueCampismo(nome)ON DELETE CASCADE,
+	CONSTRAINT fk_estada FOREIGN KEY(idFactura, ano) REFERENCES Factura(id, ano)ON DELETE CASCADE,
 	CONSTRAINT checkDate CHECK(dataInício < dataFim)
 )
 
@@ -126,21 +128,21 @@ CREATE TABLE dbo.Paga(
 	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF) ON DELETE CASCADE,
 	preçoParticipante INT,
 	CONSTRAINT pk_Paga PRIMARY KEY(nomeParque, númeroSequencial, ano, NIF),
-	CONSTRAINT fk_Paga FOREIGN KEY(nomeParque, númeroSequencial, ano) REFERENCES dbo.Actividades(nomeParque, númeroSequencial, ano)
+	CONSTRAINT fk_Paga FOREIGN KEY(nomeParque, númeroSequencial, ano) REFERENCES dbo.Actividades(nomeParque, númeroSequencial, ano)ON DELETE CASCADE
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.HóspedeEstada(
-	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
-	id INT FOREIGN KEY REFERENCES dbo.Estada(id),
+	NIF INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF) ON DELETE CASCADE,
+	id INT FOREIGN KEY REFERENCES dbo.Estada(id) ON DELETE CASCADE,
 	hóspede VARCHAR(5) NOT NULL CHECK(hóspede IN('true', 'false')),
 	CONSTRAINT pk_HóspedeEstada PRIMARY KEY(NIF, id)
 )
 
 /*****************************************************************************/
 CREATE TABLE dbo.EstadaExtra(
-	estadaId INT FOREIGN KEY REFERENCES dbo.Estada(id),
-	extraId INT FOREIGN KEY REFERENCES dbo.Extra(id),
+	estadaId INT FOREIGN KEY REFERENCES dbo.Estada(id) ON DELETE CASCADE,
+	extraId INT FOREIGN KEY REFERENCES dbo.Extra(id) ON DELETE CASCADE,
 	preçoDia INT,
 	CONSTRAINT pk_EstadaExtra PRIMARY KEY(estadaId, ExtraId)
 )
@@ -152,7 +154,7 @@ CREATE TABLE dbo.AlojamentoEstada(
 	id INT FOREIGN KEY REFERENCES Estada(id),
 	preçoBase INT,
 	CONSTRAINT pk_AlojamentoEstada PRIMARY KEY(nomeParque, localização, id),
-	CONSTRAINT fk_AlojamentoEstada FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)
+	CONSTRAINT fk_AlojamentoEstada FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)ON DELETE CASCADE
 )
 
 /*****************************************************************************/
@@ -161,5 +163,5 @@ CREATE TABLE dbo.AlojamentoExtra(
 	localização NVARCHAR(30),
 	id INT FOREIGN KEY REFERENCES Extra(id),
 	CONSTRAINT pk_AlojamentoExtra PRIMARY KEY(nomeParque, localização, id),
-	CONSTRAINT fk_AlojamentoExtra FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)
+	CONSTRAINT fk_AlojamentoExtra FOREIGN KEY(nomeParque, localização) REFERENCES Alojamento(nomeParque, localização)ON DELETE CASCADE
 )

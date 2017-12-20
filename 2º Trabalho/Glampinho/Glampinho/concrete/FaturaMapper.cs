@@ -8,14 +8,14 @@ using System.Data.SqlClient;
 namespace Glampinho.concrete {
     class FaturaMapper : AbstractMapper<Factura, int, List<Factura>>, IFacturaMapper {
         public FaturaMapper(IContext ctx) : base(ctx){ }
-       
-        public void finishEstadaWithFactura(int idEstada) {
+
+        public void finishEstadaWithFactura(Factura factura) {
             EnsureContext();
 
             using (IDbCommand command = context.createCommand()) {
                 command.CommandText = "dbo.finishEstadaWithFactura";
                 command.CommandType = CommandType.StoredProcedure;
-                SqlParameter id = new SqlParameter("@idEstada", idEstada);
+                SqlParameter id = new SqlParameter("@idEstada", factura.id);
                 command.Parameters.Add(id);
                 command.ExecuteNonQuery();
             }

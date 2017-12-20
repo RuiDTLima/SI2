@@ -44,8 +44,8 @@ namespace Glampinho.concrete {
 
         protected override string SelectCommandText {
             get {
-                return "SELECT Aloj.nomeParque, nome, Aloj.localização, descrição, preçoBase, númeroMáximoPessoas, tipologia FROM " +
-                       "(SELECT nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas FROM dbo.Alojamento WHERE nomeParque = @nomeParque AND localização = @localização) AS Aloj " +
+                return "SELECT Aloj.nomeParque, nome, Aloj.localização, descrição, preçoBase, númeroMáximoPessoas, tipologia, tipoAlojamento FROM " +
+                       "(SELECT nomeParque, nome, localização, descrição, preçoBase, númeroMáximoPessoas, tipoAlojamento FROM dbo.Alojamento WHERE nomeParque = @nomeParque AND localização = @localização) AS Aloj " +
                        "JOIN(SELECT nomeParque, localização, tipologia FROM dbo.Bungalow WHERE nomeParque = @nomeParque AND localização = @localização) AS Bung ON Aloj.nomeParque = Bung.nomeParque AND Aloj.localização = Bung.localização";
             }
         }
@@ -126,6 +126,7 @@ namespace Glampinho.concrete {
             bungalow.preçoBase = record.GetInt32(4);
             bungalow.númeroMáximoPessoas = record.GetByte(5);
             bungalow.tipologia = record.GetString(6);
+            bungalow.tipoAlojamento = record.GetString(7);
 
             return bungalow;
         }
