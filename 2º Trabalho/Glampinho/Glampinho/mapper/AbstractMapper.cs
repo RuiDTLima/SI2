@@ -14,8 +14,8 @@ namespace Glampinho.mapper {
     abstract class AbstractMapper<T, Tid, TCol> : IMapper<T, Tid, TCol> where T : class, new() where TCol : IList<T>, IEnumerable<T>, new() {
         protected IContext context;
 
-        protected abstract T Map(IDataRecord record); //How to map entity
-        protected abstract T UpdateEntityID(IDbCommand command, T e); //Update the generated ID
+        protected abstract T Map(IDataRecord record); //    How to map entity
+        protected abstract T UpdateEntityID(IDbCommand command, T e); //    Update the generated ID
         protected abstract string SelectAllCommandText { get; }
         protected virtual CommandType SelectAllCommandType { get { return System.Data.CommandType.Text; } }
         protected virtual void SelectAllParameters(IDbCommand command) { }

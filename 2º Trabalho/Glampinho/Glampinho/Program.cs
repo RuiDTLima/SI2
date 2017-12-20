@@ -1,4 +1,5 @@
 ﻿using Glampinho.concrete;
+using Glampinho.mapper;
 using Glampinho.model;
 using System;
 using System.Configuration;
@@ -15,7 +16,7 @@ namespace Glampinho {
 
                 HóspedeMapper hóspedeMapper = new HóspedeMapper(context);
 
-                foreach(var h in hóspedeMapper.ReadAll()) {
+                foreach (var h in hóspedeMapper.ReadAll()) {
                     Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", h.NIF, h.nome, h.morada, h.email, h.númeroIdentificação);
                 }
 
@@ -39,8 +40,6 @@ namespace Glampinho {
 
                 Hóspede deleteHóspede = new Hóspede();
                 deleteHóspede.NIF = 112233445;
-
-                var result = hóspedeMapper.Delete(deleteHóspede);
             }*/
 
             /* ---------- Teste Bungalow ---------- */
@@ -71,10 +70,10 @@ namespace Glampinho {
             }*/
 
             /* ---------- Teste Tenda ---------- */
-            using(Context context = new Context(connectionString)) {
+            /*using (Context context = new Context(connectionString)) {
                 TendaMapper tendaMapper = new TendaMapper(context);
 
-                foreach(var tenda in tendaMapper.ReadAll()) {
+                foreach (var tenda in tendaMapper.ReadAll()) {
                     Console.WriteLine("Tenda: {0} || {1} || {2} || {3} || {4} || {5} || {6}", tenda.nomeParque, tenda.nome, tenda.localização, tenda.descrição, tenda.preçoBase, tenda.númeroMáximoPessoas, tenda.área);
                 }
 
@@ -95,7 +94,124 @@ namespace Glampinho {
                 tendaMapper.Update(newTenda);
 
                 tendaMapper.Delete(newTenda);
+            }*/
+
+            /* ---------- Teste Extra Alojamento ---------- */
+            /*using(Context context = new Context(connectionString)) {
+                ExtraAlojamentoMapper extraAlojamentoMapper = new ExtraAlojamentoMapper(context);
+
+                foreach(var extra in extraAlojamentoMapper.ReadAll()) {
+                    Console.WriteLine("Extra Alojamento: {0} || {1} || {2} || {3}", extra.id, extra.descrição, extra.preçoDia, extra.associado);
+                }
+
+                Extra newExtraAlojamento = new Extra();
+                newExtraAlojamento.id = 3;
+                newExtraAlojamento.descrição = "extra de alojamento de teste";
+                newExtraAlojamento.preçoDia = 0;
+                newExtraAlojamento.associado = "alojamento";
+
+                newExtraAlojamento = extraAlojamentoMapper.Create(newExtraAlojamento);
+                Console.WriteLine("Extra Alojamento: {0} || {1} || {2} || {3}", newExtraAlojamento.id, newExtraAlojamento.descrição, newExtraAlojamento.preçoDia, newExtraAlojamento.associado);
+
+                newExtraAlojamento.preçoDia = 50;
+                extraAlojamentoMapper.Update(newExtraAlojamento);
+
+                Extra deletedExtra = new Extra();
+                deletedExtra.id = 1;
+                deletedExtra.descrição = "descricao";
+                deletedExtra.preçoDia = 12;
+                deletedExtra.associado = "alojamento";
+
+                extraAlojamentoMapper.Delete(deletedExtra);
+            }*/
+
+            /* ---------- Teste Extra Pessoal ---------- */
+            /*using (Context context = new Context(connectionString)) {
+                ExtraPessoalMapper extraPessoalMapper = new ExtraPessoalMapper(context);
+
+                foreach (var extra in extraPessoalMapper.ReadAll()) {
+                    Console.WriteLine("Extra Pessoa: {0} || {1} || {2} || {3}", extra.id, extra.descrição, extra.preçoDia, extra.associado);
+                }
+
+                Extra newExtraPessoa = new Extra();
+                newExtraPessoa.id = 3;
+                newExtraPessoa.descrição = "extra de pessoa de teste";
+                newExtraPessoa.preçoDia = 0;
+                newExtraPessoa.associado = "pessoa";
+
+                newExtraPessoa = extraPessoalMapper.Create(newExtraPessoa);
+                Console.WriteLine("Extra Pessoa: {0} || {1} || {2} || {3}", newExtraPessoa.id, newExtraPessoa.descrição, newExtraPessoa.preçoDia, newExtraPessoa.associado);
+
+                newExtraPessoa.preçoDia = 50;
+                extraPessoalMapper.Update(newExtraPessoa);
+
+                Extra deletedExtra = new Extra();
+                deletedExtra.id = 2;
+                deletedExtra.descrição = "erro";
+                deletedExtra.preçoDia = 20;
+                deletedExtra.associado = "pessoa";
+
+                extraPessoalMapper.Delete(deletedExtra);
+            }*/
+
+            /* ---------- Teste Actividades ---------- */
+            using (Context context = new Context(connectionString)) {
+                ActividadesMapper actividadesMapper = new ActividadesMapper(context);
+
+                foreach(var actividade in actividadesMapper.ReadAll()) {
+                    Console.WriteLine("Actividade: {0} || {1} || {2} || {3} || {4} || {5} || {6} || {7}", actividade.nomeParque, actividade.númeroSequencial, actividade.ano, actividade.nome, actividade.descrição, actividade.lotaçãoMáxima, actividade.preçoParticipante, actividade.dataRealização);
+                }
+
+                Actividades newActividade = new Actividades();
+                newActividade.nomeParque = "Glampinho";
+                newActividade.númeroSequencial = 2;
+                newActividade.ano = 2017;
+                newActividade.nome = "actividade de teste";
+                newActividade.descrição = "actividade para teste no c#";
+                newActividade.lotaçãoMáxima = 2;
+                newActividade.preçoParticipante = 10;
+                newActividade.dataRealização = new DateTime(2017, 12, 18, 10, 30, 0);
+
+                newActividade = actividadesMapper.Create(newActividade);
+                Console.WriteLine("Actividade: {0} || {1} || {2} || {3} || {4} || {5} || {6} || {7}", newActividade.nomeParque, newActividade.númeroSequencial, newActividade.ano, newActividade.nome, newActividade.descrição, newActividade.lotaçãoMáxima, newActividade.preçoParticipante, newActividade.dataRealização);
+
+                newActividade.preçoParticipante = 50;
+                actividadesMapper.Update(newActividade);
+
+                Actividades deleteActividade = new Actividades();
+                deleteActividade.nomeParque = "Glampinho";
+                deleteActividade.númeroSequencial = 1;
+                deleteActividade.ano = 2017;
+                deleteActividade.nome = "FUT7";
+                deleteActividade.descrição = "Jogo de futebol 7vs7";
+                deleteActividade.lotaçãoMáxima = 14;
+                deleteActividade.preçoParticipante = 3;
+                deleteActividade.dataRealização = new DateTime(2017, 03, 15, 10, 30, 0);
+
+                actividadesMapper.Delete(deleteActividade);
             }
-        }
+
+            /* ---------- Teste Estada ---------- */
+            /*using(Context context = new Context(connectionString)) {
+                EstadaMapper estadaMapper = new EstadaMapper(context);
+
+                int id = estadaMapper.CreateEstada(1, 5);
+                estadaMapper.AddAlojamento("tenda", 4, id);
+                estadaMapper.AddHospede(566778899, id);
+                estadaMapper.AddExtraAlojamento(3, id);
+                estadaMapper.AddExtraEstada(2, id);
+            }*/
+
+            /* hóspedeMapper.InscreverHospede(112233445, 6, "Glampinho", 2017);*/
+
+            /*FaturaMapper faturaMapper = new FaturaMapper(context);
+            faturaMapper.finishEstadaWithFactura(3); */
+
+
+            /*ProcUtils utils = new ProcUtils(context);
+                utils.SendEmails(7);
+
+                var result = hóspedeMapper.Delete(deleteHóspede);*/
+            }
     }
 }
