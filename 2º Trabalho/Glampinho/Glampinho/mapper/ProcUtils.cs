@@ -28,15 +28,23 @@ namespace Glampinho.mapper
 
             using (IDbCommand command = context.createCommand())
             {
-                
-                
-         
-                command.CommandText = "select dbo.enviarEmails(@periodoTemporal)";
-                SqlParameter param = new SqlParameter("@periodoTemporal",intervalo);
+          
+                command.CommandText = "dbo.SendEmails";
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter param = new SqlParameter("@periodoTemporal", intervalo);
+                SqlParameter output = new SqlParameter("@text", SqlDbType.VarChar)
+
+                {
+                    Direction = ParameterDirection.Output
+                };
+                output.Size = 4000;
                 command.Parameters.Add(param);
+                command.Parameters.Add(output);
+
+                command.ExecuteNonQuery();
+                Console.WriteLine((string)output.Value);
                 
-                if((command.ExecuteScalar()==null))Console.WriteLine("Não há mails para enviar");
-                else Console.WriteLine(command.ExecuteScalar());
+                
             }
         }
         public void ListActividades(DateTime dataInicio, DateTime dataFim)

@@ -1,15 +1,19 @@
-﻿using Glampinho.concrete;
-using Glampinho.mapper;
-using Glampinho.model;
+﻿
+using ConsoleApp1;
 using System;
-using System.Configuration;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Glampinho {
-    class Program {
-
-        private static string connectionString = ConfigurationManager.ConnectionStrings["glampinho"].ConnectionString;
-
-        static void Main(string[] args) {
+namespace Glampinho
+{
+    class App
+    {
+        static void Main(string[] args)
+        {
 
 
 
@@ -24,11 +28,11 @@ namespace Glampinho {
             Console.WriteLine("9 - Enviar emails a todos os hóspedes responsáveis");
             Console.WriteLine("10 - Listar todas as atividades com lugares disponíveis para um intervalo de datas especificado");
 
-
-            using (Context context = new Context(connectionString)) {
+            using (var db = new GlampinhoEF())
+            {
                 while (true)
                 {
-                    
+
                     switch (Console.ReadLine())
                     {
                         case "1":
@@ -45,10 +49,10 @@ namespace Glampinho {
                             string email = Console.ReadLine();
                             Console.WriteLine("Numero Identificação:");
                             string numId = Console.ReadLine();
-                            alineaC(context, nome, Int32.Parse(nif), morada, email, Int32.Parse(numId), commandHospede);
+                            alineaC(db, nome, Int32.Parse(nif), morada, email, Int32.Parse(numId), commandHospede);
                             break;
 
-                        case "2":
+                        /*case "2":
                             /*Console.WriteLine("Indique a operação:");
                             string command = Console.ReadLine();
 
@@ -62,8 +66,8 @@ namespace Glampinho {
                             string email = Console.ReadLine();
                             Console.WriteLine("Numero Identificação:");
                             string numId = Console.ReadLine();
-                            alineaC(context, nome, Int32.Parse(nif), morada, email, Int32.Parse(numId), command);*/
-                            break;
+                            alineaC(context, nome, Int32.Parse(nif), morada, email, Int32.Parse(numId), command);
+                            break;*/
                         case "3":
                             Console.WriteLine("Indique a operação:");
                             string commandExtraAloj = Console.ReadLine();
@@ -76,7 +80,7 @@ namespace Glampinho {
                             string preçoDia = Console.ReadLine();
                             Console.WriteLine("Associado:");
                             string associado = Console.ReadLine();
-                            alineaE(context,  Int32.Parse(id),  descrição, Int32.Parse(preçoDia),  associado, commandExtraAloj);
+                            alineaE(db, Int32.Parse(id), descrição, Int32.Parse(preçoDia), associado, commandExtraAloj);
                             break;
                         case "4":
                             Console.WriteLine("Indique a operação:");
@@ -90,7 +94,7 @@ namespace Glampinho {
                             string preçoDia1 = Console.ReadLine();
                             Console.WriteLine("Associado:");
                             string associado1 = Console.ReadLine();
-                            alineaF(context, Int32.Parse(id1), descrição1, Int32.Parse(preçoDia1), associado1, commandExtraPessoal);
+                            alineaF(db, Int32.Parse(id1), descrição1, Int32.Parse(preçoDia1), associado1, commandExtraPessoal);
                             break;
                         case "5":
                             Console.WriteLine("Indique a operação:");
@@ -109,10 +113,10 @@ namespace Glampinho {
                             string preçoParticipante = Console.ReadLine();
                             Console.WriteLine("Data Realização");
                             string dataRealização = Console.ReadLine();
-                            alineaG(context,nomeParque, Int32.Parse(númeroSequencial), nomeAct, descriçãoAct, Int32.Parse(lotaçãoMáxima), Int32.Parse(preçoParticipante),Convert.ToDateTime(dataRealização) ,commandAct);
+                            alineaG(db, nomeParque, Int32.Parse(númeroSequencial), nomeAct, descriçãoAct, Int32.Parse(lotaçãoMáxima), Int32.Parse(preçoParticipante), Convert.ToDateTime(dataRealização), commandAct);
                             break;
                         case "6":
-                            
+
                             break;
                         case "7":
                             Console.WriteLine("NIF Hospede:");
@@ -123,24 +127,24 @@ namespace Glampinho {
                             string nomeParq = Console.ReadLine();
                             Console.WriteLine("Ano:");
                             string ano = Console.ReadLine();
-                            alineaI(context, Int32.Parse(nifHospede), Int32.Parse(numeroSeq), Int32.Parse(ano), nomeParq);
+                            alineaI(db, Int32.Parse(nifHospede), Int32.Parse(numeroSeq), Int32.Parse(ano), nomeParq);
                             break;
                         case "8":
                             Console.WriteLine("ID Estada:");
                             string idEstada = Console.ReadLine();
-                            alineaJ(context, Int32.Parse(idEstada));
+                            alineaJ(db, Int32.Parse(idEstada));
                             break;
                         case "9":
                             Console.WriteLine("Intervalo:");
                             string intervalo = Console.ReadLine();
-                            alineaK(context, Int32.Parse(intervalo));
+                            alineaK(db, Int32.Parse(intervalo));
                             break;
                         case "10":
                             Console.WriteLine("Data Inicio(yyyy-MM-dd):");
                             string dataInicio = Console.ReadLine();
                             Console.WriteLine("Data Fim(yyyy-MM-dd):");
                             string dataFim = Console.ReadLine();
-                            alineaL(context, Convert.ToDateTime(dataInicio), Convert.ToDateTime(dataFim));
+                            alineaL(db, Convert.ToDateTime(dataInicio), Convert.ToDateTime(dataFim));
                             break;
                         default:
                             Console.WriteLine("Fechando aplicação.");
@@ -149,139 +153,197 @@ namespace Glampinho {
                     }
                 }
             }
-
-            void alineaC(Context ctx, string nome, int nif, string morada, string email, int numId, string command)
+            void alineaC(GlampinhoEF db, string nome, int nif, string morada, string email, int numId, string command)
             {
-                HóspedeMapper hóspedeMapper = new HóspedeMapper(ctx);
-                Hóspede newHóspede = new Hóspede();
-                newHóspede.nome = nome;
-                newHóspede.NIF = nif;
-                newHóspede.morada = morada;
-                newHóspede.email = email;
-                newHóspede.númeroIdentificação = numId;
-                
+
+
+                var newHóspede = new Hóspede
+                {
+                    nome = nome,
+                    NIF = nif,
+                    morada = morada,
+                    email = email,
+                    númeroIdentificação = numId
+                };
+
+
                 switch (command)
                 {
                     case "create":
-                        newHóspede = hóspedeMapper.Create(newHóspede);
+                        db.Hóspede.Add(newHóspede);
+                        db.SaveChanges();
                         break;
                     case "delete":
-                        newHóspede = hóspedeMapper.Delete(newHóspede);
+
+                        db.Entry(newHóspede).State = EntityState.Deleted;
+                        db.SaveChanges();
                         break;
                     case "update":
-                        newHóspede = hóspedeMapper.Update(newHóspede);
+
+                        //duas formas diferentes de fazer
+                        /*Hóspede hosp = db.Hóspede.First(i => i.NIF == nif);
+                        hosp.morada = morada;
+                        hosp.nome = nome;
+                        hosp.númeroIdentificação = numId;
+                        hosp.email = email;
+
+                        db.SaveChanges();*/
+
+                        db.Hóspede.Attach(newHóspede);
+                        var entry = db.Entry(newHóspede);
+                        entry.Property(e => e.nome).IsModified = true;
+                        entry.Property(e => e.morada).IsModified = true;
+                        entry.Property(e => e.email).IsModified = true;
+                        entry.Property(e => e.númeroIdentificação).IsModified = true;
+                        entry.Property(e => e.NIF).IsModified = true;
+                        db.SaveChanges();
+
                         break;
                     default:
                         throw new Exception("Error");
                 }
             }
-            void alineaE(Context ctx, int id, string descrição, int preçoDia, string associado, string command)
+            void alineaE(GlampinhoEF db, int id, string descrição, int preçoDia, string associado, string command)
             {
-                ExtraAlojamentoMapper extraMapper = new ExtraAlojamentoMapper(ctx);
-                Extra extra = new Extra();
-                extra.id = id;
-                extra.descrição = descrição;
-                extra.preçoDia = preçoDia;
-                extra.associado = associado;
 
+
+                var newExtraAloj = new Extra
+                {
+                    id = id,
+                    descrição = descrição,
+                    preçoDia = preçoDia,
+                    associado = associado,
+                };
                 switch (command)
                 {
                     case "create":
-                        extra = extraMapper.Create(extra);
+                        db.Extra.Add(newExtraAloj);
+                        db.SaveChanges();
                         break;
                     case "delete":
-                        extra = extraMapper.Delete(extra);
+
+                        db.Entry(newExtraAloj).State = EntityState.Deleted;
+                        db.SaveChanges();
                         break;
                     case "update":
-                        extra = extraMapper.Update(extra);
+                        db.Extra.Attach(newExtraAloj);
+                        var entry = db.Entry(newExtraAloj);
+                        entry.Property(e => e.descrição).IsModified = true;
+                        entry.Property(e => e.preçoDia).IsModified = true;
+                        entry.Property(e => e.associado).IsModified = true;
+                        db.SaveChanges();
+
+                        break;
+                    default:
+                        throw new Exception("Error");
+                }
+
+
+
+            }
+            void alineaF(GlampinhoEF db, int id, string descrição, int preçoDia, string associado, string command)
+            {
+                var newExtraAloj = new Extra
+                {
+                    id = id,
+                    descrição = descrição,
+                    preçoDia = preçoDia,
+                    associado = associado,
+                };
+                switch (command)
+                {
+                    case "create":
+                        db.Extra.Add(newExtraAloj);
+                        db.SaveChanges();
+                        break;
+                    case "delete":
+
+                        db.Entry(newExtraAloj).State = EntityState.Deleted;
+                        db.SaveChanges();
+                        break;
+                    case "update":
+                        db.Extra.Attach(newExtraAloj);
+                        var entry = db.Entry(newExtraAloj);
+                        entry.Property(e => e.descrição).IsModified = true;
+                        entry.Property(e => e.preçoDia).IsModified = true;
+                        entry.Property(e => e.associado).IsModified = true;
+                        db.SaveChanges();
+
                         break;
                     default:
                         throw new Exception("Error");
                 }
             }
-            void alineaF(Context ctx, int id, string descrição, int preçoDia, string associado, string command)
-                {
-                    ExtraPessoalMapper extraMapper = new ExtraPessoalMapper(ctx);
-                    Extra extra = new Extra();
-                    extra.id = id;
-                    extra.descrição = descrição;
-                    extra.preçoDia = preçoDia;
-                    extra.associado = associado;
-
-                    switch (command)
-                    {
-                        case "create":
-                            extra = extraMapper.Create(extra);
-                            break;
-                        case "delete":
-                            extra = extraMapper.Delete(extra);
-                            break;
-                        case "update":
-                            extra = extraMapper.Update(extra);
-                            break;
-                        default:
-                            throw new Exception("Error");
-                    }
-                }
-            void alineaG(Context ctx, string nomeParque, int númeroSequencial, string nome,string descrição, int lotaçãoMáxima, int preçoParticipante, DateTime dataRealização, string command)
+            void alineaG(GlampinhoEF db, string nomeParque, int númeroSequencial, string nome, string descrição, int lotaçãoMáxima, int preçoParticipante, DateTime dataRealização, string command)
             {
-                ActividadesMapper actMapper = new ActividadesMapper(ctx);
-                Actividades actividade = new Actividades();
-                actividade.nome = nome;
-                actividade.nomeParque = nomeParque;
-                actividade.númeroSequencial = númeroSequencial;
-                actividade.descrição = descrição;
-                actividade.lotaçãoMáxima = lotaçãoMáxima;
-                actividade.preçoParticipante = preçoParticipante;
-                actividade.dataRealização = dataRealização;
+
+                var newActividade = new Actividades
+                {
+                    nome = nome,
+                    nomeParque = nomeParque,
+                    númeroSequencial = númeroSequencial,
+                    descrição = descrição,
+                    lotaçãoMáxima = lotaçãoMáxima,
+                    preçoParticipante = preçoParticipante,
+                    dataRealização = dataRealização
+                };
 
                 switch (command)
                 {
                     case "create":
-                        actividade = actMapper.Create(actividade);
+                        db.Actividades.Add(newActividade);
+                        db.SaveChanges();
                         break;
                     case "delete":
-                        actividade = actMapper.Delete(actividade);
+                        db.Entry(newActividade).State = EntityState.Deleted;
+                        db.SaveChanges();
                         break;
                     case "update":
-                        actividade = actMapper.Update(actividade);
+                        db.Actividades.Attach(newActividade);
+                        var entry = db.Entry(newActividade);
+                        entry.Property(e => e.descrição).IsModified = true;
+                        entry.Property(e => e.lotaçãoMáxima).IsModified = true;
+                        entry.Property(e => e.preçoParticipante).IsModified = true;
+                        entry.Property(e => e.dataRealização).IsModified = true;
+                        db.SaveChanges();
+
                         break;
                     default:
                         throw new Exception("Error");
                 }
             }
-            void alineaH(Context ctx, int id, string descrição, int preçoDia, string associado, string command) { } //TODO!!!
-            void alineaI(Context ctx, int nifHospede, int numeroSeq, int ano,string nomeParq)
+            void alineaI(GlampinhoEF db, int nifHospede, int numeroSeq, int ano, string nomeParq)
             {
-                HóspedeMapper hóspedeMapper = new HóspedeMapper(ctx);
-                Hóspede h = hóspedeMapper.Read(nifHospede);
-
-                ActividadesMapper actividadesMapper = new ActividadesMapper(ctx);
-                Actividades a = actividadesMapper.Read(numeroSeq,ano,nomeParq);
-
-                actividadesMapper.InscreverHospede(a,h);
-                Console.WriteLine("Hóspede inscrito na atividade " + a.nome);
+                var a = db.inscreverHóspede(nifHospede, numeroSeq, nomeParq, ano);
             }
-            void alineaJ(Context ctx, int idEstada)
+            void alineaH(GlampinhoEF db, int id, string descrição, int preçoDia, string associado, string command) { }
+            void alineaJ(GlampinhoEF db, int idEstada)
             {
-                FaturaMapper faturaMapper = new FaturaMapper(ctx);
-                Factura f = new Factura();
-                f.id = idEstada;
-                faturaMapper.finishEstadaWithFactura(f);
+                db.finishEstadaWithFactura(idEstada);
                 Console.WriteLine("Factura emitida.");
             }
-            void alineaK(Context ctx, int intervalo)
+            void alineaK(GlampinhoEF db, int intervalo)
             {
-                ProcUtils utils = new ProcUtils(ctx);
-                utils.SendEmails(intervalo);
+
+                ObjectParameter output = new ObjectParameter("text", typeof(int));
+                db.SendEmails(intervalo, output);
+                Console.WriteLine(output.Value);
             }
-            void alineaL(Context ctx, DateTime dataInicio, DateTime dataFim)
+            void alineaL(GlampinhoEF db, DateTime dataInicio, DateTime dataFim)
             {
-                ProcUtils utils = new ProcUtils(ctx);
-                utils.ListActividades(dataInicio, dataFim);
-            }
-
-
+                var act = db.listarAtividades(dataInicio, dataFim);
+                string output = "";
+                
+               
+                    foreach (var a in act)
+                    {
+                        output += "Nome: " + a.nome + " Descrição: " + a.descrição;
+                    }
+                if(output=="")Console.WriteLine("Não existem atividades a listar no intervalo especificado.");
+                else Console.WriteLine(output);
+               
             }
         }
+
     }
+}

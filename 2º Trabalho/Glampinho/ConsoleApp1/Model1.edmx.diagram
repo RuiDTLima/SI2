@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f55616564ed744e9a05e1bd50b0f5a23" Name="Diagram1">
+        <EntityTypeShape EntityType="GlampinhoModel.Actividades" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Alojamento" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.AlojamentoEstada" Width="1.5" PointX="8.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Bungalow" Width="1.5" PointX="5.25" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Estada" Width="1.5" PointX="6" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.EstadaExtra" Width="1.5" PointX="8.25" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Extra" Width="1.5" PointX="0.75" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Factura" Width="1.5" PointX="3.75" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Hóspede" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.HóspedeEstada" Width="1.5" PointX="8.25" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Item" Width="1.5" PointX="6" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Paga" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.ParqueCampismo" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Telefones" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GlampinhoModel.Tenda" Width="1.5" PointX="5.25" PointY="14.375" IsExpanded="true" />
+        <AssociationConnector Association="GlampinhoModel.FK__Actividad__nomeP__2A2C1B24" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.fk_Paga" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__Alojament__nomeP__1FAE8CB1" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.fk_AlojamentoEstada" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.fk_Bungalow" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.fk_Tenda" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__AlojamentoEs__id__401B5C43" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__EstadaExt__estad__3C4ACB5F" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__HóspedeEstad__id__387A3A7B" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.fk_estada" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__EstadaExt__extra__3D3EEF98" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__Factura__NIFHósp__180D6AE9" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.fk_item" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__HóspedeEsta__NIF__37861642" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__Paga__NIF__33B5855E" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.FK__Telefones__nomeP__2D0887CF" ManuallyRouted="false" />
+        <AssociationConnector Association="GlampinhoModel.AlojamentoExtra" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

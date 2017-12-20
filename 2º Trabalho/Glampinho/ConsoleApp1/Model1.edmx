@@ -1,0 +1,1795 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="GlampinhoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Actividades">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="númeroSequencial" />
+            <PropertyRef Name="ano" />
+          </Key>
+          <Property Name="nomeParque" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="númeroSequencial" Type="int" Nullable="false" />
+          <Property Name="ano" Type="int" Nullable="false" />
+          <Property Name="nome" Type="nvarchar" MaxLength="30" />
+          <Property Name="descrição" Type="nvarchar" MaxLength="30" />
+          <Property Name="lotaçãoMáxima" Type="int" />
+          <Property Name="preçoParticipante" Type="int" />
+          <Property Name="dataRealização" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Alojamento">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+          </Key>
+          <Property Name="nomeParque" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="nome" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="localização" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="descrição" Type="nvarchar" MaxLength="30" />
+          <Property Name="preçoBase" Type="int" />
+          <Property Name="númeroMáximoPessoas" Type="tinyint" />
+          <Property Name="tipoAlojamento" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AlojamentoEstada">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="nomeParque" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="localização" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="preçoBase" Type="int" />
+        </EntityType>
+        <EntityType Name="AlojamentoExtra">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="nomeParque" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="localização" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bungalow">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+          </Key>
+          <Property Name="nomeParque" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="localização" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="tipologia" Type="char" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Estada">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="dataInício" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="dataFim" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="idFactura" Type="int" />
+          <Property Name="ano" Type="int" />
+        </EntityType>
+        <EntityType Name="EstadaExtra">
+          <Key>
+            <PropertyRef Name="estadaId" />
+            <PropertyRef Name="extraId" />
+          </Key>
+          <Property Name="estadaId" Type="int" Nullable="false" />
+          <Property Name="extraId" Type="int" Nullable="false" />
+          <Property Name="preçoDia" Type="int" />
+        </EntityType>
+        <EntityType Name="Extra">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descrição" Type="nvarchar" MaxLength="30" />
+          <Property Name="preçoDia" Type="int" />
+          <Property Name="associado" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="ano" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ano" Type="int" Nullable="false" />
+          <Property Name="nomeHóspede" Type="nvarchar" MaxLength="30" />
+          <Property Name="NIFHóspede" Type="int" />
+          <Property Name="preçoTotal" Type="int" />
+        </EntityType>
+        <EntityType Name="Hóspede">
+          <Key>
+            <PropertyRef Name="NIF" />
+          </Key>
+          <Property Name="NIF" Type="int" Nullable="false" />
+          <Property Name="nome" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="morada" Type="nvarchar" MaxLength="50" />
+          <Property Name="email" Type="nvarchar" MaxLength="30" />
+          <Property Name="númeroIdentificação" Type="int" />
+        </EntityType>
+        <EntityType Name="HóspedeEstada">
+          <Key>
+            <PropertyRef Name="NIF" />
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="NIF" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="hóspede" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="idFactura" />
+            <PropertyRef Name="ano" />
+            <PropertyRef Name="linha" />
+          </Key>
+          <Property Name="idFactura" Type="int" Nullable="false" />
+          <Property Name="ano" Type="int" Nullable="false" />
+          <Property Name="linha" Type="int" Nullable="false" />
+          <Property Name="quantidade" Type="int" Nullable="false" />
+          <Property Name="preço" Type="int" Nullable="false" />
+          <Property Name="descrição" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="tipo" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Paga">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="númeroSequencial" />
+            <PropertyRef Name="ano" />
+            <PropertyRef Name="NIF" />
+          </Key>
+          <Property Name="nomeParque" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="númeroSequencial" Type="int" Nullable="false" />
+          <Property Name="ano" Type="int" Nullable="false" />
+          <Property Name="NIF" Type="int" Nullable="false" />
+          <Property Name="preçoParticipante" Type="int" />
+        </EntityType>
+        <EntityType Name="ParqueCampismo">
+          <Key>
+            <PropertyRef Name="nome" />
+          </Key>
+          <Property Name="nome" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="morada" Type="nvarchar" MaxLength="50" />
+          <Property Name="estrelas" Type="tinyint" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Telefones">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="telefone" />
+          </Key>
+          <Property Name="nomeParque" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="telefone" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tenda">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+          </Key>
+          <Property Name="nomeParque" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="localização" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="área" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Teste">
+          <Property Name="a" Type="int" />
+        </EntityType>-->
+        <Association Name="FK__Actividad__nomeP__2A2C1B24">
+          <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Actividades" Type="Self.Actividades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParqueCampismo">
+              <PropertyRef Name="nome" />
+            </Principal>
+            <Dependent Role="Actividades">
+              <PropertyRef Name="nomeParque" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Alojament__nomeP__1FAE8CB1">
+          <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParqueCampismo">
+              <PropertyRef Name="nome" />
+            </Principal>
+            <Dependent Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AlojamentoEs__id__401B5C43">
+          <End Role="Estada" Type="Self.Estada" Multiplicity="1" />
+          <End Role="AlojamentoEstada" Type="Self.AlojamentoEstada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estada">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AlojamentoEstada">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AlojamentoEx__id__43EBED27">
+          <End Role="Extra" Type="Self.Extra" Multiplicity="1" />
+          <End Role="AlojamentoExtra" Type="Self.AlojamentoExtra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Extra">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AlojamentoExtra">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EstadaExt__estad__3C4ACB5F">
+          <End Role="Estada" Type="Self.Estada" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EstadaExtra" Type="Self.EstadaExtra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estada">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EstadaExtra">
+              <PropertyRef Name="estadaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EstadaExt__extra__3D3EEF98">
+          <End Role="Extra" Type="Self.Extra" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EstadaExtra" Type="Self.EstadaExtra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Extra">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EstadaExtra">
+              <PropertyRef Name="extraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Factura__NIFHósp__180D6AE9">
+          <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="0..1" />
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hóspede">
+              <PropertyRef Name="NIF" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="NIFHóspede" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HóspedeEsta__NIF__37861642">
+          <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="HóspedeEstada" Type="Self.HóspedeEstada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hóspede">
+              <PropertyRef Name="NIF" />
+            </Principal>
+            <Dependent Role="HóspedeEstada">
+              <PropertyRef Name="NIF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HóspedeEstad__id__387A3A7B">
+          <End Role="Estada" Type="Self.Estada" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="HóspedeEstada" Type="Self.HóspedeEstada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estada">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="HóspedeEstada">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Paga__NIF__33B5855E">
+          <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Paga" Type="Self.Paga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hóspede">
+              <PropertyRef Name="NIF" />
+            </Principal>
+            <Dependent Role="Paga">
+              <PropertyRef Name="NIF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Telefones__nomeP__2D0887CF">
+          <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Telefones" Type="Self.Telefones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParqueCampismo">
+              <PropertyRef Name="nome" />
+            </Principal>
+            <Dependent Role="Telefones">
+              <PropertyRef Name="nomeParque" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_AlojamentoEstada">
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AlojamentoEstada" Type="Self.AlojamentoEstada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Principal>
+            <Dependent Role="AlojamentoEstada">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_AlojamentoExtra">
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AlojamentoExtra" Type="Self.AlojamentoExtra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Principal>
+            <Dependent Role="AlojamentoExtra">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Bungalow">
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Bungalow" Type="Self.Bungalow" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Principal>
+            <Dependent Role="Bungalow">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_estada">
+          <End Role="Factura" Type="Self.Factura" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Estada" Type="Self.Estada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Factura">
+              <PropertyRef Name="id" />
+              <PropertyRef Name="ano" />
+            </Principal>
+            <Dependent Role="Estada">
+              <PropertyRef Name="idFactura" />
+              <PropertyRef Name="ano" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_item">
+          <End Role="Factura" Type="Self.Factura" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Factura">
+              <PropertyRef Name="id" />
+              <PropertyRef Name="ano" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="idFactura" />
+              <PropertyRef Name="ano" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Paga">
+          <End Role="Actividades" Type="Self.Actividades" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Paga" Type="Self.Paga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actividades">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="númeroSequencial" />
+              <PropertyRef Name="ano" />
+            </Principal>
+            <Dependent Role="Paga">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="númeroSequencial" />
+              <PropertyRef Name="ano" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Tenda">
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tenda" Type="Self.Tenda" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Principal>
+            <Dependent Role="Tenda">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="addAlojamento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tipoAlojamento" Type="varchar" Mode="In" />
+          <Parameter Name="lotação" Type="tinyint" Mode="In" />
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+        </Function>
+        <Function Name="addExtraPessoa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idExtra" Type="int" Mode="In" />
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+        </Function>
+        <Function Name="addExtraToAlojamento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idExtra" Type="int" Mode="In" />
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+        </Function>
+        <Function Name="addExtraToEstada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idExtra" Type="int" Mode="In" />
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+        </Function>
+        <Function Name="addHóspede" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NIF" Type="int" Mode="In" />
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="addHospedeAtividade" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="hospede" Type="int" Mode="In" />
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+          <Parameter Name="númeroSequencial" Type="int" Mode="In" />
+        </Function>
+        <Function Name="addPreçoTotal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idFactura" Type="int" Mode="In" />
+          <Parameter Name="ano" Type="int" Mode="In" />
+        </Function>
+        <Function Name="createEstada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NIFResponsável" Type="int" Mode="In" />
+          <Parameter Name="tempoEstada" Type="int" Mode="In" />
+          <Parameter Name="idNumber" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="createEstadaInTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NIFResponsável" Type="int" Mode="In" />
+          <Parameter Name="NIFHóspede" Type="int" Mode="In" />
+          <Parameter Name="tempoEstada" Type="int" Mode="In" />
+          <Parameter Name="tipoAlojamento" Type="varchar" Mode="In" />
+          <Parameter Name="lotação" Type="tinyint" Mode="In" />
+          <Parameter Name="idExtraPessoal" Type="int" Mode="In" />
+          <Parameter Name="idExtraAlojamento" Type="int" Mode="In" />
+        </Function>
+        <Function Name="deleteALL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="deleteAlojamento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="localização" Type="nvarchar" Mode="In" />
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="deleteAlojamentoBungalow" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="localização" Type="nvarchar" Mode="In" />
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="deleteAlojamentoTenda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="localização" Type="nvarchar" Mode="In" />
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="deleteAtividades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+          <Parameter Name="númeroSequencial" Type="int" Mode="In" />
+        </Function>
+        <Function Name="deleteExtra" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="identi" Type="int" Mode="In" />
+          <Parameter Name="nome" Type="nvarchar" Mode="In" />
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+          <Parameter Name="localização" Type="nvarchar" Mode="In" />
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+        </Function>
+        <Function Name="deleteExtraPessoa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="deleteHospede" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NIFHospede" Type="int" Mode="In" />
+        </Function>
+        <Function Name="eliminaHóspedesAssociados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+        </Function>
+        <Function Name="emailContent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="NIF" Type="int" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="text" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="enviarEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="NIF" Type="int" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="text" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="enviarEmails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="periodoTemporal" Type="int" Mode="In" />
+        </Function>
+        <Function Name="finishEstadaWithFactura" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+        </Function>
+        <Function Name="funcSendEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="periodoTemporal" Type="int" Mode="In" />
+        </Function>
+        <Function Name="funcSendMail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="NIF" Type="int" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="text" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="getAlojamentoPreço" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+          <Parameter Name="idFactura" Type="int" Mode="In" />
+          <Parameter Name="ano" Type="int" Mode="In" />
+          <Parameter Name="linha" Type="int" Mode="In" />
+          <Parameter Name="novaLinha" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="getCustoTotalActividades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+          <Parameter Name="idFactura" Type="int" Mode="In" />
+          <Parameter Name="ano" Type="int" Mode="In" />
+          <Parameter Name="linha" Type="int" Mode="In" />
+        </Function>
+        <Function Name="getEstadaExtrasPreço" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+          <Parameter Name="idFactura" Type="int" Mode="In" />
+          <Parameter Name="ano" Type="int" Mode="In" />
+          <Parameter Name="linha" Type="int" Mode="In" />
+          <Parameter Name="novaLinha" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="getPessoalExtrasPreço" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idEstada" Type="int" Mode="In" />
+          <Parameter Name="idFactura" Type="int" Mode="In" />
+          <Parameter Name="ano" Type="int" Mode="In" />
+          <Parameter Name="linha" Type="int" Mode="In" />
+          <Parameter Name="novaLinha" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="inscreverHóspede" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NIFHóspede" Type="int" Mode="In" />
+          <Parameter Name="númeroSequencial" Type="int" Mode="In" />
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+          <Parameter Name="ano" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertAlojamentoBungalow" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+          <Parameter Name="nome" Type="nvarchar" Mode="In" />
+          <Parameter Name="localização" Type="nvarchar" Mode="In" />
+          <Parameter Name="descrição" Type="nvarchar" Mode="In" />
+          <Parameter Name="preçoBase" Type="int" Mode="In" />
+          <Parameter Name="númeroMáximoPessoas" Type="tinyint" Mode="In" />
+          <Parameter Name="tipologia" Type="char" Mode="In" />
+        </Function>
+        <Function Name="InsertAlojamentoTenda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+          <Parameter Name="nome" Type="nvarchar" Mode="In" />
+          <Parameter Name="localização" Type="nvarchar" Mode="In" />
+          <Parameter Name="descrição" Type="nvarchar" Mode="In" />
+          <Parameter Name="preçoBase" Type="int" Mode="In" />
+          <Parameter Name="númeroMáximoPessoas" Type="tinyint" Mode="In" />
+          <Parameter Name="área" Type="int" Mode="In" />
+        </Function>
+        <Function Name="listarAtividades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dataInicio" Type="date" Mode="In" />
+          <Parameter Name="dataFim" Type="date" Mode="In" />
+        </Function>
+        <Function Name="listAtividades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dataInicio" Type="date" Mode="In" />
+          <Parameter Name="dataFim" Type="date" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="nome" Type="nvarchar" MaxLength="30" Nullable="false" />
+                <Property Name="descrição" Type="nvarchar" MaxLength="255" Nullable="false" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="lol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="NIF" Type="int" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="text" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="lol2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="periodoTemporal" Type="int" Mode="In" />
+        </Function>
+        <Function Name="media" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="preço" Type="int" Mode="In" />
+          <Parameter Name="amostras" Type="int" Mode="In" />
+        </Function>
+        <Function Name="mediaPagamentos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="n" Type="int" Mode="In" />
+          <Parameter Name="pagamento" Type="nvarchar" Mode="InOut" />
+        </Function>
+        <Function Name="SendEMail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="NIF" Type="int" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="text" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SendEmails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="periodoTemporal" Type="int" Mode="In" />
+          <Parameter Name="text" Type="text" Mode="InOut" />
+        </Function>
+        <Function Name="SendMail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+          <Parameter Name="NIF" Type="int" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+          <Parameter Name="text" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="test" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="lol" Type="int" Mode="In" />
+        </Function>
+        <Function Name="test2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="lol" Type="int" Mode="In" />
+        </Function>
+        <Function Name="testeAlineaC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaD_DELETE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaD_INSERT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaJ" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="verificarHospedeParque" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="hospede" Type="int" Mode="In" />
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="GlampinhoModelStoreContainer">
+          <EntitySet Name="Actividades" EntityType="Self.Actividades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Alojamento" EntityType="Self.Alojamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AlojamentoEstada" EntityType="Self.AlojamentoEstada" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AlojamentoExtra" EntityType="Self.AlojamentoExtra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bungalow" EntityType="Self.Bungalow" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estada" EntityType="Self.Estada" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EstadaExtra" EntityType="Self.EstadaExtra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Extra" EntityType="Self.Extra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Factura" EntityType="Self.Factura" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hóspede" EntityType="Self.Hóspede" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HóspedeEstada" EntityType="Self.HóspedeEstada" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paga" EntityType="Self.Paga" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParqueCampismo" EntityType="Self.ParqueCampismo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Telefones" EntityType="Self.Telefones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tenda" EntityType="Self.Tenda" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Actividad__nomeP__2A2C1B24" Association="Self.FK__Actividad__nomeP__2A2C1B24">
+            <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
+            <End Role="Actividades" EntitySet="Actividades" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Alojament__nomeP__1FAE8CB1" Association="Self.FK__Alojament__nomeP__1FAE8CB1">
+            <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
+            <End Role="Alojamento" EntitySet="Alojamento" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AlojamentoEs__id__401B5C43" Association="Self.FK__AlojamentoEs__id__401B5C43">
+            <End Role="Estada" EntitySet="Estada" />
+            <End Role="AlojamentoEstada" EntitySet="AlojamentoEstada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AlojamentoEx__id__43EBED27" Association="Self.FK__AlojamentoEx__id__43EBED27">
+            <End Role="Extra" EntitySet="Extra" />
+            <End Role="AlojamentoExtra" EntitySet="AlojamentoExtra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EstadaExt__estad__3C4ACB5F" Association="Self.FK__EstadaExt__estad__3C4ACB5F">
+            <End Role="Estada" EntitySet="Estada" />
+            <End Role="EstadaExtra" EntitySet="EstadaExtra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EstadaExt__extra__3D3EEF98" Association="Self.FK__EstadaExt__extra__3D3EEF98">
+            <End Role="Extra" EntitySet="Extra" />
+            <End Role="EstadaExtra" EntitySet="EstadaExtra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Factura__NIFHósp__180D6AE9" Association="Self.FK__Factura__NIFHósp__180D6AE9">
+            <End Role="Hóspede" EntitySet="Hóspede" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HóspedeEsta__NIF__37861642" Association="Self.FK__HóspedeEsta__NIF__37861642">
+            <End Role="Hóspede" EntitySet="Hóspede" />
+            <End Role="HóspedeEstada" EntitySet="HóspedeEstada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HóspedeEstad__id__387A3A7B" Association="Self.FK__HóspedeEstad__id__387A3A7B">
+            <End Role="Estada" EntitySet="Estada" />
+            <End Role="HóspedeEstada" EntitySet="HóspedeEstada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Paga__NIF__33B5855E" Association="Self.FK__Paga__NIF__33B5855E">
+            <End Role="Hóspede" EntitySet="Hóspede" />
+            <End Role="Paga" EntitySet="Paga" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Telefones__nomeP__2D0887CF" Association="Self.FK__Telefones__nomeP__2D0887CF">
+            <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
+            <End Role="Telefones" EntitySet="Telefones" />
+          </AssociationSet>
+          <AssociationSet Name="fk_AlojamentoEstada" Association="Self.fk_AlojamentoEstada">
+            <End Role="Alojamento" EntitySet="Alojamento" />
+            <End Role="AlojamentoEstada" EntitySet="AlojamentoEstada" />
+          </AssociationSet>
+          <AssociationSet Name="fk_AlojamentoExtra" Association="Self.fk_AlojamentoExtra">
+            <End Role="Alojamento" EntitySet="Alojamento" />
+            <End Role="AlojamentoExtra" EntitySet="AlojamentoExtra" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Bungalow" Association="Self.fk_Bungalow">
+            <End Role="Alojamento" EntitySet="Alojamento" />
+            <End Role="Bungalow" EntitySet="Bungalow" />
+          </AssociationSet>
+          <AssociationSet Name="fk_estada" Association="Self.fk_estada">
+            <End Role="Factura" EntitySet="Factura" />
+            <End Role="Estada" EntitySet="Estada" />
+          </AssociationSet>
+          <AssociationSet Name="fk_item" Association="Self.fk_item">
+            <End Role="Factura" EntitySet="Factura" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Paga" Association="Self.fk_Paga">
+            <End Role="Actividades" EntitySet="Actividades" />
+            <End Role="Paga" EntitySet="Paga" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Tenda" Association="Self.fk_Tenda">
+            <End Role="Alojamento" EntitySet="Alojamento" />
+            <End Role="Tenda" EntitySet="Tenda" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GlampinhoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <ComplexType Name="listAtividades_Result">
+          <Property Name="nome" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descrição" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Actividades">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="númeroSequencial" />
+            <PropertyRef Name="ano" />
+          </Key>
+          <Property Name="nomeParque" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="númeroSequencial" Type="Int32" Nullable="false" />
+          <Property Name="ano" Type="Int32" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="descrição" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="lotaçãoMáxima" Type="Int32" />
+          <Property Name="preçoParticipante" Type="Int32" />
+          <Property Name="dataRealização" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="ParqueCampismo" Relationship="Self.FK__Actividad__nomeP__2A2C1B24" FromRole="Actividades" ToRole="ParqueCampismo" />
+          <NavigationProperty Name="Paga" Relationship="Self.fk_Paga" FromRole="Actividades" ToRole="Paga" />
+        </EntityType>
+        <EntityType Name="Alojamento">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+          </Key>
+          <Property Name="nomeParque" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="localização" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descrição" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="preçoBase" Type="Int32" />
+          <Property Name="númeroMáximoPessoas" Type="Byte" />
+          <Property Name="tipoAlojamento" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ParqueCampismo" Relationship="Self.FK__Alojament__nomeP__1FAE8CB1" FromRole="Alojamento" ToRole="ParqueCampismo" />
+          <NavigationProperty Name="AlojamentoEstada" Relationship="Self.fk_AlojamentoEstada" FromRole="Alojamento" ToRole="AlojamentoEstada" />
+          <NavigationProperty Name="Bungalow" Relationship="Self.fk_Bungalow" FromRole="Alojamento" ToRole="Bungalow" />
+          <NavigationProperty Name="Tenda" Relationship="Self.fk_Tenda" FromRole="Alojamento" ToRole="Tenda" />
+          <NavigationProperty Name="Extra" Relationship="Self.AlojamentoExtra" FromRole="Alojamento" ToRole="Extra" />
+        </EntityType>
+        <EntityType Name="AlojamentoEstada">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="nomeParque" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="localização" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="preçoBase" Type="Int32" />
+          <NavigationProperty Name="Alojamento" Relationship="Self.fk_AlojamentoEstada" FromRole="AlojamentoEstada" ToRole="Alojamento" />
+          <NavigationProperty Name="Estada" Relationship="Self.FK__AlojamentoEs__id__401B5C43" FromRole="AlojamentoEstada" ToRole="Estada" />
+        </EntityType>
+        <EntityType Name="Bungalow">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+          </Key>
+          <Property Name="nomeParque" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="localização" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tipologia" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Alojamento" Relationship="Self.fk_Bungalow" FromRole="Bungalow" ToRole="Alojamento" />
+        </EntityType>
+        <EntityType Name="Estada">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="dataInício" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="dataFim" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="idFactura" Type="Int32" />
+          <Property Name="ano" Type="Int32" />
+          <NavigationProperty Name="AlojamentoEstada" Relationship="Self.FK__AlojamentoEs__id__401B5C43" FromRole="Estada" ToRole="AlojamentoEstada" />
+          <NavigationProperty Name="EstadaExtra" Relationship="Self.FK__EstadaExt__estad__3C4ACB5F" FromRole="Estada" ToRole="EstadaExtra" />
+          <NavigationProperty Name="HóspedeEstada" Relationship="Self.FK__HóspedeEstad__id__387A3A7B" FromRole="Estada" ToRole="HóspedeEstada" />
+          <NavigationProperty Name="Factura" Relationship="Self.fk_estada" FromRole="Estada" ToRole="Factura" />
+        </EntityType>
+        <EntityType Name="EstadaExtra">
+          <Key>
+            <PropertyRef Name="estadaId" />
+            <PropertyRef Name="extraId" />
+          </Key>
+          <Property Name="estadaId" Type="Int32" Nullable="false" />
+          <Property Name="extraId" Type="Int32" Nullable="false" />
+          <Property Name="preçoDia" Type="Int32" />
+          <NavigationProperty Name="Estada" Relationship="Self.FK__EstadaExt__estad__3C4ACB5F" FromRole="EstadaExtra" ToRole="Estada" />
+          <NavigationProperty Name="Extra" Relationship="Self.FK__EstadaExt__extra__3D3EEF98" FromRole="EstadaExtra" ToRole="Extra" />
+        </EntityType>
+        <EntityType Name="Extra">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descrição" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="preçoDia" Type="Int32" />
+          <Property Name="associado" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="EstadaExtra" Relationship="Self.FK__EstadaExt__extra__3D3EEF98" FromRole="Extra" ToRole="EstadaExtra" />
+          <NavigationProperty Name="Alojamento" Relationship="Self.AlojamentoExtra" FromRole="Extra" ToRole="Alojamento" />
+        </EntityType>
+        <EntityType Name="Factura">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="ano" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ano" Type="Int32" Nullable="false" />
+          <Property Name="nomeHóspede" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="NIFHóspede" Type="Int32" />
+          <Property Name="preçoTotal" Type="Int32" />
+          <NavigationProperty Name="Estada" Relationship="Self.fk_estada" FromRole="Factura" ToRole="Estada" />
+          <NavigationProperty Name="Hóspede" Relationship="Self.FK__Factura__NIFHósp__180D6AE9" FromRole="Factura" ToRole="Hóspede" />
+          <NavigationProperty Name="Item" Relationship="Self.fk_item" FromRole="Factura" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Hóspede">
+          <Key>
+            <PropertyRef Name="NIF" />
+          </Key>
+          <Property Name="NIF" Type="Int32" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="morada" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="númeroIdentificação" Type="Int32" />
+          <NavigationProperty Name="Factura" Relationship="Self.FK__Factura__NIFHósp__180D6AE9" FromRole="Hóspede" ToRole="Factura" />
+          <NavigationProperty Name="HóspedeEstada" Relationship="Self.FK__HóspedeEsta__NIF__37861642" FromRole="Hóspede" ToRole="HóspedeEstada" />
+          <NavigationProperty Name="Paga" Relationship="Self.FK__Paga__NIF__33B5855E" FromRole="Hóspede" ToRole="Paga" />
+        </EntityType>
+        <EntityType Name="HóspedeEstada">
+          <Key>
+            <PropertyRef Name="NIF" />
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="NIF" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="hóspede" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Estada" Relationship="Self.FK__HóspedeEstad__id__387A3A7B" FromRole="HóspedeEstada" ToRole="Estada" />
+          <NavigationProperty Name="Hóspede1" Relationship="Self.FK__HóspedeEsta__NIF__37861642" FromRole="HóspedeEstada" ToRole="Hóspede" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="idFactura" />
+            <PropertyRef Name="ano" />
+            <PropertyRef Name="linha" />
+          </Key>
+          <Property Name="idFactura" Type="Int32" Nullable="false" />
+          <Property Name="ano" Type="Int32" Nullable="false" />
+          <Property Name="linha" Type="Int32" Nullable="false" />
+          <Property Name="quantidade" Type="Int32" Nullable="false" />
+          <Property Name="preço" Type="Int32" Nullable="false" />
+          <Property Name="descrição" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tipo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Factura" Relationship="Self.fk_item" FromRole="Item" ToRole="Factura" />
+        </EntityType>
+        <EntityType Name="Paga">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="númeroSequencial" />
+            <PropertyRef Name="ano" />
+            <PropertyRef Name="NIF" />
+          </Key>
+          <Property Name="nomeParque" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="númeroSequencial" Type="Int32" Nullable="false" />
+          <Property Name="ano" Type="Int32" Nullable="false" />
+          <Property Name="NIF" Type="Int32" Nullable="false" />
+          <Property Name="preçoParticipante" Type="Int32" />
+          <NavigationProperty Name="Actividades" Relationship="Self.fk_Paga" FromRole="Paga" ToRole="Actividades" />
+          <NavigationProperty Name="Hóspede" Relationship="Self.FK__Paga__NIF__33B5855E" FromRole="Paga" ToRole="Hóspede" />
+        </EntityType>
+        <EntityType Name="ParqueCampismo">
+          <Key>
+            <PropertyRef Name="nome" />
+          </Key>
+          <Property Name="nome" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="morada" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="estrelas" Type="Byte" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Actividades" Relationship="Self.FK__Actividad__nomeP__2A2C1B24" FromRole="ParqueCampismo" ToRole="Actividades" />
+          <NavigationProperty Name="Alojamento" Relationship="Self.FK__Alojament__nomeP__1FAE8CB1" FromRole="ParqueCampismo" ToRole="Alojamento" />
+          <NavigationProperty Name="Telefones" Relationship="Self.FK__Telefones__nomeP__2D0887CF" FromRole="ParqueCampismo" ToRole="Telefones" />
+        </EntityType>
+        <EntityType Name="Telefones">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="telefone" />
+          </Key>
+          <Property Name="nomeParque" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="telefone" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ParqueCampismo" Relationship="Self.FK__Telefones__nomeP__2D0887CF" FromRole="Telefones" ToRole="ParqueCampismo" />
+        </EntityType>
+        <EntityType Name="Tenda">
+          <Key>
+            <PropertyRef Name="nomeParque" />
+            <PropertyRef Name="localização" />
+          </Key>
+          <Property Name="nomeParque" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="localização" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="área" Type="Int32" />
+          <NavigationProperty Name="Alojamento" Relationship="Self.fk_Tenda" FromRole="Tenda" ToRole="Alojamento" />
+        </EntityType>
+        <Association Name="FK__Actividad__nomeP__2A2C1B24">
+          <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Actividades" Type="Self.Actividades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParqueCampismo">
+              <PropertyRef Name="nome" />
+            </Principal>
+            <Dependent Role="Actividades">
+              <PropertyRef Name="nomeParque" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Paga">
+          <End Role="Actividades" Type="Self.Actividades" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Paga" Type="Self.Paga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actividades">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="númeroSequencial" />
+              <PropertyRef Name="ano" />
+            </Principal>
+            <Dependent Role="Paga">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="númeroSequencial" />
+              <PropertyRef Name="ano" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Alojament__nomeP__1FAE8CB1">
+          <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParqueCampismo">
+              <PropertyRef Name="nome" />
+            </Principal>
+            <Dependent Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_AlojamentoEstada">
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AlojamentoEstada" Type="Self.AlojamentoEstada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Principal>
+            <Dependent Role="AlojamentoEstada">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Bungalow">
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Bungalow" Type="Self.Bungalow" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Principal>
+            <Dependent Role="Bungalow">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Tenda">
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tenda" Type="Self.Tenda" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Alojamento">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Principal>
+            <Dependent Role="Tenda">
+              <PropertyRef Name="nomeParque" />
+              <PropertyRef Name="localização" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AlojamentoEs__id__401B5C43">
+          <End Role="Estada" Type="Self.Estada" Multiplicity="1" />
+          <End Role="AlojamentoEstada" Type="Self.AlojamentoEstada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estada">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AlojamentoEstada">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EstadaExt__estad__3C4ACB5F">
+          <End Role="Estada" Type="Self.Estada" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EstadaExtra" Type="Self.EstadaExtra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estada">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EstadaExtra">
+              <PropertyRef Name="estadaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HóspedeEstad__id__387A3A7B">
+          <End Role="Estada" Type="Self.Estada" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="HóspedeEstada" Type="Self.HóspedeEstada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estada">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="HóspedeEstada">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_estada">
+          <End Role="Factura" Type="Self.Factura" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Estada" Type="Self.Estada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Factura">
+              <PropertyRef Name="id" />
+              <PropertyRef Name="ano" />
+            </Principal>
+            <Dependent Role="Estada">
+              <PropertyRef Name="idFactura" />
+              <PropertyRef Name="ano" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EstadaExt__extra__3D3EEF98">
+          <End Role="Extra" Type="Self.Extra" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EstadaExtra" Type="Self.EstadaExtra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Extra">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EstadaExtra">
+              <PropertyRef Name="extraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Factura__NIFHósp__180D6AE9">
+          <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="0..1" />
+          <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hóspede">
+              <PropertyRef Name="NIF" />
+            </Principal>
+            <Dependent Role="Factura">
+              <PropertyRef Name="NIFHóspede" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_item">
+          <End Role="Factura" Type="Self.Factura" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Factura">
+              <PropertyRef Name="id" />
+              <PropertyRef Name="ano" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="idFactura" />
+              <PropertyRef Name="ano" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HóspedeEsta__NIF__37861642">
+          <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="HóspedeEstada" Type="Self.HóspedeEstada" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hóspede">
+              <PropertyRef Name="NIF" />
+            </Principal>
+            <Dependent Role="HóspedeEstada">
+              <PropertyRef Name="NIF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Paga__NIF__33B5855E">
+          <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Paga" Type="Self.Paga" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hóspede">
+              <PropertyRef Name="NIF" />
+            </Principal>
+            <Dependent Role="Paga">
+              <PropertyRef Name="NIF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Telefones__nomeP__2D0887CF">
+          <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Telefones" Type="Self.Telefones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParqueCampismo">
+              <PropertyRef Name="nome" />
+            </Principal>
+            <Dependent Role="Telefones">
+              <PropertyRef Name="nomeParque" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AlojamentoExtra">
+          <End Role="Extra" Type="Self.Extra" Multiplicity="*" />
+          <End Role="Alojamento" Type="Self.Alojamento" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="GlampinhoEF" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Actividades" EntityType="Self.Actividades" />
+          <EntitySet Name="Alojamento" EntityType="Self.Alojamento" />
+          <EntitySet Name="AlojamentoEstada" EntityType="Self.AlojamentoEstada" />
+          <EntitySet Name="Bungalow" EntityType="Self.Bungalow" />
+          <EntitySet Name="Estada" EntityType="Self.Estada" />
+          <EntitySet Name="EstadaExtra" EntityType="Self.EstadaExtra" />
+          <EntitySet Name="Extra" EntityType="Self.Extra" />
+          <EntitySet Name="Factura" EntityType="Self.Factura" />
+          <EntitySet Name="Hóspede" EntityType="Self.Hóspede" />
+          <EntitySet Name="HóspedeEstada" EntityType="Self.HóspedeEstada" />
+          <EntitySet Name="Item" EntityType="Self.Item" />
+          <EntitySet Name="Paga" EntityType="Self.Paga" />
+          <EntitySet Name="ParqueCampismo" EntityType="Self.ParqueCampismo" />
+          <EntitySet Name="Telefones" EntityType="Self.Telefones" />
+          <EntitySet Name="Tenda" EntityType="Self.Tenda" />
+          <AssociationSet Name="FK__Actividad__nomeP__2A2C1B24" Association="Self.FK__Actividad__nomeP__2A2C1B24">
+            <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
+            <End Role="Actividades" EntitySet="Actividades" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Paga" Association="Self.fk_Paga">
+            <End Role="Actividades" EntitySet="Actividades" />
+            <End Role="Paga" EntitySet="Paga" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Alojament__nomeP__1FAE8CB1" Association="Self.FK__Alojament__nomeP__1FAE8CB1">
+            <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
+            <End Role="Alojamento" EntitySet="Alojamento" />
+          </AssociationSet>
+          <AssociationSet Name="fk_AlojamentoEstada" Association="Self.fk_AlojamentoEstada">
+            <End Role="Alojamento" EntitySet="Alojamento" />
+            <End Role="AlojamentoEstada" EntitySet="AlojamentoEstada" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Bungalow" Association="Self.fk_Bungalow">
+            <End Role="Alojamento" EntitySet="Alojamento" />
+            <End Role="Bungalow" EntitySet="Bungalow" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Tenda" Association="Self.fk_Tenda">
+            <End Role="Alojamento" EntitySet="Alojamento" />
+            <End Role="Tenda" EntitySet="Tenda" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AlojamentoEs__id__401B5C43" Association="Self.FK__AlojamentoEs__id__401B5C43">
+            <End Role="Estada" EntitySet="Estada" />
+            <End Role="AlojamentoEstada" EntitySet="AlojamentoEstada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EstadaExt__estad__3C4ACB5F" Association="Self.FK__EstadaExt__estad__3C4ACB5F">
+            <End Role="Estada" EntitySet="Estada" />
+            <End Role="EstadaExtra" EntitySet="EstadaExtra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HóspedeEstad__id__387A3A7B" Association="Self.FK__HóspedeEstad__id__387A3A7B">
+            <End Role="Estada" EntitySet="Estada" />
+            <End Role="HóspedeEstada" EntitySet="HóspedeEstada" />
+          </AssociationSet>
+          <AssociationSet Name="fk_estada" Association="Self.fk_estada">
+            <End Role="Factura" EntitySet="Factura" />
+            <End Role="Estada" EntitySet="Estada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EstadaExt__extra__3D3EEF98" Association="Self.FK__EstadaExt__extra__3D3EEF98">
+            <End Role="Extra" EntitySet="Extra" />
+            <End Role="EstadaExtra" EntitySet="EstadaExtra" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Factura__NIFHósp__180D6AE9" Association="Self.FK__Factura__NIFHósp__180D6AE9">
+            <End Role="Hóspede" EntitySet="Hóspede" />
+            <End Role="Factura" EntitySet="Factura" />
+          </AssociationSet>
+          <AssociationSet Name="fk_item" Association="Self.fk_item">
+            <End Role="Factura" EntitySet="Factura" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HóspedeEsta__NIF__37861642" Association="Self.FK__HóspedeEsta__NIF__37861642">
+            <End Role="Hóspede" EntitySet="Hóspede" />
+            <End Role="HóspedeEstada" EntitySet="HóspedeEstada" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Paga__NIF__33B5855E" Association="Self.FK__Paga__NIF__33B5855E">
+            <End Role="Hóspede" EntitySet="Hóspede" />
+            <End Role="Paga" EntitySet="Paga" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Telefones__nomeP__2D0887CF" Association="Self.FK__Telefones__nomeP__2D0887CF">
+            <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
+            <End Role="Telefones" EntitySet="Telefones" />
+          </AssociationSet>
+          <AssociationSet Name="AlojamentoExtra" Association="Self.AlojamentoExtra">
+            <End Role="Extra" EntitySet="Extra" />
+            <End Role="Alojamento" EntitySet="Alojamento" />
+          </AssociationSet>
+          <FunctionImport Name="listAtividades" IsComposable="true" ReturnType="Collection(GlampinhoModel.listAtividades_Result)">
+            <Parameter Name="dataInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="dataFim" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="addAlojamento">
+            <Parameter Name="tipoAlojamento" Mode="In" Type="String" />
+            <Parameter Name="lotação" Mode="In" Type="Byte" />
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="addExtraPessoa">
+            <Parameter Name="idExtra" Mode="In" Type="Int32" />
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="addExtraToAlojamento">
+            <Parameter Name="idExtra" Mode="In" Type="Int32" />
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="addExtraToEstada">
+            <Parameter Name="idExtra" Mode="In" Type="Int32" />
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="addHóspede">
+            <Parameter Name="NIF" Mode="In" Type="Int32" />
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="addHospedeAtividade" ReturnType="Collection(Int32)">
+            <Parameter Name="hospede" Mode="In" Type="Int32" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+            <Parameter Name="númeroSequencial" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="addPreçoTotal">
+            <Parameter Name="idFactura" Mode="In" Type="Int32" />
+            <Parameter Name="ano" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="createEstada">
+            <Parameter Name="NIFResponsável" Mode="In" Type="Int32" />
+            <Parameter Name="tempoEstada" Mode="In" Type="Int32" />
+            <Parameter Name="idNumber" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="createEstadaInTime">
+            <Parameter Name="NIFResponsável" Mode="In" Type="Int32" />
+            <Parameter Name="NIFHóspede" Mode="In" Type="Int32" />
+            <Parameter Name="tempoEstada" Mode="In" Type="Int32" />
+            <Parameter Name="tipoAlojamento" Mode="In" Type="String" />
+            <Parameter Name="lotação" Mode="In" Type="Byte" />
+            <Parameter Name="idExtraPessoal" Mode="In" Type="Int32" />
+            <Parameter Name="idExtraAlojamento" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="deleteALL" />
+          <FunctionImport Name="deleteAlojamento">
+            <Parameter Name="localização" Mode="In" Type="String" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="deleteAlojamentoBungalow">
+            <Parameter Name="localização" Mode="In" Type="String" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="deleteAlojamentoTenda">
+            <Parameter Name="localização" Mode="In" Type="String" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="deleteAtividades">
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+            <Parameter Name="númeroSequencial" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="deleteExtra">
+            <Parameter Name="identi" Mode="In" Type="Int32" />
+            <Parameter Name="nome" Mode="In" Type="String" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+            <Parameter Name="localização" Mode="In" Type="String" />
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="deleteExtraPessoa">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="deleteHospede">
+            <Parameter Name="NIFHospede" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="eliminaHóspedesAssociados">
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="finishEstadaWithFactura">
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getAlojamentoPreço">
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+            <Parameter Name="idFactura" Mode="In" Type="Int32" />
+            <Parameter Name="ano" Mode="In" Type="Int32" />
+            <Parameter Name="linha" Mode="In" Type="Int32" />
+            <Parameter Name="novaLinha" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getCustoTotalActividades">
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+            <Parameter Name="idFactura" Mode="In" Type="Int32" />
+            <Parameter Name="ano" Mode="In" Type="Int32" />
+            <Parameter Name="linha" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getEstadaExtrasPreço">
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+            <Parameter Name="idFactura" Mode="In" Type="Int32" />
+            <Parameter Name="ano" Mode="In" Type="Int32" />
+            <Parameter Name="linha" Mode="In" Type="Int32" />
+            <Parameter Name="novaLinha" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getPessoalExtrasPreço">
+            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+            <Parameter Name="idFactura" Mode="In" Type="Int32" />
+            <Parameter Name="ano" Mode="In" Type="Int32" />
+            <Parameter Name="linha" Mode="In" Type="Int32" />
+            <Parameter Name="novaLinha" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="inscreverHóspede">
+            <Parameter Name="NIFHóspede" Mode="In" Type="Int32" />
+            <Parameter Name="númeroSequencial" Mode="In" Type="Int32" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+            <Parameter Name="ano" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertAlojamentoBungalow">
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+            <Parameter Name="nome" Mode="In" Type="String" />
+            <Parameter Name="localização" Mode="In" Type="String" />
+            <Parameter Name="descrição" Mode="In" Type="String" />
+            <Parameter Name="preçoBase" Mode="In" Type="Int32" />
+            <Parameter Name="númeroMáximoPessoas" Mode="In" Type="Byte" />
+            <Parameter Name="tipologia" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="InsertAlojamentoTenda">
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+            <Parameter Name="nome" Mode="In" Type="String" />
+            <Parameter Name="localização" Mode="In" Type="String" />
+            <Parameter Name="descrição" Mode="In" Type="String" />
+            <Parameter Name="preçoBase" Mode="In" Type="Int32" />
+            <Parameter Name="númeroMáximoPessoas" Mode="In" Type="Byte" />
+            <Parameter Name="área" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="listarAtividades" ReturnType="Collection(GlampinhoModel.listarAtividades_Result)">
+            <Parameter Name="dataInicio" Mode="In" Type="DateTime" />
+            <Parameter Name="dataFim" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="mediaPagamentos">
+            <Parameter Name="n" Mode="In" Type="Int32" />
+            <Parameter Name="pagamento" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SendEmails">
+            <Parameter Name="periodoTemporal" Mode="In" Type="Int32" />
+            <Parameter Name="text" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="test">
+            <Parameter Name="lol" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="test2">
+            <Parameter Name="lol" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="testeAlineaC" ReturnType="Collection(GlampinhoModel.testeAlineaC_Result)" />
+          <FunctionImport Name="testeAlineaD_DELETE" ReturnType="Collection(GlampinhoModel.testeAlineaD_DELETE_Result)" />
+          <FunctionImport Name="testeAlineaD_INSERT" ReturnType="Collection(GlampinhoModel.testeAlineaD_INSERT_Result)" />
+          <FunctionImport Name="testeAlineaI" ReturnType="Collection(GlampinhoModel.testeAlineaI_Result)" />
+          <FunctionImport Name="testeAlineaJ" ReturnType="Collection(GlampinhoModel.testeAlineaJ_Result)" />
+          <FunctionImport Name="testeAlineaK" />
+          <FunctionImport Name="testeAlineaL" ReturnType="Collection(GlampinhoModel.testeAlineaL_Result)" />
+          <FunctionImport Name="testeAlineaM" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="verificarHospedeParque" ReturnType="Collection(Int32)">
+            <Parameter Name="hospede" Mode="In" Type="Int32" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="listarAtividades_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="descrição" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaC_Result">
+          <Property Type="Int32" Name="NIF" Nullable="false" />
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="númeroIdentificação" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaD_DELETE_Result">
+          <Property Type="String" Name="nomeParque" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="localização" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="preçoBase" Nullable="true" />
+          <Property Type="Byte" Name="númeroMáximoPessoas" Nullable="true" />
+          <Property Type="String" Name="tipoAlojamento" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaD_INSERT_Result">
+          <Property Type="String" Name="nomeParque" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="localização" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="preçoBase" Nullable="true" />
+          <Property Type="Byte" Name="númeroMáximoPessoas" Nullable="true" />
+          <Property Type="String" Name="tipoAlojamento" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaI_Result">
+          <Property Type="String" Name="nomeParque" Nullable="false" MaxLength="30" />
+          <Property Type="Int32" Name="númeroSequencial" Nullable="false" />
+          <Property Type="Int32" Name="ano" Nullable="false" />
+          <Property Type="Int32" Name="NIF" Nullable="false" />
+          <Property Type="Int32" Name="preçoParticipante" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaJ_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="Int32" Name="ano" Nullable="false" />
+          <Property Type="String" Name="nomeHóspede" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="NIFHóspede" Nullable="true" />
+          <Property Type="Int32" Name="preçoTotal" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaL_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="descrição" Nullable="false" MaxLength="255" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GlampinhoModelStoreContainer" CdmEntityContainer="GlampinhoEF">
+          <EntitySetMapping Name="Actividades">
+            <EntityTypeMapping TypeName="GlampinhoModel.Actividades">
+              <MappingFragment StoreEntitySet="Actividades">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="númeroSequencial" ColumnName="númeroSequencial" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="lotaçãoMáxima" ColumnName="lotaçãoMáxima" />
+                <ScalarProperty Name="preçoParticipante" ColumnName="preçoParticipante" />
+                <ScalarProperty Name="dataRealização" ColumnName="dataRealização" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Alojamento">
+            <EntityTypeMapping TypeName="GlampinhoModel.Alojamento">
+              <MappingFragment StoreEntitySet="Alojamento">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AlojamentoEstada">
+            <EntityTypeMapping TypeName="GlampinhoModel.AlojamentoEstada">
+              <MappingFragment StoreEntitySet="AlojamentoEstada">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bungalow">
+            <EntityTypeMapping TypeName="GlampinhoModel.Bungalow">
+              <MappingFragment StoreEntitySet="Bungalow">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="tipologia" ColumnName="tipologia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estada">
+            <EntityTypeMapping TypeName="GlampinhoModel.Estada">
+              <MappingFragment StoreEntitySet="Estada">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dataInício" ColumnName="dataInício" />
+                <ScalarProperty Name="dataFim" ColumnName="dataFim" />
+                <ScalarProperty Name="idFactura" ColumnName="idFactura" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstadaExtra">
+            <EntityTypeMapping TypeName="GlampinhoModel.EstadaExtra">
+              <MappingFragment StoreEntitySet="EstadaExtra">
+                <ScalarProperty Name="estadaId" ColumnName="estadaId" />
+                <ScalarProperty Name="extraId" ColumnName="extraId" />
+                <ScalarProperty Name="preçoDia" ColumnName="preçoDia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Extra">
+            <EntityTypeMapping TypeName="GlampinhoModel.Extra">
+              <MappingFragment StoreEntitySet="Extra">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoDia" ColumnName="preçoDia" />
+                <ScalarProperty Name="associado" ColumnName="associado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Factura">
+            <EntityTypeMapping TypeName="GlampinhoModel.Factura">
+              <MappingFragment StoreEntitySet="Factura">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+                <ScalarProperty Name="nomeHóspede" ColumnName="nomeHóspede" />
+                <ScalarProperty Name="NIFHóspede" ColumnName="NIFHóspede" />
+                <ScalarProperty Name="preçoTotal" ColumnName="preçoTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hóspede">
+            <EntityTypeMapping TypeName="GlampinhoModel.Hóspede">
+              <MappingFragment StoreEntitySet="Hóspede">
+                <ScalarProperty Name="NIF" ColumnName="NIF" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="númeroIdentificação" ColumnName="númeroIdentificação" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HóspedeEstada">
+            <EntityTypeMapping TypeName="GlampinhoModel.HóspedeEstada">
+              <MappingFragment StoreEntitySet="HóspedeEstada">
+                <ScalarProperty Name="NIF" ColumnName="NIF" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="hóspede" ColumnName="hóspede" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Item">
+            <EntityTypeMapping TypeName="GlampinhoModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="idFactura" ColumnName="idFactura" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+                <ScalarProperty Name="linha" ColumnName="linha" />
+                <ScalarProperty Name="quantidade" ColumnName="quantidade" />
+                <ScalarProperty Name="preço" ColumnName="preço" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paga">
+            <EntityTypeMapping TypeName="GlampinhoModel.Paga">
+              <MappingFragment StoreEntitySet="Paga">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="númeroSequencial" ColumnName="númeroSequencial" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+                <ScalarProperty Name="NIF" ColumnName="NIF" />
+                <ScalarProperty Name="preçoParticipante" ColumnName="preçoParticipante" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParqueCampismo">
+            <EntityTypeMapping TypeName="GlampinhoModel.ParqueCampismo">
+              <MappingFragment StoreEntitySet="ParqueCampismo">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="estrelas" ColumnName="estrelas" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Telefones">
+            <EntityTypeMapping TypeName="GlampinhoModel.Telefones">
+              <MappingFragment StoreEntitySet="Telefones">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="telefone" ColumnName="telefone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tenda">
+            <EntityTypeMapping TypeName="GlampinhoModel.Tenda">
+              <MappingFragment StoreEntitySet="Tenda">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="área" ColumnName="área" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AlojamentoExtra" TypeName="GlampinhoModel.AlojamentoExtra" StoreEntitySet="AlojamentoExtra">
+            <EndProperty Name="Extra">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+            <EndProperty Name="Alojamento">
+              <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+              <ScalarProperty Name="localização" ColumnName="localização" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionName="GlampinhoModel.Store.listAtividades" FunctionImportName="listAtividades">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.listAtividades_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="addAlojamento" FunctionName="GlampinhoModel.Store.addAlojamento" />
+          <FunctionImportMapping FunctionImportName="addExtraPessoa" FunctionName="GlampinhoModel.Store.addExtraPessoa" />
+          <FunctionImportMapping FunctionImportName="addExtraToAlojamento" FunctionName="GlampinhoModel.Store.addExtraToAlojamento" />
+          <FunctionImportMapping FunctionImportName="addExtraToEstada" FunctionName="GlampinhoModel.Store.addExtraToEstada" />
+          <FunctionImportMapping FunctionImportName="addHóspede" FunctionName="GlampinhoModel.Store.addHóspede" />
+          <FunctionImportMapping FunctionImportName="addHospedeAtividade" FunctionName="GlampinhoModel.Store.addHospedeAtividade" />
+          <FunctionImportMapping FunctionImportName="addPreçoTotal" FunctionName="GlampinhoModel.Store.addPreçoTotal" />
+          <FunctionImportMapping FunctionImportName="createEstada" FunctionName="GlampinhoModel.Store.createEstada" />
+          <FunctionImportMapping FunctionImportName="createEstadaInTime" FunctionName="GlampinhoModel.Store.createEstadaInTime" />
+          <FunctionImportMapping FunctionImportName="deleteALL" FunctionName="GlampinhoModel.Store.deleteALL" />
+          <FunctionImportMapping FunctionImportName="deleteAlojamento" FunctionName="GlampinhoModel.Store.deleteAlojamento" />
+          <FunctionImportMapping FunctionImportName="deleteAlojamentoBungalow" FunctionName="GlampinhoModel.Store.deleteAlojamentoBungalow" />
+          <FunctionImportMapping FunctionImportName="deleteAlojamentoTenda" FunctionName="GlampinhoModel.Store.deleteAlojamentoTenda" />
+          <FunctionImportMapping FunctionImportName="deleteAtividades" FunctionName="GlampinhoModel.Store.deleteAtividades" />
+          <FunctionImportMapping FunctionImportName="deleteExtra" FunctionName="GlampinhoModel.Store.deleteExtra" />
+          <FunctionImportMapping FunctionImportName="deleteExtraPessoa" FunctionName="GlampinhoModel.Store.deleteExtraPessoa" />
+          <FunctionImportMapping FunctionImportName="deleteHospede" FunctionName="GlampinhoModel.Store.deleteHospede" />
+          <FunctionImportMapping FunctionImportName="eliminaHóspedesAssociados" FunctionName="GlampinhoModel.Store.eliminaHóspedesAssociados" />
+          <FunctionImportMapping FunctionImportName="finishEstadaWithFactura" FunctionName="GlampinhoModel.Store.finishEstadaWithFactura" />
+          <FunctionImportMapping FunctionImportName="getAlojamentoPreço" FunctionName="GlampinhoModel.Store.getAlojamentoPreço" />
+          <FunctionImportMapping FunctionImportName="getCustoTotalActividades" FunctionName="GlampinhoModel.Store.getCustoTotalActividades" />
+          <FunctionImportMapping FunctionImportName="getEstadaExtrasPreço" FunctionName="GlampinhoModel.Store.getEstadaExtrasPreço" />
+          <FunctionImportMapping FunctionImportName="getPessoalExtrasPreço" FunctionName="GlampinhoModel.Store.getPessoalExtrasPreço" />
+          <FunctionImportMapping FunctionImportName="inscreverHóspede" FunctionName="GlampinhoModel.Store.inscreverHóspede" />
+          <FunctionImportMapping FunctionImportName="InsertAlojamentoBungalow" FunctionName="GlampinhoModel.Store.InsertAlojamentoBungalow" />
+          <FunctionImportMapping FunctionImportName="InsertAlojamentoTenda" FunctionName="GlampinhoModel.Store.InsertAlojamentoTenda" />
+          <FunctionImportMapping FunctionImportName="listarAtividades" FunctionName="GlampinhoModel.Store.listarAtividades">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.listarAtividades_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="mediaPagamentos" FunctionName="GlampinhoModel.Store.mediaPagamentos" />
+          <FunctionImportMapping FunctionImportName="SendEmails" FunctionName="GlampinhoModel.Store.SendEmails" />
+          <FunctionImportMapping FunctionImportName="test" FunctionName="GlampinhoModel.Store.test" />
+          <FunctionImportMapping FunctionImportName="test2" FunctionName="GlampinhoModel.Store.test2" />
+          <FunctionImportMapping FunctionImportName="testeAlineaC" FunctionName="GlampinhoModel.Store.testeAlineaC">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaC_Result">
+                <ScalarProperty Name="NIF" ColumnName="NIF" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="númeroIdentificação" ColumnName="númeroIdentificação" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaD_DELETE" FunctionName="GlampinhoModel.Store.testeAlineaD_DELETE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaD_DELETE_Result">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaD_INSERT" FunctionName="GlampinhoModel.Store.testeAlineaD_INSERT">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaD_INSERT_Result">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaI" FunctionName="GlampinhoModel.Store.testeAlineaI">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaI_Result">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="númeroSequencial" ColumnName="númeroSequencial" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+                <ScalarProperty Name="NIF" ColumnName="NIF" />
+                <ScalarProperty Name="preçoParticipante" ColumnName="preçoParticipante" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaJ" FunctionName="GlampinhoModel.Store.testeAlineaJ">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaJ_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+                <ScalarProperty Name="nomeHóspede" ColumnName="nomeHóspede" />
+                <ScalarProperty Name="NIFHóspede" ColumnName="NIFHóspede" />
+                <ScalarProperty Name="preçoTotal" ColumnName="preçoTotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaK" FunctionName="GlampinhoModel.Store.testeAlineaK" />
+          <FunctionImportMapping FunctionImportName="testeAlineaL" FunctionName="GlampinhoModel.Store.testeAlineaL">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaL_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaM" FunctionName="GlampinhoModel.Store.testeAlineaM" />
+          <FunctionImportMapping FunctionImportName="verificarHospedeParque" FunctionName="GlampinhoModel.Store.verificarHospedeParque" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

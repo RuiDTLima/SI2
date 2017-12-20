@@ -51,8 +51,6 @@ CREATE TABLE dbo.Estada(
 	dataFim DATETIME2 NOT NULL,
 	idFactura INT,
 	ano INT,
-	nomeParque NVARCHAR(30),
-	CONSTRAINT fk_Parque FOREIGN KEY(nomeParque) REFERENCES ParqueCampismo(nome)ON DELETE CASCADE,
 	CONSTRAINT fk_estada FOREIGN KEY(idFactura, ano) REFERENCES Factura(id, ano)ON DELETE CASCADE,
 	CONSTRAINT checkDate CHECK(dataInício < dataFim)
 )
