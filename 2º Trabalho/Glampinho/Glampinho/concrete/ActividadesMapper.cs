@@ -119,5 +119,27 @@ namespace Glampinho.concrete {
                 command.ExecuteNonQuery();
             }
         }
+
+        internal Actividades Read(int numeroSeq, int ano, string nomeParqe)
+        {
+       
+            EnsureContext();
+            using (IDbCommand cmd = context.createCommand())
+            {
+                cmd.CommandText = SelectCommandText;
+                cmd.CommandType = SelectCommandType;
+
+                SqlParameter numSeq = new SqlParameter("@númeroSequencial", numeroSeq);
+                SqlParameter nomeParq = new SqlParameter("@nomeParque", nomeParqe);
+                SqlParameter year = new SqlParameter("@ano", ano);
+
+                cmd.Parameters.Add(numSeq);
+                cmd.Parameters.Add(nomeParq);
+                cmd.Parameters.Add(year);
+
+                using (IDataReader reader = cmd.ExecuteReader())
+                    return reader.Read() ? Map(reader) : null;
+            }
+        }
     }
 }

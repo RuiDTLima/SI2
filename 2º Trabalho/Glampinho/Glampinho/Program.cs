@@ -192,7 +192,7 @@ namespace Glampinho {
             }*/
 
             /* --------- Teste EstadaInTime ---------- */
-            using(Context context = new Context(connectionString)) {
+            /*using(Context context = new Context(connectionString)) {
                 ProcUtils procedimentos = new ProcUtils(context);
                 Hóspede responsável = new Hóspede();
                 responsável.NIF = 112233445;
@@ -229,7 +229,8 @@ namespace Glampinho {
                 extraAlojamento.associado = "alojamento";
 
                 procedimentos.createEstadaInTime(responsável, hóspede, estada, bungalow, extraPessoal, extraAlojamento);
-            }
+            }*/
+                
 
             /* ---------- Teste Estada ---------- */
             /*using(Context context = new Context(connectionString)) {

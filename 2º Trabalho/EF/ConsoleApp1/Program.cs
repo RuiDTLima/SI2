@@ -11,21 +11,21 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            using (var db = new ParqueCampismoContext())
+            using (var db = new Model1())
             {
 
 
-                var query1 = from b in db.Parques
+                var query1 = from b in db.ParqueCampismo
                             select b;
-                var q2 = db.Parques.SqlQuery("select * from ParqueCampismo");
+                //var q2 = db.ParqueCampismo.SqlQuery("select * from ParqueCampismo");
                
-                foreach (var item in q2)
+                foreach (var item in query1)
                 {
                     Console.WriteLine(item.nome);
                 }
 
             }
-            using (var db = new ActividadesContext())
+            using (var db = new Model1())
             {
 
 
