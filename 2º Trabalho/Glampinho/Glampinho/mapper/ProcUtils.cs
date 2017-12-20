@@ -91,10 +91,6 @@ namespace Glampinho.mapper
             }
         }
 
-        public void PagamentosHospede(Hóspede hóspede, DateTime dataInicio, DateTime dataFim,ParqueCampismo parqueCampismo)
-        {
-
-        }
 
     }
 }

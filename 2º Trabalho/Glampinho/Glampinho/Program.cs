@@ -79,7 +79,7 @@ namespace Glampinho {
                 estadaMapper.AddHospede(h1,id);
                 estadaMapper.AddExtraAlojamento(extra1, id);
                 estadaMapper.AddExtraEstada(extra2, id);*/
-                
+
 
                 /* hóspedeMapper.InscreverHospede(112233445, 6, "Glampinho", 2017);*/
 
@@ -87,13 +87,23 @@ namespace Glampinho {
                 faturaMapper.finishEstadaWithFactura(3); */
 
 
-                ProcUtils utils = new ProcUtils(context);
+                /*ProcUtils utils = new ProcUtils(context);
 
                 utils.SendEmails(7);
 
                 utils.ListActividades(Convert.ToDateTime("2016-03-12"), Convert.ToDateTime("2017-03-16"));
                 utils.MediaPagamentos(2);
 
+                FaturaRepository repository = new FaturaRepository(context);
+                repository.CalcularDespesasHospede(repository.FindFacturas(123456789, Convert.ToDateTime("2017-03-15"), Convert.ToDateTime("2017-10-16"), "Glampinho"), 123456789);
+                */
+
+                ParqueCampismoMapper p = new ParqueCampismoMapper(context);
+                ParqueCampismo parque = new ParqueCampismo();
+                parque.nome = "Glampinho";
+                p.Delete(parque);
+
+               
             }
         }
     }

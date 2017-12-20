@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp1
+{
+    class HóspedeContext : DbContext
+    {
+            public DbSet<Hóspede> hospedes { get; set; }
+
+        }
+    
+}
