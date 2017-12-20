@@ -164,7 +164,11 @@ CREATE PROCEDURE dbo.createEstadaInTime @NIFResponsável INT, @NIFHóspede INT, @t
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL SERIALIZABLE	-- durante a criação de uma estada não pode haver nenhuma alteração ao estado da base de dados devido em especial ao preços
 			DECLARE @id INT
+<<<<<<< HEAD
+			EXEC dbo.createEstada @NIFResponsável, @tempoEstada,@id OUTPUT
+=======
 			EXEC dbo.createEstada @NIFResponsável, @tempoEstada, @id OUTPUT
+>>>>>>> 6151cc127cef7f5e252092ca1fd865c376a8e720
 
 			EXEC dbo.addAlojamento @tipoAlojamento, @lotação, @id
 

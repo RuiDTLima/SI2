@@ -5,90 +5,84 @@ using Glampinho.model;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Glampinho.concrete
-{
-    class ExtraPessoalMapper : AbstracMapper<Extra, int, List<Extra>>, IExtraPessoalMapper
-    {
+namespace Glampinho.concrete {
+    class ExtraPessoalMapper : AbstractMapper<Extra, int, List<Extra>>, IExtraPessoalMapper {
+        protected override CommandType DeleteCommandType {
+            get {
+                return CommandType.StoredProcedure;
+            }
+        }
+
         public ExtraPessoalMapper(IContext ctx) : base(ctx) { }
-        protected override string InsertCommandText
-        {
-            get
-            {
-                return "INSERT INTO Extra(id, descrição, preçoDia, associado) " +
+
+        protected override string DeleteCommandText {
+            get {
+                return "dbo.deleteExtraPessoa"; // chamar procedimento armazenado
+            }
+        }
+
+        protected override string InsertCommandText {
+            get {
+                return "INSERT INTO dbo.Extra(id, descrição, preçoDia, associado) " +
                         "VALUES(@id, @descrição, @preçoDia, 'pessoa')";
             }
         }
 
-        protected override string SelectAllCommandText
-        {
-            get
-            {
-                return "SELECT id, descrição, preçoDia, associado FROM Extra";
+        protected override string SelectAllCommandText {
+            get {
+                return "SELECT id, descrição, preçoDia, associado FROM dbo.Extra WHERE associado = 'pessoa'";
             }
         }
 
-        protected override string SelectCommandText
-        {
-            get
-            {
-                return String.Format("{0} WHERE id = @id", SelectAllCommandText);
+        protected override string SelectCommandText {
+            get {
+                return String.Format("{0} AND id = @id", SelectAllCommandText);
             }
         }
 
-        protected override string UpdateCommandText
-        {
-            get
-            {
-                return "UPDATE Extra SET descrição=@descrição, preçoDia=@preçoDia WHERE id = @id";
+        protected override string UpdateCommandText {
+            get {
+                return "UPDATE dbo.Extra SET descrição = @descrição, preçoDia = @preçoDia WHERE id = @id";
             }
         }
-        protected override void DeleteParameters(IDbCommand command, Extra e)
-        {
+
+        protected override void DeleteParameters(IDbCommand command, Extra e) {
             SqlParameter id = new SqlParameter("@id", e.id);
             command.Parameters.Add(id);
         }
 
-        protected override void InsertParameters(IDbCommand command, Extra e)
-        {
+        protected override void InsertParameters(IDbCommand command, Extra e) {
             SqlParameter id = new SqlParameter("@id", e.id);
             SqlParameter descrição = new SqlParameter("@descrição", e.descrição);
             SqlParameter preçoDia = new SqlParameter("@preçoDia", e.preçoDia);
-            SqlParameter associado = new SqlParameter("@associado", "pessoa");
-
 
             command.Parameters.Add(id);
             command.Parameters.Add(descrição);
             command.Parameters.Add(preçoDia);
-            command.Parameters.Add(associado);
-
         }
 
-        protected override void SelectParameters(IDbCommand command, int k)
-        {
+        protected override void SelectParameters(IDbCommand command, int k) {
             SqlParameter param = new SqlParameter("@id", k);
             command.Parameters.Add(param);
         }
 
-        protected override void UpdateParameters(IDbCommand command, Extra e)
-        {
-            SqlParameter descrição = new SqlParameter("@descrição", e.descrição);
-            SqlParameter preçoDia = new SqlParameter("@preçoDia", e.preçoDia);
-            SqlParameter associado = new SqlParameter("@associado", e.associado);
+        protected override void UpdateParameters(IDbCommand command, Extra e) {
+            SqlParameter description = new SqlParameter("@descrição", e.descrição);
+            SqlParameter priceDay = new SqlParameter("@preçoDia", e.preçoDia);
+            SqlParameter id = new SqlParameter("@id", e.id);
 
-            command.Parameters.Add(descrição);
-            command.Parameters.Add(preçoDia);
-            command.Parameters.Add(associado);
+            command.Parameters.Add(description);
+            command.Parameters.Add(priceDay);
+            command.Parameters.Add(id);
         }
 
-        protected override Extra UpdateEntityID(IDbCommand command, Extra e)
-        {
+        protected override Extra UpdateEntityID(IDbCommand command, Extra e) {
             var id = command.Parameters["@id"] as SqlParameter;
             e.id = int.Parse(id.Value.ToString());
             return e;
         }
 
-        protected override Extra Map(IDataRecord record)
-        {
+        protected override Extra Map(IDataRecord record) {
             Extra extra = new Extra();
             extra.id = record.GetInt32(0);
             extra.descrição = record.GetString(1);
@@ -97,32 +91,23 @@ namespace Glampinho.concrete
 
             return extra;
         }
-        protected override string DeleteCommandText
-        {
-            get
-            {
-                return "dbo.deleteExtraPessoa"; // chamar procedimento armazenado
-            }
+
+        public override Extra Create(Extra entity) {
+            if (entity.associado != "pessoa")
+                throw new ArgumentException("Extra must be of type pessoa");
+            return base.Create(entity);
         }
 
-        public override Extra Delete(Extra entity)
-        {
-            if (entity == null)
-                throw new ArgumentException("The Extra cannot be null to be deleted");
+        public override Extra Update(Extra entity) {
+            if (entity.associado != "pessoa")
+                throw new ArgumentException("Extra must be of type pessoa");
+            return base.Update(entity);
+        }
 
-            EnsureContext();
-
-            using (IDbCommand command = context.createCommand())
-            {
-                command.CommandText = DeleteCommandText;
-                command.CommandType = CommandType.StoredProcedure;
-
-                DeleteParameters(command, entity);
-
-                return command.ExecuteNonQuery() == 0 ? null : entity;
-            }
+        public override Extra Delete(Extra entity) {
+            if (entity.associado != "pessoa")
+                throw new ArgumentException("Extra must be of type pessoa");
+            return base.Delete(entity);
         }
     }
 }
-
-

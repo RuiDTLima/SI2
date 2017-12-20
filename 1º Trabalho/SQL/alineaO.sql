@@ -273,7 +273,7 @@ CREATE PROC dbo.testeAlineaG AS
 			SELECT * FROM dbo.Paga
 			SELECT * FROM dbo.Actividades
 
-			exec dbo.deleteAtividades 'Glampinho', 1
+			exec dbo.deleteAtividades 'Glampinho', 1, 2017
 
 			SELECT * FROM dbo.ParqueCampismo
 			SELECT * FROM dbo.Hóspede

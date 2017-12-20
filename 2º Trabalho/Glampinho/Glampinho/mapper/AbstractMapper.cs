@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace Glampinho.mapper
 {
@@ -16,12 +15,12 @@ namespace Glampinho.mapper
         }
     }
 
-    abstract class AbstracMapper<T, Tid, TCol> : IMapper<T, Tid, TCol> where T : class, new() where TCol : IList<T>, IEnumerable<T>, new()
+    abstract class AbstractMapper<T, Tid, TCol> : IMapper<T, Tid, TCol> where T : class, new() where TCol : IList<T>, IEnumerable<T>, new()
     {
         protected IContext context;
 
-        protected abstract T Map(IDataRecord record); //How to map entity
-        protected abstract T UpdateEntityID(IDbCommand command, T e); //Update the generated ID
+        protected abstract T Map(IDataRecord record); //    How to map entity
+        protected abstract T UpdateEntityID(IDbCommand command, T e); //    Update the generated ID
         protected abstract string SelectAllCommandText { get; }
         protected virtual CommandType SelectAllCommandType { get { return System.Data.CommandType.Text; } }
         protected virtual void SelectAllParameters(IDbCommand command) { }
@@ -90,7 +89,7 @@ namespace Glampinho.mapper
             }
         }
 
-        public AbstracMapper(IContext ctx)
+        public AbstractMapper(IContext ctx)
         {
             context = ctx;
         }
@@ -168,43 +167,6 @@ namespace Glampinho.mapper
                 UpdateParameters(cmd, entity);
                 int result = cmd.ExecuteNonQuery();
                 return (result == 0) ? null : entity;
-            }
-        }
-
-        public void SendEmails(int intervalo)
-        {
-            EnsureContext();
-
-            using (IDbCommand command = context.createCommand())
-            {
-
-                string emailsText;
-
-                command.CommandText = "select dbo.enviarEmails(@periodoTemporal)";
-                SqlParameter param = new SqlParameter("@periodoTemporal", intervalo);
-                command.Parameters.Add(param);
-                emailsText = (string)command.ExecuteScalar();
-
-                Console.WriteLine(emailsText);
-            }
-        }
-        public void ListActividades(DateTime dataInicio, DateTime dataFim)
-        {
-            EnsureContext();
-
-            using (IDbCommand command = context.createCommand())
-            {
-                command.CommandText = "dbo.listarAtividades";
-                command.CommandType = CommandType.StoredProcedure;
-                SqlParameter dtInicio = new SqlParameter("@dataInicio", dataInicio);
-                SqlParameter dtFim = new SqlParameter("@dataFim", dataFim);
-
-                command.Parameters.Add(dtInicio);
-                command.Parameters.Add(dtFim);
-
-
-                command.ExecuteNonQuery();
-
             }
         }
     }

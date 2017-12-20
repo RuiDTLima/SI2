@@ -24,8 +24,7 @@ namespace Glampinho.concrete {
         public SqlCommand createCommand() {
             Open();
             return connection.CreateCommand();
-        }
-        
+        }   
 
         public void Dispose() {
             if (connection != null) {

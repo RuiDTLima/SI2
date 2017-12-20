@@ -18,12 +18,13 @@ namespace Glampinho.mapper {
             if (context == null)
                 throw new InvalidOperationException("Data Context not set.");
         }
+
+<<<<<<< HEAD
+            using (IDbCommand command = context.createCommand())
+            {
           
                 command.CommandText = "dbo.SendEmails";
                 command.CommandType = CommandType.StoredProcedure;
-        public void SendEmails(int intervalo) {
-            EnsureContext();
-            using (IDbCommand command = context.createCommand()) {
                 SqlParameter param = new SqlParameter("@periodoTemporal", intervalo);
                 SqlParameter output = new SqlParameter("@text", SqlDbType.VarChar)
 
@@ -31,6 +32,13 @@ namespace Glampinho.mapper {
                     Direction = ParameterDirection.Output
                 };
                 output.Size = 4000;
+=======
+        public void SendEmails(int intervalo) {
+            EnsureContext();
+            using (IDbCommand command = context.createCommand()) {
+                command.CommandText = "select dbo.enviarEmails(@periodoTemporal)";
+                SqlParameter param = new SqlParameter("@periodoTemporal",intervalo);
+>>>>>>> 6151cc127cef7f5e252092ca1fd865c376a8e720
                 command.Parameters.Add(param);
                 command.Parameters.Add(output);
 

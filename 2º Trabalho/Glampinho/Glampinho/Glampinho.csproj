@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -46,26 +46,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="concrete\ActividadesMapper.cs" />
-    <Compile Include="concrete\ParqueCampismoMapper.cs" />
-    <Compile Include="concrete\FaturaRepository.cs" />
+    <Compile Include="concrete\ActividadesRepository.cs" />
+    <Compile Include="concrete\BungalowMapper.cs" />
+    <Compile Include="concrete\BungalowRepository.cs" />
     <Compile Include="concrete\Context.cs" />
     <Compile Include="concrete\EstadaMapper.cs" />
     <Compile Include="concrete\ExtraAlojamentoMapper.cs" />
+    <Compile Include="concrete\ExtraAlojamentoRepository.cs" />
+    <Compile Include="concrete\ExtraPessoalRepository.cs" />
     <Compile Include="concrete\ExtraPessoaMapper.cs" />
     <Compile Include="concrete\FaturaMapper.cs" />
     <Compile Include="concrete\HóspedeMapper.cs" />
+    <Compile Include="concrete\HóspedeRepository.cs" />
+    <Compile Include="concrete\TendaMapper.cs" />
+    <Compile Include="concrete\TendaRepository.cs" />
+    <Compile Include="dal\IActividadesRepository.cs" />
+    <Compile Include="dal\IBungalowRepository.cs" />
     <Compile Include="dal\IContext.cs" />
-    <Compile Include="dal\IFaturaRepository.cs" />
+    <Compile Include="dal\IExtraAlojamentoRepository.cs" />
+    <Compile Include="dal\IExtraPessoalRepository.cs" />
+    <Compile Include="dal\IHóspedeRepository.cs" />
     <Compile Include="dal\IRepository.cs" />
+    <Compile Include="dal\ITendaRepository.cs" />
     <Compile Include="mapper\AbstractMapper.cs" />
     <Compile Include="mapper\IAtividadesMapper.cs" />
+    <Compile Include="mapper\IBungalowMapper.cs" />
     <Compile Include="mapper\IEstadaMapper.cs" />
     <Compile Include="mapper\IExtraAlojamentoMapper.cs" />
     <Compile Include="mapper\IExtraPessoalMapper.cs" />
     <Compile Include="mapper\IFacturaMapper.cs" />
     <Compile Include="mapper\IHóspedeMapper.cs" />
     <Compile Include="mapper\IMapper.cs" />
-    <Compile Include="mapper\IParqueCampismoMapper.cs" />
+    <Compile Include="mapper\ITendaMapper.cs" />
     <Compile Include="mapper\ProcUtils.cs" />
     <Compile Include="model\Actividades.cs" />
     <Compile Include="model\AlojamentoExtra.cs" />

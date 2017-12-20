@@ -1,7 +1,8 @@
 ﻿using Glampinho.model;
+using System;
 using System.Collections.Generic;
 
 namespace Glampinho.mapper {
-    interface IHóspedeMapper : IMapper<Hóspede, int, List<Hóspede>> {
+    interface ITendaMapper : IMapper<Tenda, Tuple<string, string>, List<Tenda>> {
     }
 }

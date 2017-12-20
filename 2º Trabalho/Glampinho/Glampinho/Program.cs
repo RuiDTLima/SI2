@@ -6,24 +6,45 @@ using System.Configuration;
 
 namespace Glampinho {
     class Program {
-
-        private static string connectionString = ConfigurationManager.ConnectionStrings["glampinho"].ConnectionString;
-
         static void Main(string[] args) {
+            string connectionString = ConfigurationManager.ConnectionStrings["glampinho"].ConnectionString;
+            /* ---------- Teste Hóspede ---------- */
+            /*using (Context context = new Context(connectionString)) {
+                Hóspede hóspede = new Hóspede();
 
+                hóspede.NIF = 112233445;
 
+                HóspedeMapper hóspedeMapper = new HóspedeMapper(context);
 
-            Console.WriteLine("1 - Inserir/Remover/Atualizar Hóspede");
-            Console.WriteLine("2 - Inserir/Remover/Atualizar Alojamento num Parque");
-            Console.WriteLine("3 - Inserir/Remover/Atualizar Extra de Alojamento");
-            Console.WriteLine("4 - Inserir/Remover/Atualizar Extra de Pessoa");
-            Console.WriteLine("5 - Inserir/Remover/Atualizar Actividade");
-            Console.WriteLine("6 - Criar uma estada para um dado período de tempo");
+                foreach (var h in hóspedeMapper.ReadAll()) {
+                    Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", h.NIF, h.nome, h.morada, h.email, h.númeroIdentificação);
+                }
+
+                Hóspede newHóspede = new Hóspede();
+                newHóspede.nome = "teste C#";
+                newHóspede.NIF = 1;
+                newHóspede.morada = "teste";
+                newHóspede.email = "teste@c#.com";
+                newHóspede.númeroIdentificação = 12;
+
+                newHóspede = hóspedeMapper.Create(newHóspede);
             Console.WriteLine("7 - Inscrever um hóspede numa atividade.");
             Console.WriteLine("8 - Pagamento devido por uma estada, com emissão da respetiva fatura");
             Console.WriteLine("9 - Enviar emails a todos os hóspedes responsáveis");
             Console.WriteLine("10 - Listar todas as atividades com lugares disponíveis para um intervalo de datas especificado");
 
+                Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", newHóspede.NIF, newHóspede.nome, newHóspede.morada, newHóspede.email, newHóspede.númeroIdentificação);
+                
+                newHóspede.morada = "update";
+                newHóspede.nome = "teste C#";
+                newHóspede.NIF = 1;
+                newHóspede.email = "teste@c#.com";
+                newHóspede.númeroIdentificação = 12;
+                hóspedeMapper.Update(newHóspede);
+
+                Hóspede deleteHóspede = new Hóspede();
+                deleteHóspede.NIF = 112233445;
+            }*/
 
             using (Context context = new Context(connectionString)) {
                 while (true)
@@ -68,6 +89,7 @@ namespace Glampinho {
                             Console.WriteLine("Indique a operação:");
                             string commandExtraAloj = Console.ReadLine();
 
+                newBungalow = bungalowMapper.Create(newBungalow);
                             Console.WriteLine("Id:");
                             string id = Console.ReadLine();
                             Console.WriteLine("Descrição:");
@@ -82,6 +104,10 @@ namespace Glampinho {
                             Console.WriteLine("Indique a operação:");
                             string commandExtraPessoal = Console.ReadLine();
 
+                Console.WriteLine("Bungalow: {0} || {1} || {2} || {3} || {4} || {5} || {6}", newBungalow.nomeParque, newBungalow.nome, newBungalow.localização, newBungalow.descrição, newBungalow.preçoBase, newBungalow.númeroMáximoPessoas, newBungalow.tipologia);
+
+                newBungalow.preçoBase = 0;
+                bungalowMapper.Update(newBungalow);
                             Console.WriteLine("Id:");
                             string id1 = Console.ReadLine();
                             Console.WriteLine("Descrição:");
@@ -150,6 +176,12 @@ namespace Glampinho {
                 }
             }
 
+                bungalowMapper.Delete(newBungalow);
+            }*/
+
+            /* ---------- Teste Tenda ---------- */
+            /*using (Context context = new Context(connectionString)) {
+                TendaMapper tendaMapper = new TendaMapper(context);
             void alineaC(Context ctx, string nome, int nif, string morada, string email, int numId, string command)
             {
                 HóspedeMapper hóspedeMapper = new HóspedeMapper(ctx);
@@ -208,6 +240,14 @@ namespace Glampinho {
                     extra.preçoDia = preçoDia;
                     extra.associado = associado;
 
+                Tenda newTenda = new Tenda();
+                newTenda.nomeParque = "Glampinho";
+                newTenda.nome = "Tenda c#";
+                newTenda.localização = "Rua tenda c#";
+                newTenda.descrição = "tenda de teste de c#";
+                newTenda.preçoBase = 50;
+                newTenda.númeroMáximoPessoas = 1;
+                newTenda.área = 25;
                     switch (command)
                     {
                         case "create":
@@ -235,6 +275,7 @@ namespace Glampinho {
                 actividade.preçoParticipante = preçoParticipante;
                 actividade.dataRealização = dataRealização;
 
+                newTenda = tendaMapper.Create(newTenda);
                 switch (command)
                 {
                     case "create":
@@ -283,5 +324,7 @@ namespace Glampinho {
 
 
             }
+    }
+}
         }
     }

@@ -7,15 +7,33 @@ using System.Data.SqlClient;
 
 namespace Glampinho.concrete
 {
-    class EstadaMapper : AbstracMapper<Estada, int, List<Estada>>, IEstadaMapper
+    class EstadaMapper : AbstractMapper<Estada, int, List<Estada>>, IEstadaMapper
     {
         public EstadaMapper(IContext ctx) : base(ctx) { }
 
-        protected override string UpdateCommandText => throw new NotImplementedException();
+        protected override string UpdateCommandText
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        protected override string DeleteCommandText => throw new NotImplementedException();
+        protected override string DeleteCommandText
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        protected override string InsertCommandText => throw new NotImplementedException();
+        protected override string InsertCommandText
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         protected override void SelectParameters(IDbCommand command, int k)
         {
@@ -23,15 +41,16 @@ namespace Glampinho.concrete
             command.Parameters.Add(param);
         }
 
-        
         protected override Estada Map(IDataRecord record)
         {
             Estada estada = new Estada();
+
             estada.id = record.GetInt32(0);
             estada.dataInício = record.GetDateTime(1);
             estada.dataFim = record.GetDateTime(2);
             estada.idFactura = record.GetInt32(3);
             estada.ano = record.GetInt32(4);
+
             return estada;
         }
 
@@ -56,8 +75,6 @@ namespace Glampinho.concrete
         }
 
         /************************************************ metodos para os procs *****************************************************/
-
-
 
         public int CreateEstada(Hóspede hóspede, int duração)
         {
@@ -101,7 +118,6 @@ namespace Glampinho.concrete
                 command.Parameters.Add(iden);
 
                 command.ExecuteNonQuery();
-
             }
         }
 
@@ -115,14 +131,11 @@ namespace Glampinho.concrete
                 command.CommandType = CommandType.StoredProcedure;
                 SqlParameter nifHosp = new SqlParameter("@NIF", hóspede.NIF);
                 SqlParameter iden = new SqlParameter("@id", id);
-
-
+                
                 command.Parameters.Add(nifHosp);
                 command.Parameters.Add(iden);
 
-
                 command.ExecuteNonQuery();
-
             }
         }
 
@@ -137,13 +150,10 @@ namespace Glampinho.concrete
                 SqlParameter idExtr = new SqlParameter("@idExtra", extra.id);
                 SqlParameter iden = new SqlParameter("@idEstada", id);
 
-
                 command.Parameters.Add(idExtr);
                 command.Parameters.Add(iden);
 
-
                 command.ExecuteNonQuery();
-
             }
         }
 
@@ -157,23 +167,19 @@ namespace Glampinho.concrete
                 command.CommandType = CommandType.StoredProcedure;
                 SqlParameter idExtr = new SqlParameter("@idExtra", extra.id);
                 SqlParameter iden = new SqlParameter("@idEstada", id);
-
-
+                
                 command.Parameters.Add(idExtr);
                 command.Parameters.Add(iden);
-
-
+                
                 command.ExecuteNonQuery();
-
             }
         }
-        
 
         protected override string SelectAllCommandText
         {
             get
             {
-                return "SELECT NIF, nome, morada, email, númeroIdentificação FROM Estada";
+                return "SELECT NIF, nome, morada, email, númeroIdentificação FROM dbo.Estada";
             }
         }
 
@@ -186,4 +192,3 @@ namespace Glampinho.concrete
         }
     }
 }
-

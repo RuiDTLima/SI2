@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Glampinho.model;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace Glampinho.mapper
 {
-    interface IAtividadesMapper : IMapper<Actividades, int?, List<Actividades>>
+    interface IAtividadesMapper : IMapper<Actividades, Tuple<String, int, int>, List<Actividades>>
     {
-        void InscreverHospede(Actividades actividade, Hóspede hóspede);
     }
 }

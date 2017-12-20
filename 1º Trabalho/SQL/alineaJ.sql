@@ -163,7 +163,7 @@ CREATE PROCEDURE dbo.finishEstadaWithFactura @idEstada INT AS
 			INSERT INTO dbo.Factura(id, ano, NIFHóspede, nomeHóspede, preçoTotal)
 				VALUES (@idFactura, @ano, @NIFResponsável, @nomeResponsável, 0)	
 			
-			UPDATE Estada SET idFactura=@idFactura WHERE id=@idEstada
+			UPDATE Estada SET idFactura=@idFactura, ano = @ano WHERE id=@idEstada
 
 			EXEC dbo.getAlojamentoPreço @idEstada, @idFactura, @ano, 0, @novaLinha OUTPUT
 
