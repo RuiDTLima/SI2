@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actividades.cs" />
-    <Compile Include="ActividadesContext.cs" />
     <Compile Include="Alojamento.cs" />
     <Compile Include="AlojamentoEstada.cs" />
     <Compile Include="Bungalow.cs" />
