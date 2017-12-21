@@ -4,52 +4,35 @@ using Glampinho.model;
 using System;
 using System.Configuration;
 
-namespace Glampinho {
-    class Program {
-        static void Main(string[] args) {
-            string connectionString = ConfigurationManager.ConnectionStrings["glampinho"].ConnectionString;
-            /* ---------- Teste Hóspede ---------- */
-            /*using (Context context = new Context(connectionString)) {
-                Hóspede hóspede = new Hóspede();
+namespace Glampinho
+{
+    class Program
+    {
 
-                hóspede.NIF = 112233445;
+        private static string connectionString = ConfigurationManager.ConnectionStrings["glampinho"].ConnectionString;
 
-                HóspedeMapper hóspedeMapper = new HóspedeMapper(context);
+        static void Main(string[] args)
+        {
 
-                foreach (var h in hóspedeMapper.ReadAll()) {
-                    Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", h.NIF, h.nome, h.morada, h.email, h.númeroIdentificação);
-                }
 
-                Hóspede newHóspede = new Hóspede();
-                newHóspede.nome = "teste C#";
-                newHóspede.NIF = 1;
-                newHóspede.morada = "teste";
-                newHóspede.email = "teste@c#.com";
-                newHóspede.númeroIdentificação = 12;
 
-                newHóspede = hóspedeMapper.Create(newHóspede);
-            Console.WriteLine("7 - Inscrever um hóspede numa atividade.");
+            Console.WriteLine("1 - Inserir/Remover/Atualizar Hóspede");
+            Console.WriteLine("2 - Inserir/Remover/Atualizar Alojamento num Parque");
+            Console.WriteLine("3 - Inserir/Remover/Atualizar Extra de Alojamento");
+            Console.WriteLine("4 - Inserir/Remover/Atualizar Extra de Pessoa");
+            Console.WriteLine("5 - Inserir/Remover/Atualizar Actividade");
+            Console.WriteLine("6 - Criar uma estada para um dado período de tempo");
+            Console.WriteLine("7 - Inscrever um hóspede numa atividade");
             Console.WriteLine("8 - Pagamento devido por uma estada, com emissão da respetiva fatura");
             Console.WriteLine("9 - Enviar emails a todos os hóspedes responsáveis");
             Console.WriteLine("10 - Listar todas as atividades com lugares disponíveis para um intervalo de datas especificado");
 
-                Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", newHóspede.NIF, newHóspede.nome, newHóspede.morada, newHóspede.email, newHóspede.númeroIdentificação);
-                
-                newHóspede.morada = "update";
-                newHóspede.nome = "teste C#";
-                newHóspede.NIF = 1;
-                newHóspede.email = "teste@c#.com";
-                newHóspede.númeroIdentificação = 12;
-                hóspedeMapper.Update(newHóspede);
 
-                Hóspede deleteHóspede = new Hóspede();
-                deleteHóspede.NIF = 112233445;
-            }*/
-
-            using (Context context = new Context(connectionString)) {
+            using (Context context = new Context(connectionString))
+            {
                 while (true)
                 {
-                    
+
                     switch (Console.ReadLine())
                     {
                         case "1":
@@ -89,7 +72,6 @@ namespace Glampinho {
                             Console.WriteLine("Indique a operação:");
                             string commandExtraAloj = Console.ReadLine();
 
-                newBungalow = bungalowMapper.Create(newBungalow);
                             Console.WriteLine("Id:");
                             string id = Console.ReadLine();
                             Console.WriteLine("Descrição:");
@@ -98,16 +80,12 @@ namespace Glampinho {
                             string preçoDia = Console.ReadLine();
                             Console.WriteLine("Associado:");
                             string associado = Console.ReadLine();
-                            alineaE(context,  Int32.Parse(id),  descrição, Int32.Parse(preçoDia),  associado, commandExtraAloj);
+                            alineaE(context, Int32.Parse(id), descrição, Int32.Parse(preçoDia), associado, commandExtraAloj);
                             break;
                         case "4":
                             Console.WriteLine("Indique a operação:");
                             string commandExtraPessoal = Console.ReadLine();
 
-                Console.WriteLine("Bungalow: {0} || {1} || {2} || {3} || {4} || {5} || {6}", newBungalow.nomeParque, newBungalow.nome, newBungalow.localização, newBungalow.descrição, newBungalow.preçoBase, newBungalow.númeroMáximoPessoas, newBungalow.tipologia);
-
-                newBungalow.preçoBase = 0;
-                bungalowMapper.Update(newBungalow);
                             Console.WriteLine("Id:");
                             string id1 = Console.ReadLine();
                             Console.WriteLine("Descrição:");
@@ -135,10 +113,10 @@ namespace Glampinho {
                             string preçoParticipante = Console.ReadLine();
                             Console.WriteLine("Data Realização");
                             string dataRealização = Console.ReadLine();
-                            alineaG(context,nomeParque, Int32.Parse(númeroSequencial), nomeAct, descriçãoAct, Int32.Parse(lotaçãoMáxima), Int32.Parse(preçoParticipante),Convert.ToDateTime(dataRealização) ,commandAct);
+                            alineaG(context, nomeParque, Int32.Parse(númeroSequencial), nomeAct, descriçãoAct, Int32.Parse(lotaçãoMáxima), Int32.Parse(preçoParticipante), Convert.ToDateTime(dataRealização), commandAct);
                             break;
                         case "6":
-                            
+
                             break;
                         case "7":
                             Console.WriteLine("NIF Hospede:");
@@ -176,12 +154,6 @@ namespace Glampinho {
                 }
             }
 
-                bungalowMapper.Delete(newBungalow);
-            }*/
-
-            /* ---------- Teste Tenda ---------- */
-            /*using (Context context = new Context(connectionString)) {
-                TendaMapper tendaMapper = new TendaMapper(context);
             void alineaC(Context ctx, string nome, int nif, string morada, string email, int numId, string command)
             {
                 HóspedeMapper hóspedeMapper = new HóspedeMapper(ctx);
@@ -191,7 +163,7 @@ namespace Glampinho {
                 newHóspede.morada = morada;
                 newHóspede.email = email;
                 newHóspede.númeroIdentificação = numId;
-                
+
                 switch (command)
                 {
                     case "create":
@@ -232,38 +204,30 @@ namespace Glampinho {
                 }
             }
             void alineaF(Context ctx, int id, string descrição, int preçoDia, string associado, string command)
-                {
-                    ExtraPessoalMapper extraMapper = new ExtraPessoalMapper(ctx);
-                    Extra extra = new Extra();
-                    extra.id = id;
-                    extra.descrição = descrição;
-                    extra.preçoDia = preçoDia;
-                    extra.associado = associado;
+            {
+                ExtraPessoalMapper extraMapper = new ExtraPessoalMapper(ctx);
+                Extra extra = new Extra();
+                extra.id = id;
+                extra.descrição = descrição;
+                extra.preçoDia = preçoDia;
+                extra.associado = associado;
 
-                Tenda newTenda = new Tenda();
-                newTenda.nomeParque = "Glampinho";
-                newTenda.nome = "Tenda c#";
-                newTenda.localização = "Rua tenda c#";
-                newTenda.descrição = "tenda de teste de c#";
-                newTenda.preçoBase = 50;
-                newTenda.númeroMáximoPessoas = 1;
-                newTenda.área = 25;
-                    switch (command)
-                    {
-                        case "create":
-                            extra = extraMapper.Create(extra);
-                            break;
-                        case "delete":
-                            extra = extraMapper.Delete(extra);
-                            break;
-                        case "update":
-                            extra = extraMapper.Update(extra);
-                            break;
-                        default:
-                            throw new Exception("Error");
-                    }
+                switch (command)
+                {
+                    case "create":
+                        extra = extraMapper.Create(extra);
+                        break;
+                    case "delete":
+                        extra = extraMapper.Delete(extra);
+                        break;
+                    case "update":
+                        extra = extraMapper.Update(extra);
+                        break;
+                    default:
+                        throw new Exception("Error");
                 }
-            void alineaG(Context ctx, string nomeParque, int númeroSequencial, string nome,string descrição, int lotaçãoMáxima, int preçoParticipante, DateTime dataRealização, string command)
+            }
+            void alineaG(Context ctx, string nomeParque, int númeroSequencial, string nome, string descrição, int lotaçãoMáxima, int preçoParticipante, DateTime dataRealização, string command)
             {
                 ActividadesMapper actMapper = new ActividadesMapper(ctx);
                 Actividades actividade = new Actividades();
@@ -275,7 +239,6 @@ namespace Glampinho {
                 actividade.preçoParticipante = preçoParticipante;
                 actividade.dataRealização = dataRealização;
 
-                newTenda = tendaMapper.Create(newTenda);
                 switch (command)
                 {
                     case "create":
@@ -292,15 +255,16 @@ namespace Glampinho {
                 }
             }
             void alineaH(Context ctx, int id, string descrição, int preçoDia, string associado, string command) { } //TODO!!!
-            void alineaI(Context ctx, int nifHospede, int numeroSeq, int ano,string nomeParq)
+            void alineaI(Context ctx, int nifHospede, int numeroSeq, int ano, string nomeParq)
             {
                 HóspedeMapper hóspedeMapper = new HóspedeMapper(ctx);
                 Hóspede h = hóspedeMapper.Read(nifHospede);
 
                 ActividadesMapper actividadesMapper = new ActividadesMapper(ctx);
-                Actividades a = actividadesMapper.Read(numeroSeq,ano,nomeParq);
+                ProcUtils utils = new ProcUtils(ctx);
+                Actividades a = actividadesMapper.Read(new Tuple<string, int, int>(nomeParq,numeroSeq,ano));
 
-                actividadesMapper.InscreverHospede(a,h);
+                utils.InscreverHospede(a, h);
                 Console.WriteLine("Hóspede inscrito na atividade " + a.nome);
             }
             void alineaJ(Context ctx, int idEstada)
@@ -323,8 +287,6 @@ namespace Glampinho {
             }
 
 
-            }
-    }
-}
         }
     }
+}
