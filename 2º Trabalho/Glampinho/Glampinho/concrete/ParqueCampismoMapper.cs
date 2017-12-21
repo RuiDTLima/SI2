@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Glampinho.mapper;
+﻿using Glampinho.mapper;
 using Glampinho.model;
+using System.Collections.Generic;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace Glampinho.concrete
 {
-    class ParqueCampismoMapper : AbstracMapper<ParqueCampismo, int, List<ParqueCampismo>>, IParqueCampismoMapper
+    class ParqueCampismoMapper : AbstractMapper<ParqueCampismo, int, List<ParqueCampismo>>, IParqueCampismoMapper
     {
         public ParqueCampismoMapper(IContext ctx) : base(ctx) { }
 
@@ -22,7 +22,7 @@ namespace Glampinho.concrete
             {
                 command.CommandText = "SELECT DISTINCT NIF FROM HóspedeEstada \n" +
                  "EXCEPT\n" +
-                 "SELECT DISTINCT NIF FROM HóspedeEstada JOIN ( SELECT id FROM Estada WHERE Estada.nomeParque<>@nomeParque) AS A on A.id=HóspedeEstada.id";
+                 "SELECT DISTINCT NIF FROM HóspedeEstada INNER JOIN ( SELECT id FROM AlojamentoEstada WHERE nomeParque<>@nomeParque ) AS A ON A.id=HóspedeEstada.id";
                 command.CommandType = CommandType.Text;
                 SqlParameter nomeParq = new SqlParameter("@nomeParque", entity.nome);
 
@@ -42,6 +42,27 @@ namespace Glampinho.concrete
 
                 reader.Close();
                 command.Parameters.Clear();
+
+                command.CommandText = "SELECT A.id FROM Estada INNER JOIN(SELECT * FROM AlojamentoEstada WHERE nomeParque = 'Glampinho') AS A ON Estada.id = A.id";
+                command.CommandType = CommandType.Text;
+                SqlParameter nomeParqe = new SqlParameter("@nomeParque", entity.nome);
+
+                command.Parameters.Clear();
+                reader.Close();
+
+                command.Parameters.Add(nomeParq);
+
+                IDataReader dataReader = command.ExecuteReader();
+                List<Estada> estadas = new List<Estada>();
+                while (reader.Read())
+                {
+                    Estada estada = new Estada();
+                    estada.id = reader.GetInt32(0);
+                    estadas.Add(estada);
+                }
+
+                EstadaMapper estadaMapper = new EstadaMapper(context);
+                estadas.ForEach(h => { estadaMapper.Delete(h); });
 
                 command.CommandText = "DELETE FROM ParqueCampismo WHERE nome=@nome";
                 command.CommandType = CommandType.Text;
