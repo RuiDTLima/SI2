@@ -200,7 +200,7 @@ EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'tenda nova', 'Rua 5', 'por estrear'
 EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow hoje', 'Rua 6', 'primeiro bungalow', 15, 10, 'T3'
 EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow ontem', 'Rua 7', 'segundo bungalow', 15, 9, 'T3'
 
-INSERT INTO dbo.Estada(id, dataInício, dataFim,nomeParque)
+INSERT INTO dbo.Estada(id, dataInício, dataFim)
 	VALUES (1, '2017-03-15 13:00:00', '2017-03-16 13:00:00','Glampinho'),
 		   (2, '2017-11-12 13:00:00', '2018-11-14 13:00:00','Glampinho'),
 		   (3, '2017-10-05 10:00:00', '2017-11-12 13:00:00','Glampinho'),

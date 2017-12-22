@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="GlampinhoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="GlampinhoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Actividades">
           <Key>
             <PropertyRef Name="nomeParque" />
@@ -174,12 +174,7 @@
           <Property Name="localização" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="área" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Teste">
-          <Property Name="a" Type="int" />
-        </EntityType>-->
-        <Association Name="FK__Actividad__nomeP__2A2C1B24">
+        <Association Name="FK__Actividad__nomeP__5F5EFD72">
           <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -193,7 +188,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Alojament__nomeP__1FAE8CB1">
+        <Association Name="FK__Alojament__nomeP__54E16EFF">
           <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -207,7 +202,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AlojamentoEs__id__401B5C43">
+        <Association Name="FK__AlojamentoEs__id__754E3E91">
           <End Role="Estada" Type="Self.Estada" Multiplicity="1" />
           <End Role="AlojamentoEstada" Type="Self.AlojamentoEstada" Multiplicity="*" />
           <ReferentialConstraint>
@@ -219,7 +214,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AlojamentoEx__id__43EBED27">
+        <Association Name="FK__AlojamentoEx__id__791ECF75">
           <End Role="Extra" Type="Self.Extra" Multiplicity="1" />
           <End Role="AlojamentoExtra" Type="Self.AlojamentoExtra" Multiplicity="*" />
           <ReferentialConstraint>
@@ -231,7 +226,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__EstadaExt__estad__3C4ACB5F">
+        <Association Name="FK__EstadaExt__estad__717DADAD">
           <End Role="Estada" Type="Self.Estada" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -245,7 +240,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__EstadaExt__extra__3D3EEF98">
+        <Association Name="FK__EstadaExt__extra__7271D1E6">
           <End Role="Extra" Type="Self.Extra" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -259,7 +254,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Factura__NIFHósp__180D6AE9">
+        <Association Name="FK__Factura__NIFHósp__4D404D37">
           <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="0..1" />
           <End Role="Factura" Type="Self.Factura" Multiplicity="*" />
           <ReferentialConstraint>
@@ -271,7 +266,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__HóspedeEsta__NIF__37861642">
+        <Association Name="FK__HóspedeEsta__NIF__6CB8F890">
           <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -285,7 +280,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__HóspedeEstad__id__387A3A7B">
+        <Association Name="FK__HóspedeEstad__id__6DAD1CC9">
           <End Role="Estada" Type="Self.Estada" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -299,7 +294,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Paga__NIF__33B5855E">
+        <Association Name="FK__Paga__NIF__68E867AC">
           <End Role="Hóspede" Type="Self.Hóspede" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -313,7 +308,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Telefones__nomeP__2D0887CF">
+        <Association Name="FK__Telefones__nomeP__623B6A1D">
           <End Role="ParqueCampismo" Type="Self.ParqueCampismo" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -499,13 +494,10 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
         <Function Name="deleteAtividades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
           <Parameter Name="númeroSequencial" Type="int" Mode="In" />
+          <Parameter Name="ano" Type="int" Mode="In" />
         </Function>
         <Function Name="deleteExtra" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="identi" Type="int" Mode="In" />
-          <Parameter Name="nome" Type="nvarchar" Mode="In" />
-          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
-          <Parameter Name="localização" Type="nvarchar" Mode="In" />
-          <Parameter Name="idEstada" Type="int" Mode="In" />
+          <Parameter Name="id" Type="int" Mode="In" />
         </Function>
         <Function Name="deleteExtraPessoa" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id" Type="int" Mode="In" />
@@ -516,29 +508,8 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
         <Function Name="eliminaHóspedesAssociados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idEstada" Type="int" Mode="In" />
         </Function>
-        <Function Name="emailContent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
-          <Parameter Name="NIF" Type="int" Mode="In" />
-          <Parameter Name="email" Type="nvarchar" Mode="In" />
-          <Parameter Name="text" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="enviarEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
-          <Parameter Name="NIF" Type="int" Mode="In" />
-          <Parameter Name="email" Type="nvarchar" Mode="In" />
-          <Parameter Name="text" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="enviarEmails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
-          <Parameter Name="periodoTemporal" Type="int" Mode="In" />
-        </Function>
         <Function Name="finishEstadaWithFactura" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idEstada" Type="int" Mode="In" />
-        </Function>
-        <Function Name="funcSendEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
-          <Parameter Name="periodoTemporal" Type="int" Mode="In" />
-        </Function>
-        <Function Name="funcSendMail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
-          <Parameter Name="NIF" Type="int" Mode="In" />
-          <Parameter Name="email" Type="nvarchar" Mode="In" />
-          <Parameter Name="text" Type="varchar" Mode="In" />
         </Function>
         <Function Name="getAlojamentoPreço" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idEstada" Type="int" Mode="In" />
@@ -591,29 +562,22 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
           <Parameter Name="númeroMáximoPessoas" Type="tinyint" Mode="In" />
           <Parameter Name="área" Type="int" Mode="In" />
         </Function>
+        <Function Name="inserts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="listarAtividades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="dataInicio" Type="date" Mode="In" />
-          <Parameter Name="dataFim" Type="date" Mode="In" />
+          <Parameter Name="dataInicio" Type="datetime2" Mode="In" />
+          <Parameter Name="dataFim" Type="datetime2" Mode="In" />
         </Function>
         <Function Name="listAtividades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="dataInicio" Type="date" Mode="In" />
-          <Parameter Name="dataFim" Type="date" Mode="In" />
+          <Parameter Name="dataInicio" Type="datetime2" Mode="In" />
+          <Parameter Name="dataFim" Type="datetime2" Mode="In" />
           <ReturnType>
             <CollectionType>
               <RowType>
                 <Property Name="nome" Type="nvarchar" MaxLength="30" Nullable="false" />
-                <Property Name="descrição" Type="nvarchar" MaxLength="255" Nullable="false" />
+                <Property Name="descrição" Type="nvarchar" MaxLength="30" Nullable="false" />
               </RowType>
             </CollectionType>
           </ReturnType>
-        </Function>
-        <Function Name="lol" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
-          <Parameter Name="NIF" Type="int" Mode="In" />
-          <Parameter Name="email" Type="nvarchar" Mode="In" />
-          <Parameter Name="text" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="lol2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
-          <Parameter Name="periodoTemporal" Type="int" Mode="In" />
         </Function>
         <Function Name="media" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="preço" Type="int" Mode="In" />
@@ -623,19 +587,14 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
           <Parameter Name="n" Type="int" Mode="In" />
           <Parameter Name="pagamento" Type="nvarchar" Mode="InOut" />
         </Function>
-        <Function Name="SendEMail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+        <Function Name="sendEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NIF" Type="int" Mode="In" />
           <Parameter Name="email" Type="nvarchar" Mode="In" />
           <Parameter Name="text" Type="varchar" Mode="In" />
+          <Parameter Name="mail" Type="text" Mode="InOut" />
         </Function>
         <Function Name="SendEmails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="periodoTemporal" Type="int" Mode="In" />
-          <Parameter Name="text" Type="text" Mode="InOut" />
-        </Function>
-        <Function Name="SendMail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
-          <Parameter Name="NIF" Type="int" Mode="In" />
-          <Parameter Name="email" Type="nvarchar" Mode="In" />
-          <Parameter Name="text" Type="varchar" Mode="In" />
         </Function>
         <Function Name="test" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="lol" Type="int" Mode="In" />
@@ -643,14 +602,28 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
         <Function Name="test2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="lol" Type="int" Mode="In" />
         </Function>
+        <Function Name="testaInsertAlojamentoBungalow" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testaInsertAlojamentoTenda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="testeAlineaC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="testeAlineaD_DELETE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="testeAlineaD_INSERT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaF" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaHAddAlojamento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaHAddExtraToAlojamento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaHAddExtraToEstada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaHAddHóspede" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaHCreateEstada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaHCreateEstadaInTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="testeAlineaI" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="testeAlineaJ" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="testeAlineaK" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="testeAlineaL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="testeAlineaM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaNTriggerDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaNTriggerInsert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="testeAlineaNTriggerUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="verificarHospedeParque" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="hospede" Type="int" Mode="In" />
           <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
@@ -672,47 +645,47 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
           <EntitySet Name="ParqueCampismo" EntityType="Self.ParqueCampismo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Telefones" EntityType="Self.Telefones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tenda" EntityType="Self.Tenda" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Actividad__nomeP__2A2C1B24" Association="Self.FK__Actividad__nomeP__2A2C1B24">
+          <AssociationSet Name="FK__Actividad__nomeP__5F5EFD72" Association="Self.FK__Actividad__nomeP__5F5EFD72">
             <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
             <End Role="Actividades" EntitySet="Actividades" />
           </AssociationSet>
-          <AssociationSet Name="FK__Alojament__nomeP__1FAE8CB1" Association="Self.FK__Alojament__nomeP__1FAE8CB1">
+          <AssociationSet Name="FK__Alojament__nomeP__54E16EFF" Association="Self.FK__Alojament__nomeP__54E16EFF">
             <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
             <End Role="Alojamento" EntitySet="Alojamento" />
           </AssociationSet>
-          <AssociationSet Name="FK__AlojamentoEs__id__401B5C43" Association="Self.FK__AlojamentoEs__id__401B5C43">
+          <AssociationSet Name="FK__AlojamentoEs__id__754E3E91" Association="Self.FK__AlojamentoEs__id__754E3E91">
             <End Role="Estada" EntitySet="Estada" />
             <End Role="AlojamentoEstada" EntitySet="AlojamentoEstada" />
           </AssociationSet>
-          <AssociationSet Name="FK__AlojamentoEx__id__43EBED27" Association="Self.FK__AlojamentoEx__id__43EBED27">
+          <AssociationSet Name="FK__AlojamentoEx__id__791ECF75" Association="Self.FK__AlojamentoEx__id__791ECF75">
             <End Role="Extra" EntitySet="Extra" />
             <End Role="AlojamentoExtra" EntitySet="AlojamentoExtra" />
           </AssociationSet>
-          <AssociationSet Name="FK__EstadaExt__estad__3C4ACB5F" Association="Self.FK__EstadaExt__estad__3C4ACB5F">
+          <AssociationSet Name="FK__EstadaExt__estad__717DADAD" Association="Self.FK__EstadaExt__estad__717DADAD">
             <End Role="Estada" EntitySet="Estada" />
             <End Role="EstadaExtra" EntitySet="EstadaExtra" />
           </AssociationSet>
-          <AssociationSet Name="FK__EstadaExt__extra__3D3EEF98" Association="Self.FK__EstadaExt__extra__3D3EEF98">
+          <AssociationSet Name="FK__EstadaExt__extra__7271D1E6" Association="Self.FK__EstadaExt__extra__7271D1E6">
             <End Role="Extra" EntitySet="Extra" />
             <End Role="EstadaExtra" EntitySet="EstadaExtra" />
           </AssociationSet>
-          <AssociationSet Name="FK__Factura__NIFHósp__180D6AE9" Association="Self.FK__Factura__NIFHósp__180D6AE9">
+          <AssociationSet Name="FK__Factura__NIFHósp__4D404D37" Association="Self.FK__Factura__NIFHósp__4D404D37">
             <End Role="Hóspede" EntitySet="Hóspede" />
             <End Role="Factura" EntitySet="Factura" />
           </AssociationSet>
-          <AssociationSet Name="FK__HóspedeEsta__NIF__37861642" Association="Self.FK__HóspedeEsta__NIF__37861642">
+          <AssociationSet Name="FK__HóspedeEsta__NIF__6CB8F890" Association="Self.FK__HóspedeEsta__NIF__6CB8F890">
             <End Role="Hóspede" EntitySet="Hóspede" />
             <End Role="HóspedeEstada" EntitySet="HóspedeEstada" />
           </AssociationSet>
-          <AssociationSet Name="FK__HóspedeEstad__id__387A3A7B" Association="Self.FK__HóspedeEstad__id__387A3A7B">
+          <AssociationSet Name="FK__HóspedeEstad__id__6DAD1CC9" Association="Self.FK__HóspedeEstad__id__6DAD1CC9">
             <End Role="Estada" EntitySet="Estada" />
             <End Role="HóspedeEstada" EntitySet="HóspedeEstada" />
           </AssociationSet>
-          <AssociationSet Name="FK__Paga__NIF__33B5855E" Association="Self.FK__Paga__NIF__33B5855E">
+          <AssociationSet Name="FK__Paga__NIF__68E867AC" Association="Self.FK__Paga__NIF__68E867AC">
             <End Role="Hóspede" EntitySet="Hóspede" />
             <End Role="Paga" EntitySet="Paga" />
           </AssociationSet>
-          <AssociationSet Name="FK__Telefones__nomeP__2D0887CF" Association="Self.FK__Telefones__nomeP__2D0887CF">
+          <AssociationSet Name="FK__Telefones__nomeP__623B6A1D" Association="Self.FK__Telefones__nomeP__623B6A1D">
             <End Role="ParqueCampismo" EntitySet="ParqueCampismo" />
             <End Role="Telefones" EntitySet="Telefones" />
           </AssociationSet>
@@ -745,8 +718,7 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             <End Role="Tenda" EntitySet="Tenda" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GlampinhoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1331,25 +1303,22 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
           <FunctionImport Name="deleteAtividades">
             <Parameter Name="nomeParque" Mode="In" Type="String" />
             <Parameter Name="númeroSequencial" Mode="In" Type="Int32" />
+            <Parameter Name="ano" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="deleteExtra">
-            <Parameter Name="identi" Mode="In" Type="Int32" />
-            <Parameter Name="nome" Mode="In" Type="String" />
-            <Parameter Name="nomeParque" Mode="In" Type="String" />
-            <Parameter Name="localização" Mode="In" Type="String" />
-            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="deleteExtraPessoa">
-            <Parameter Name="id" Mode="In" Type="Int32" />
+          <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="deleteHospede">
-            <Parameter Name="NIFHospede" Mode="In" Type="Int32" />
+          <Parameter Name="NIFHospede" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="eliminaHóspedesAssociados">
-            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          <Parameter Name="idEstada" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="finishEstadaWithFactura">
-            <Parameter Name="idEstada" Mode="In" Type="Int32" />
+          <Parameter Name="idEstada" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="getAlojamentoPreço">
             <Parameter Name="idEstada" Mode="In" Type="Int32" />
@@ -1411,14 +1380,13 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             <Parameter Name="pagamento" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SendEmails">
-            <Parameter Name="periodoTemporal" Mode="In" Type="Int32" />
-            <Parameter Name="text" Mode="InOut" Type="String" />
+          <Parameter Name="periodoTemporal" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="test">
-            <Parameter Name="lol" Mode="In" Type="Int32" />
+          <Parameter Name="lol" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="test2">
-            <Parameter Name="lol" Mode="In" Type="Int32" />
+          <Parameter Name="lol" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="testeAlineaC" ReturnType="Collection(GlampinhoModel.testeAlineaC_Result)" />
           <FunctionImport Name="testeAlineaD_DELETE" ReturnType="Collection(GlampinhoModel.testeAlineaD_DELETE_Result)" />
@@ -1432,6 +1400,30 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             <Parameter Name="hospede" Mode="In" Type="Int32" />
             <Parameter Name="nomeParque" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="inserts" />
+          <FunctionImport Name="sendEmail">
+            <Parameter Name="NIF" Mode="In" Type="Int32" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="text" Mode="In" Type="String" />
+            <Parameter Name="mail" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SendEmails1" ReturnType="Collection(String)">
+            <Parameter Name="periodoTemporal" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="testaInsertAlojamentoBungalow" ReturnType="Collection(GlampinhoModel.testaInsertAlojamentoBungalow_Result)" />
+          <FunctionImport Name="testaInsertAlojamentoTenda" ReturnType="Collection(GlampinhoModel.testaInsertAlojamentoTenda_Result)" />
+          <FunctionImport Name="testeAlineaE" ReturnType="Collection(GlampinhoModel.testeAlineaE_Result)" />
+          <FunctionImport Name="testeAlineaF" ReturnType="Collection(GlampinhoModel.testeAlineaF_Result)" />
+          <FunctionImport Name="testeAlineaG" ReturnType="Collection(GlampinhoModel.testeAlineaG_Result)" />
+          <FunctionImport Name="testeAlineaHAddAlojamento" ReturnType="Collection(GlampinhoModel.testeAlineaHAddAlojamento_Result)" />
+          <FunctionImport Name="testeAlineaHAddExtraToAlojamento" ReturnType="Collection(GlampinhoModel.testeAlineaHAddExtraToAlojamento_Result)" />
+          <FunctionImport Name="testeAlineaHAddExtraToEstada" ReturnType="Collection(GlampinhoModel.testeAlineaHAddExtraToEstada_Result)" />
+          <FunctionImport Name="testeAlineaHAddHóspede" ReturnType="Collection(GlampinhoModel.testeAlineaHAddHóspede_Result)" />
+          <FunctionImport Name="testeAlineaHCreateEstada" ReturnType="Collection(GlampinhoModel.testeAlineaHCreateEstada_Result)" />
+          <FunctionImport Name="testeAlineaHCreateEstadaInTime" ReturnType="Collection(GlampinhoModel.testeAlineaHCreateEstadaInTime_Result)" />
+          <FunctionImport Name="testeAlineaNTriggerDelete" ReturnType="Collection(GlampinhoModel.testeAlineaNTriggerDelete_Result)" />
+          <FunctionImport Name="testeAlineaNTriggerInsert" ReturnType="Collection(GlampinhoModel.testeAlineaNTriggerInsert_Result)" />
+          <FunctionImport Name="testeAlineaNTriggerUpdate" ReturnType="Collection(GlampinhoModel.testeAlineaNTriggerUpdate_Result)" />
         </EntityContainer>
         <ComplexType Name="listarAtividades_Result">
           <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
@@ -1479,6 +1471,122 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
         <ComplexType Name="testeAlineaL_Result">
           <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
           <Property Type="String" Name="descrição" Nullable="false" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="testaInsertAlojamentoBungalow_Result">
+          <Property Type="String" Name="nomeParque" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="localização" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="preçoBase" Nullable="true" />
+          <Property Type="Byte" Name="númeroMáximoPessoas" Nullable="true" />
+          <Property Type="String" Name="tipoAlojamento" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="testaInsertAlojamentoTenda_Result">
+          <Property Type="String" Name="nomeParque" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="localização" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="preçoBase" Nullable="true" />
+          <Property Type="Byte" Name="númeroMáximoPessoas" Nullable="true" />
+          <Property Type="String" Name="tipoAlojamento" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaE_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="preçoDia" Nullable="true" />
+          <Property Type="String" Name="associado" Nullable="false" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaF_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="preçoDia" Nullable="true" />
+          <Property Type="String" Name="associado" Nullable="false" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaG_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="estrelas" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaHAddAlojamento_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="estrelas" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaHAddExtraToAlojamento_Result">
+          <Property Type="String" Name="nomeParque" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="localização" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="preçoBase" Nullable="true" />
+          <Property Type="Byte" Name="númeroMáximoPessoas" Nullable="true" />
+          <Property Type="String" Name="tipoAlojamento" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaHAddExtraToEstada_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="estrelas" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaHAddHóspede_Result">
+          <Property Type="Int32" Name="NIF" Nullable="false" />
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="númeroIdentificação" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaHCreateEstada_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="estrelas" Nullable="false" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaHCreateEstadaInTime_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="DateTime" Name="dataInício" Nullable="false" />
+          <Property Type="DateTime" Name="dataFim" Nullable="false" />
+          <Property Type="Int32" Name="idFactura" Nullable="true" />
+          <Property Type="Int32" Name="ano" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaNTriggerDelete_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+          <Property Type="Byte" Name="estrelas" Nullable="false" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="localização" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="nomeAlojamento" Nullable="false" MaxLength="30" />
+          <Property Type="Byte" Name="númeroMáximoPessoas" Nullable="true" />
+          <Property Type="Int32" Name="preçoBase" Nullable="true" />
+          <Property Type="String" Name="tipoAlojamento" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="tipologia" Nullable="false" MaxLength="2" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaNTriggerInsert_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+          <Property Type="Byte" Name="estrelas" Nullable="false" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="localização" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="nomeAlojamento" Nullable="false" MaxLength="30" />
+          <Property Type="Byte" Name="númeroMáximoPessoas" Nullable="true" />
+          <Property Type="Int32" Name="preçoBase" Nullable="true" />
+          <Property Type="String" Name="tipoAlojamento" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="tipologia" Nullable="false" MaxLength="2" />
+        </ComplexType>
+        <ComplexType Name="testeAlineaNTriggerUpdate_Result">
+          <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="30" />
+          <Property Type="Byte" Name="estrelas" Nullable="false" />
+          <Property Type="String" Name="morada" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="descrição" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="localização" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="nomeAlojamento" Nullable="false" MaxLength="30" />
+          <Property Type="Byte" Name="númeroMáximoPessoas" Nullable="true" />
+          <Property Type="Int32" Name="preçoBase" Nullable="true" />
+          <Property Type="String" Name="tipoAlojamento" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="tipologia" Nullable="false" MaxLength="2" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1696,7 +1804,6 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="mediaPagamentos" FunctionName="GlampinhoModel.Store.mediaPagamentos" />
-          <FunctionImportMapping FunctionImportName="SendEmails" FunctionName="GlampinhoModel.Store.SendEmails" />
           <FunctionImportMapping FunctionImportName="test" FunctionName="GlampinhoModel.Store.test" />
           <FunctionImportMapping FunctionImportName="test2" FunctionName="GlampinhoModel.Store.test2" />
           <FunctionImportMapping FunctionImportName="testeAlineaC" FunctionName="GlampinhoModel.Store.testeAlineaC">
@@ -1769,6 +1876,181 @@ warning 6013: The table/view 'Glampinho.dbo.Teste' does not have a primary key d
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="testeAlineaM" FunctionName="GlampinhoModel.Store.testeAlineaM" />
           <FunctionImportMapping FunctionImportName="verificarHospedeParque" FunctionName="GlampinhoModel.Store.verificarHospedeParque" />
+          <FunctionImportMapping FunctionImportName="inserts" FunctionName="GlampinhoModel.Store.inserts" />
+          <FunctionImportMapping FunctionImportName="sendEmail" FunctionName="GlampinhoModel.Store.sendEmail" />
+          <FunctionImportMapping FunctionImportName="SendEmails1" FunctionName="GlampinhoModel.Store.SendEmails" />
+          <FunctionImportMapping FunctionImportName="testaInsertAlojamentoBungalow" FunctionName="GlampinhoModel.Store.testaInsertAlojamentoBungalow">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testaInsertAlojamentoBungalow_Result">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testaInsertAlojamentoTenda" FunctionName="GlampinhoModel.Store.testaInsertAlojamentoTenda">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testaInsertAlojamentoTenda_Result">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaE" FunctionName="GlampinhoModel.Store.testeAlineaE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaE_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoDia" ColumnName="preçoDia" />
+                <ScalarProperty Name="associado" ColumnName="associado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaF" FunctionName="GlampinhoModel.Store.testeAlineaF">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaF_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoDia" ColumnName="preçoDia" />
+                <ScalarProperty Name="associado" ColumnName="associado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaG" FunctionName="GlampinhoModel.Store.testeAlineaG">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaG_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="estrelas" ColumnName="estrelas" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaHAddAlojamento" FunctionName="GlampinhoModel.Store.testeAlineaHAddAlojamento">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaHAddAlojamento_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="estrelas" ColumnName="estrelas" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaHAddExtraToAlojamento" FunctionName="GlampinhoModel.Store.testeAlineaHAddExtraToAlojamento">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaHAddExtraToAlojamento_Result">
+                <ScalarProperty Name="nomeParque" ColumnName="nomeParque" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaHAddExtraToEstada" FunctionName="GlampinhoModel.Store.testeAlineaHAddExtraToEstada">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaHAddExtraToEstada_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="estrelas" ColumnName="estrelas" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaHAddHóspede" FunctionName="GlampinhoModel.Store.testeAlineaHAddHóspede">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaHAddHóspede_Result">
+                <ScalarProperty Name="NIF" ColumnName="NIF" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="númeroIdentificação" ColumnName="númeroIdentificação" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaHCreateEstada" FunctionName="GlampinhoModel.Store.testeAlineaHCreateEstada">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaHCreateEstada_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="estrelas" ColumnName="estrelas" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaHCreateEstadaInTime" FunctionName="GlampinhoModel.Store.testeAlineaHCreateEstadaInTime">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaHCreateEstadaInTime_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dataInício" ColumnName="dataInício" />
+                <ScalarProperty Name="dataFim" ColumnName="dataFim" />
+                <ScalarProperty Name="idFactura" ColumnName="idFactura" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaNTriggerDelete" FunctionName="GlampinhoModel.Store.testeAlineaNTriggerDelete">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaNTriggerDelete_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="estrelas" ColumnName="estrelas" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="nomeAlojamento" ColumnName="nomeAlojamento" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+                <ScalarProperty Name="tipologia" ColumnName="tipologia" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaNTriggerInsert" FunctionName="GlampinhoModel.Store.testeAlineaNTriggerInsert">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaNTriggerInsert_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="estrelas" ColumnName="estrelas" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="nomeAlojamento" ColumnName="nomeAlojamento" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+                <ScalarProperty Name="tipologia" ColumnName="tipologia" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="testeAlineaNTriggerUpdate" FunctionName="GlampinhoModel.Store.testeAlineaNTriggerUpdate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="GlampinhoModel.testeAlineaNTriggerUpdate_Result">
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="estrelas" ColumnName="estrelas" />
+                <ScalarProperty Name="morada" ColumnName="morada" />
+                <ScalarProperty Name="descrição" ColumnName="descrição" />
+                <ScalarProperty Name="localização" ColumnName="localização" />
+                <ScalarProperty Name="nomeAlojamento" ColumnName="nomeAlojamento" />
+                <ScalarProperty Name="númeroMáximoPessoas" ColumnName="númeroMáximoPessoas" />
+                <ScalarProperty Name="preçoBase" ColumnName="preçoBase" />
+                <ScalarProperty Name="tipoAlojamento" ColumnName="tipoAlojamento" />
+                <ScalarProperty Name="tipologia" ColumnName="tipologia" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

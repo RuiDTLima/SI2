@@ -246,7 +246,7 @@ namespace ConsoleApp1
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("deleteAlojamentoTenda", localizaçãoParameter, nomeParqueParameter);
         }
     
-        public virtual int deleteAtividades(string nomeParque, Nullable<int> númeroSequencial)
+        public virtual int deleteAtividades(string nomeParque, Nullable<int> númeroSequencial, Nullable<int> ano)
         {
             var nomeParqueParameter = nomeParque != null ?
                 new ObjectParameter("nomeParque", nomeParque) :
@@ -256,32 +256,20 @@ namespace ConsoleApp1
                 new ObjectParameter("númeroSequencial", númeroSequencial) :
                 new ObjectParameter("númeroSequencial", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("deleteAtividades", nomeParqueParameter, númeroSequencialParameter);
+            var anoParameter = ano.HasValue ?
+                new ObjectParameter("ano", ano) :
+                new ObjectParameter("ano", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("deleteAtividades", nomeParqueParameter, númeroSequencialParameter, anoParameter);
         }
     
-        public virtual int deleteExtra(Nullable<int> identi, string nome, string nomeParque, string localização, Nullable<int> idEstada)
+        public virtual int deleteExtra(Nullable<int> id)
         {
-            var identiParameter = identi.HasValue ?
-                new ObjectParameter("identi", identi) :
-                new ObjectParameter("identi", typeof(int));
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
     
-            var nomeParameter = nome != null ?
-                new ObjectParameter("nome", nome) :
-                new ObjectParameter("nome", typeof(string));
-    
-            var nomeParqueParameter = nomeParque != null ?
-                new ObjectParameter("nomeParque", nomeParque) :
-                new ObjectParameter("nomeParque", typeof(string));
-    
-            var localizaçãoParameter = localização != null ?
-                new ObjectParameter("localização", localização) :
-                new ObjectParameter("localização", typeof(string));
-    
-            var idEstadaParameter = idEstada.HasValue ?
-                new ObjectParameter("idEstada", idEstada) :
-                new ObjectParameter("idEstada", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("deleteExtra", identiParameter, nomeParameter, nomeParqueParameter, localizaçãoParameter, idEstadaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("deleteExtra", idParameter);
         }
     
         public virtual int deleteExtraPessoa(Nullable<int> id)
@@ -513,13 +501,13 @@ namespace ConsoleApp1
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("mediaPagamentos", nParameter, pagamento);
         }
     
-        public virtual int SendEmails(Nullable<int> periodoTemporal, ObjectParameter text)
+        public virtual int SendEmails(Nullable<int> periodoTemporal)
         {
             var periodoTemporalParameter = periodoTemporal.HasValue ?
                 new ObjectParameter("periodoTemporal", periodoTemporal) :
                 new ObjectParameter("periodoTemporal", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SendEmails", periodoTemporalParameter, text);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SendEmails", periodoTemporalParameter);
         }
     
         public virtual int test(Nullable<int> lol)
@@ -591,6 +579,107 @@ namespace ConsoleApp1
                 new ObjectParameter("nomeParque", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("verificarHospedeParque", hospedeParameter, nomeParqueParameter);
+        }
+    
+        public virtual int inserts()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("inserts");
+        }
+    
+        public virtual int sendEmail(Nullable<int> nIF, string email, string text, ObjectParameter mail)
+        {
+            var nIFParameter = nIF.HasValue ?
+                new ObjectParameter("NIF", nIF) :
+                new ObjectParameter("NIF", typeof(int));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            var textParameter = text != null ?
+                new ObjectParameter("text", text) :
+                new ObjectParameter("text", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sendEmail", nIFParameter, emailParameter, textParameter, mail);
+        }
+    
+        public virtual ObjectResult<string> SendEmails1(Nullable<int> periodoTemporal)
+        {
+            var periodoTemporalParameter = periodoTemporal.HasValue ?
+                new ObjectParameter("periodoTemporal", periodoTemporal) :
+                new ObjectParameter("periodoTemporal", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("SendEmails1", periodoTemporalParameter);
+        }
+    
+        public virtual ObjectResult<testaInsertAlojamentoBungalow_Result> testaInsertAlojamentoBungalow()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testaInsertAlojamentoBungalow_Result>("testaInsertAlojamentoBungalow");
+        }
+    
+        public virtual ObjectResult<testaInsertAlojamentoTenda_Result> testaInsertAlojamentoTenda()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testaInsertAlojamentoTenda_Result>("testaInsertAlojamentoTenda");
+        }
+    
+        public virtual ObjectResult<testeAlineaE_Result> testeAlineaE()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaE_Result>("testeAlineaE");
+        }
+    
+        public virtual ObjectResult<testeAlineaF_Result> testeAlineaF()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaF_Result>("testeAlineaF");
+        }
+    
+        public virtual ObjectResult<testeAlineaG_Result> testeAlineaG()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaG_Result>("testeAlineaG");
+        }
+    
+        public virtual ObjectResult<testeAlineaHAddAlojamento_Result> testeAlineaHAddAlojamento()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaHAddAlojamento_Result>("testeAlineaHAddAlojamento");
+        }
+    
+        public virtual ObjectResult<testeAlineaHAddExtraToAlojamento_Result> testeAlineaHAddExtraToAlojamento()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaHAddExtraToAlojamento_Result>("testeAlineaHAddExtraToAlojamento");
+        }
+    
+        public virtual ObjectResult<testeAlineaHAddExtraToEstada_Result> testeAlineaHAddExtraToEstada()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaHAddExtraToEstada_Result>("testeAlineaHAddExtraToEstada");
+        }
+    
+        public virtual ObjectResult<testeAlineaHAddHóspede_Result> testeAlineaHAddHóspede()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaHAddHóspede_Result>("testeAlineaHAddHóspede");
+        }
+    
+        public virtual ObjectResult<testeAlineaHCreateEstada_Result> testeAlineaHCreateEstada()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaHCreateEstada_Result>("testeAlineaHCreateEstada");
+        }
+    
+        public virtual ObjectResult<testeAlineaHCreateEstadaInTime_Result> testeAlineaHCreateEstadaInTime()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaHCreateEstadaInTime_Result>("testeAlineaHCreateEstadaInTime");
+        }
+    
+        public virtual ObjectResult<testeAlineaNTriggerDelete_Result> testeAlineaNTriggerDelete()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaNTriggerDelete_Result>("testeAlineaNTriggerDelete");
+        }
+    
+        public virtual ObjectResult<testeAlineaNTriggerInsert_Result> testeAlineaNTriggerInsert()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaNTriggerInsert_Result>("testeAlineaNTriggerInsert");
+        }
+    
+        public virtual ObjectResult<testeAlineaNTriggerUpdate_Result> testeAlineaNTriggerUpdate()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<testeAlineaNTriggerUpdate_Result>("testeAlineaNTriggerUpdate");
         }
     }
 }

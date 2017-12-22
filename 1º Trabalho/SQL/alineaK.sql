@@ -14,64 +14,57 @@ USE Glampinho
 /*************************************** Estrutura do email a enviar  ************************************************************************/
 GO
 IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'sendEmail')
-	DROP PROCEDURE dbo.SendEmail;
+	DROP PROCEDURE dbo.sendEmail;
 GO
-CREATE PROCEDURE dbo.SendEmail @NIF INT, @email NVARCHAR(30), @text VARCHAR(255),@mail NVARCHAR(4000) OUTPUT AS
-	SET @mail=CONCAT('De: Gerência Glampinho '+char(10)+'Para: ' + @email+char(10)+'Cliente com o NIF: ' + CAST(@NIF AS VARCHAR)+char(10)+'Mensagem: ' +char(10)+@text,char(10)) 
-	
+CREATE PROCEDURE dbo.sendEmail @NIF INT, @email NVARCHAR(30), @text VARCHAR(255), @mail TEXT OUTPUT AS
+	SET @mail=CONCAT('De: Gerência Glampinho ' + char(10) + 'Para: ' + @email + char(10) + 'Cliente com o NIF: ' + CAST(@NIF AS VARCHAR) + char(10) + 'Mensagem: ' + @text, char(10), char(10)) 
+	RETURN 
 
 /*************************************** Envia email a todos os hóspedes responsáveis por estadas a começar dentro de x temp ************************************************************************/
 GO
 IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'SendEmails')
 	DROP PROCEDURE dbo.SendEmails;
 GO
-CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT,@text NVARCHAR(4000) OUTPUT AS
+CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT/*, @text NVARCHAR(2555) OUTPUT*/ AS
 BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
     BEGIN TRY
 	DECLARE @NIF INT
-	DECLARE @email NVARCHAR(500)
-	DECLARE @emailText VARCHAR(4000)
+	DECLARE @email NVARCHAR(30)
+	DECLARE @emailText VARCHAR(255)
 	
+	DECLARE @Notificações TABLE(
+		mensagem TEXT NOT NULL
+	)
 
 	DECLARE iterate_NIFs CURSOR LOCAL FORWARD_ONLY FOR 
 		SELECT Hosp.NIF, Hosp.email FROM dbo.Hóspede AS Hosp JOIN dbo.HóspedeEstada AS HospEst ON Hosp.NIF = HospEst.NIF 
-			JOIN dbo.Estada AS Est ON HospEst.id = Est.id WHERE HospEst.hóspede = 'true' AND Est.dataInício <= DATEADD(DAY, @periodoTemporal, GETDATE())
+			JOIN dbo.Estada AS Est ON HospEst.id = Est.id WHERE HospEst.hóspede = 'true' AND Est.dataInício > GETDATE() AND Est.dataInício <= DATEADD(DAY, @periodoTemporal, GETDATE())
 	
 	OPEN iterate_NIFs
 	FETCH NEXT FROM iterate_NIFs INTO @NIF, @email
-	SET @text = ''
+	
 	WHILE @@FETCH_STATUS = 0
 		BEGIN
-			EXEC dbo.SendEmail @NIF, @email, 'A sua estada no Parque Glampinho está à sua espera! Para mais informações contacte-nos para glampinho@email.com.',@emailText output
-			/*SELECT @text= dbo.lol (112233445, 'jose@gmail.com', 'A sua estada no Parque Glampinho está à sua espera! Para mais informações contacte-nos para glampinho@email.com.')*/
-			SET @text =  CONCAT(@emailText,@text)
+			EXEC dbo.SendEmail @NIF, @email, 'A sua estada no Parque Glampinho está à sua espera! Para mais informações contacte-nos para glampinho@email.com.', @emailText OUTPUT
+			INSERT INTO @Notificações(mensagem) VALUES(@emailText)
 			FETCH NEXT FROM iterate_NIFs INTO @NIF, @email
 		END
+		
+	SELECT mensagem FROM @Notificações
 	CLOSE iterate_NIFs
 	DEALLOCATE iterate_NIFs
 	COMMIT
 END TRY
 BEGIN CATCH
- IF @@TRANCOUNT !=0
-			ROLLBACK;
+	IF @@TRANCOUNT !=0
+		ROLLBACK;
 END CATCH 
 
 /*************************************** Teste ************************************************************************/
-
-DECLARE @T VARCHAR(4000)
-
-EXEC dbo.sendEmails 7,@T output
-
-SELECT @T
-
-SELECT * FROM dbo.Estada
-SELECT * FROM dbo.Hóspede
-SELECT * FROM dbo.HóspedeEstada
-
 INSERT INTO dbo.Estada(id, dataInício, dataFim)
-	VALUES	(2, '2017-12-25', '2017-12-27'),
-			(3, '2017-12-17', '2017-12-27'),
-			(4, '2017-12-19', '2017-12-30')
+	VALUES	(2, '2017-12-22 13:00:00', '2017-12-27 13:00:00'),
+			(3, '2017-12-22 13:00:00', '2017-12-27 13:00:00'),
+			(4, '2017-12-22 13:00:00', '2017-12-30 13:00:00')
 
 INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
 	VALUES (112233445, 'José', 'Rua 1', 'jose@gmail.com', 11223344),
@@ -82,9 +75,9 @@ INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
 INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 	VALUES	(112233445, 2, 'true'),
 			(566778899, 3, 'true')
+	
+SELECT * FROM dbo.Estada
+SELECT * FROM dbo.Hóspede
+SELECT * FROM dbo.HóspedeEstada
 
-
-
-
-
-
+EXEC dbo.sendEmails 1

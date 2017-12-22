@@ -26,6 +26,8 @@ namespace Glampinho
             Console.WriteLine("8 - Pagamento devido por uma estada, com emissão da respetiva fatura");
             Console.WriteLine("9 - Enviar emails a todos os hóspedes responsáveis");
             Console.WriteLine("10 - Listar todas as atividades com lugares disponíveis para um intervalo de datas especificado");
+            Console.WriteLine("11 - Obter o total pago por hóspede");
+            Console.WriteLine("12 - Eliminar um dos parques ");
 
 
             using (Context context = new Context(connectionString))
@@ -146,10 +148,13 @@ namespace Glampinho
                             string dataFim = Console.ReadLine();
                             alineaL(context, Convert.ToDateTime(dataInicio), Convert.ToDateTime(dataFim));
                             break;
+                        case "11":
+
                         default:
                             Console.WriteLine("Fechando aplicação.");
                             Environment.Exit(0);
                             break;
+                    
                     }
                 }
             }
