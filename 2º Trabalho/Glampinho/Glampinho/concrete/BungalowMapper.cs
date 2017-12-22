@@ -38,7 +38,7 @@ namespace Glampinho.concrete {
 
         protected override string SelectAllCommandText {
             get {
-                return "SELECT Aloj.nomeParque, nome, Aloj.localização, descrição, preçoBase, númeroMáximoPessoas, tipologia FROM dbo.Alojamento AS Aloj JOIN dbo.Bungalow AS Bung ON Aloj.nomeParque = Bung.nomeParque AND Aloj.localização = Bung.localização";
+                return "SELECT Aloj.nomeParque, nome, Aloj.localização, descrição, preçoBase, númeroMáximoPessoas, tipologia, tipoAlojamento FROM dbo.Alojamento AS Aloj JOIN dbo.Bungalow AS Bung ON Aloj.nomeParque = Bung.nomeParque AND Aloj.localização = Bung.localização";
             }
         }
 

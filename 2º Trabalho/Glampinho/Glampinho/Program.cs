@@ -2,6 +2,7 @@
 using Glampinho.mapper;
 using Glampinho.model;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace Glampinho {
@@ -9,7 +10,7 @@ namespace Glampinho {
         static void Main(string[] args) {
             string connectionString = ConfigurationManager.ConnectionStrings["glampinho"].ConnectionString;
             /* ---------- Teste Hóspede ---------- */
-            /*using (Context context = new Context(connectionString)) {
+           /* using (Context context = new Context(connectionString)) {
                 Hóspede hóspede = new Hóspede();
 
                 hóspede.NIF = 112233445;
@@ -40,6 +41,7 @@ namespace Glampinho {
 
                 Hóspede deleteHóspede = new Hóspede();
                 deleteHóspede.NIF = 112233445;
+                hóspedeMapper.Delete(deleteHóspede);
             }*/
 
             /* ---------- Teste Bungalow ---------- */
@@ -192,7 +194,7 @@ namespace Glampinho {
             }*/
 
             /* --------- Teste EstadaInTime ---------- */
-            /*using(Context context = new Context(connectionString)) {
+           /* using(Context context = new Context(connectionString)) {
                 ProcUtils procedimentos = new ProcUtils(context);
                 Hóspede responsável = new Hóspede();
                 responsável.NIF = 112233445;
@@ -230,67 +232,63 @@ namespace Glampinho {
 
                 procedimentos.createEstadaInTime(responsável, hóspede, estada, bungalow, extraPessoal, extraAlojamento);
             }*/
-                
 
-            /* ---------- Teste Estada ---------- */
-            /*using(Context context = new Context(connectionString)) {
-                EstadaMapper estadaMapper = new EstadaMapper(context);
+            /* --------- Teste InscreverHospede ---------- */
+           /* using(Context context = new Context(connectionString)) {
+                HóspedeMapper hóspedeMapper = new HóspedeMapper(context);
+                Hóspede hóspede = hóspedeMapper.Read(112233445);
 
-                int id = estadaMapper.CreateEstada(1, 5);
-                estadaMapper.AddAlojamento("tenda", 4, id);
-                estadaMapper.AddHospede(566778899, id);
-                estadaMapper.AddExtraAlojamento(3, id);
-                estadaMapper.AddExtraEstada(2, id);
+                ActividadesMapper actividadesMapper = new ActividadesMapper(context);
+                Actividades actividade = actividadesMapper.Read(new Tuple<string, int, int>("Glampinho", 1, 2017));
+
+                ProcUtils procedimento = new ProcUtils(context);
+                procedimento.InscreverHospede(actividade, hóspede);
             }*/
-               /* Estada estada = new Estada();
-              
-                Hóspede h2 = new Hóspede();
-                Hóspede h1 = new Hóspede();
-                h1.NIF = 566778899;
-                h2.NIF = 112233445;
-                Alojamento alojamento = new Alojamento();
-                alojamento.tipoAlojamento = "tenda";
-                alojamento.númeroMáximoPessoas = 10;
-                Extra extra1 = new Extra();
-                extra1.id = 3;
-                Extra extra2 = new Extra();
-                extra2.id = 2;
 
+            /* --------- Teste finishEstadaWithFactura ---------- */
+            /*using(Context context = new Context(connectionString)) {
+                ProcUtils procedimento = new ProcUtils(context);
+                Estada estada = new Estada();
+                estada.id = 3;
+                procedimento.finishEstadaWithFactura(estada);
+            }*/
 
+            /* --------- Teste sendEmails ---------- */
+            /*using(Context context = new Context(connectionString)) {
+                ProcUtils procedimento = new ProcUtils(context);
+                List<string> messages = procedimento.SendEmails(1);
+                messages.ForEach((string message) => {
+                    Console.Write(message);
+                });
+            }*/
 
+            /* --------- Teste listarActividades ---------- */
+            using(Context context = new Context(connectionString)) {
+                ProcUtils procedimento = new ProcUtils(context);
+                List<string> actividades = procedimento.ListarActividades(new DateTime(2016, 3, 12), new DateTime(2017, 3, 16));
 
-                int id = estadaMapper.CreateEstada(h2, 5);
-                estadaMapper.AddAlojamento(alojamento,id);
-                estadaMapper.AddHospede(h1,id);
-                estadaMapper.AddExtraAlojamento(extra1, id);
-                estadaMapper.AddExtraEstada(extra2, id);*/
-
-
-            /* hóspedeMapper.InscreverHospede(112233445, 6, "Glampinho", 2017);*/
-
-            /*FaturaMapper faturaMapper = new FaturaMapper(context);
-            faturaMapper.finishEstadaWithFactura(3); */
-
-
-            /*ProcUtils utils = new ProcUtils(context);
-                utils.SendEmails(7);
-
-                var result = hóspedeMapper.Delete(deleteHóspede);*/
-                /*ProcUtils utils = new ProcUtils(context);
-
-                utils.SendEmails(7);
-
-                utils.ListActividades(Convert.ToDateTime("2016-03-12"), Convert.ToDateTime("2017-03-16"));
-                utils.MediaPagamentos(2);
-
-                FaturaRepository repository = new FaturaRepository(context);
-                repository.CalcularDespesasHospede(repository.FindFacturas(123456789, Convert.ToDateTime("2017-03-15"), Convert.ToDateTime("2017-10-16"), "Glampinho"), 123456789);
-                */
-
-                /*ParqueCampismoMapper p = new ParqueCampismoMapper(context);
-                ParqueCampismo parque = new ParqueCampismo();
-                parque.nome = "Glampinho";
-                p.Delete(parque);*/
+                actividades.ForEach((string actividade) => {
+                    Console.WriteLine(actividade);
+                });
             }
+
+            /* --------- Teste FindFacturas ---------- */
+            /*using (Context context = new Context(connectionString)) {
+                ProcUtils procedimento = new ProcUtils(context);
+                Hóspede hóspede = new Hóspede();
+                hóspede.NIF = 123456789;
+                Tuple<int, int> pair = procedimento.FindFacturas(hóspede, new DateTime(2017, 3, 15, 13, 0, 0), new DateTime(2017, 11, 12, 13, 0, 0), "Glampinho");
+
+                Console.WriteLine("Despedas totais do hóspede com NIF: {0} - {1}", pair.Item1, pair.Item2);
+            }*/
+            
+            /* --------- Teste DeletePark ---------- */
+            /*using(Context context = new Context(connectionString)) {
+                ProcUtils procedimento = new ProcUtils(context);
+                ParqueCampismo park = new ParqueCampismo();
+                park.nome = "Glampinho";
+                procedimento.DeletePark(park);
+            }*/
+        }
     }
 }

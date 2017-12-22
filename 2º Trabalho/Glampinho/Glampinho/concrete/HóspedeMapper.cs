@@ -5,24 +5,18 @@ using Glampinho.model;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Glampinho.concrete
-{
-    class HóspedeMapper : AbstractMapper<Hóspede, int, List<Hóspede>>, IHóspedeMapper
-    {
-        protected override CommandType DeleteCommandType
-        {
-            get
-            {
+namespace Glampinho.concrete {
+    class HóspedeMapper : AbstractMapper<Hóspede, int, List<Hóspede>>, IHóspedeMapper {
+        protected override CommandType DeleteCommandType {
+            get {
                 return CommandType.StoredProcedure;
             }
         }
 
         public HóspedeMapper(IContext ctx) : base(ctx) { }
 
-        protected override string DeleteCommandText
-        {
-            get
-            {
+        protected override string DeleteCommandText {
+            get {
                 return "dbo.deleteHospede";
             }
         }
@@ -30,48 +24,38 @@ namespace Glampinho.concrete
         /**
          *  Quem usar este commando tem de garantir que depois insere também o hóspede numa estada 
          */
-        protected override string InsertCommandText
-        {
-            get
-            {
+        protected override string InsertCommandText {
+            get {
                 return "INSERT INTO Hóspede(NIF, nome, morada, email, númeroIdentificação) " +
                         "VALUES(@NIF, @nome, @morada, @email, @númeroIdentificação)";
             }
         }
 
-        protected override string SelectAllCommandText
-        {
-            get
-            {
+        protected override string SelectAllCommandText {
+            get {
                 return "SELECT NIF, nome, morada, email, númeroIdentificação FROM Hóspede";
             }
         }
 
-        protected override string SelectCommandText
-        {
-            get
-            {
+        protected override string SelectCommandText {
+            get {
                 return String.Format("{0} WHERE NIF = @NIF", SelectAllCommandText);
             }
         }
 
-        protected override string UpdateCommandText
-        {
-            get
-            {
+        protected override string UpdateCommandText {
+            get {
                 return "UPDATE Hóspede SET morada = @morada, email = @email WHERE NIF = @NIF";
             }
         }
 
-        protected override void DeleteParameters(IDbCommand command, Hóspede e)
-        {
+        protected override void DeleteParameters(IDbCommand command, Hóspede e) {
             SqlParameter nif = new SqlParameter("@NIFHospede", e.NIF);
 
             command.Parameters.Add(nif);
         }
 
-        protected override void InsertParameters(IDbCommand command, Hóspede e)
-        {
+        protected override void InsertParameters(IDbCommand command, Hóspede e) {
             SqlParameter nif = new SqlParameter("@NIF", e.NIF);
             SqlParameter name = new SqlParameter("@nome", e.nome);
             SqlParameter address = new SqlParameter("@morada", e.morada);
@@ -85,14 +69,12 @@ namespace Glampinho.concrete
             command.Parameters.Add(ID);
         }
 
-        protected override void SelectParameters(IDbCommand command, int k)
-        {
+        protected override void SelectParameters(IDbCommand command, int k) {
             SqlParameter param = new SqlParameter("@NIF", k);
             command.Parameters.Add(param);
         }
 
-        protected override void UpdateParameters(IDbCommand command, Hóspede e)
-        {
+        protected override void UpdateParameters(IDbCommand command, Hóspede e) {
             SqlParameter address = new SqlParameter("@morada", e.morada);
             SqlParameter email = new SqlParameter("@email", e.email);
             SqlParameter nif = new SqlParameter("@NIF", e.NIF);
@@ -102,15 +84,13 @@ namespace Glampinho.concrete
             command.Parameters.Add(nif);
         }
 
-        protected override Hóspede UpdateEntityID(IDbCommand command, Hóspede e)
-        {
+        protected override Hóspede UpdateEntityID(IDbCommand command, Hóspede e) {
             var nif = command.Parameters["@NIF"] as SqlParameter;
             e.NIF = int.Parse(nif.Value.ToString());
             return e;
         }
 
-        protected override Hóspede Map(IDataRecord record)
-        {
+        protected override Hóspede Map(IDataRecord record) {
             Hóspede hóspede = new Hóspede();
             hóspede.NIF = record.GetInt32(0);
             hóspede.nome = record.GetString(1);

@@ -19,16 +19,74 @@ CREATE PROC dbo.testeAlineaC AS
 SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
-			EXEC dbo.inserts
+			INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
+				VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
+
+			EXEC dbo.InsertAlojamentoTenda    'Glampinho', 'tenda pequena',  'Rua 1', 'bonito',			   12, 4,  50
+			EXEC dbo.InsertAlojamentoTenda    'Glampinho', 'tenda grande',	 'Rua 2', 'grande',			   15, 10, 50
+			EXEC dbo.InsertAlojamentoTenda    'Glampinho', 'tenda tempo',	 'Rua 3', 'tempo',			   15, 11, 50
+			EXEC dbo.InsertAlojamentoTenda	  'Glampinho', 'tenda vazia',	 'Rua 4', 'vazia',			   15, 10, 50
+			EXEC dbo.InsertAlojamentoTenda	  'Glampinho', 'tenda nova',     'Rua 5', 'por estrear',	   15, 10, 50
+			EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow hoje',  'Rua 6', 'primeiro bungalow', 15, 10, 'T3'
+			EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow ontem', 'Rua 7', 'segundo bungalow',  15, 9,  'T3'
+
+			INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
+				VALUES (1, 'descricao', 10, 'alojamento'), 
+					   (2, 'teste', 15, 'pessoa'), 
+					   (3, 'metodo', 20, 'alojamento')
+
+			INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
+				VALUES ('Glampinho', 'Rua 4', 1),
+					   ('Glampinho', 'Rua 4', 2),
+					   ('Glampinho', 'Rua 4', 3)
+
+			INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
+				VALUES (112233445, 'José', 'Rua 1', 'jose@gmail.com', 11223344),
+					   (566778899, 'Maria', 'Rua 2', 'maria@gmail.com', 55667788),
+					   (123456789, 'Manel', 'Rua 3', 'manel@gmail.com', 99112233),
+					   (123243546, 'António', 'Rua 4', 'antonio@gmail.com', 44556677)
+			
+			INSERT INTO	dbo.Estada(id, dataInício, dataFim, idFactura, ano)
+				VALUES (1, '2017-11-09 13:00:00', '2017-11-11 13:00:00', null, null),
+					   (2, '2017-11-17 10:00:00', '2017-11-18 13:00:00', null, null)
+
+			INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
+				VALUES (112233445, 1, 'false'),
+					   (566778899, 1, 'true' ),
+					   (123456789, 2, 'true' ),
+					   (123243546, 2, 'false'),
+					   (112233445, 2, 'false')
+
+			INSERT INTO dbo.EstadaExtra(estadaId, extraId, preçoDia)
+				VALUES (1, 1, 10),
+					   (1, 2, 15),
+					   (1, 3, 20),
+					   (2, 1, 10),
+					   (2, 2, 15),
+					   (2, 3, 20)
+
+			INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
+				VALUES ('Glampinho', 'Rua 1', 1, 12),
+					   ('Glampinho', 'Rua 2', 2, 15)
+
+			INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
+				VALUES ('Glampinho', 1, 2017, 'FUT7', 'Jogo de futebol 7vs7', '14', 3, '2017-03-15 10:30:00'),
+					   ('Glampinho', 2, 2017, 'FUT5', 'Jogo de futebol 5vs5', '10', 2, '2017-10-07 10:00:00')
+
+			INSERT INTO dbo.Paga(nomeParque, númeroSequencial, ano, NIF, preçoParticipante)
+				VALUES ('Glampinho', 1, 2017, 112233445, 3),
+					   ('Glampinho', 1, 2017, 566778899, 3)
 
 			SELECT * FROM dbo.Hóspede
 			SELECT * FROM dbo.HóspedeEstada
+			SELECT * FROM dbo.Paga
 
 			EXEC dbo.deleteHospede 112233445
 			EXEC dbo.deleteHospede 566778899
 
 			SELECT * FROM dbo.Hóspede
 			SELECT * FROM dbo.HóspedeEstada
+			SELECT * FROM dbo.Paga
 		ROLLBACK
 		END TRY
 	BEGIN CATCH
@@ -47,7 +105,11 @@ CREATE PROCEDURE dbo.testaInsertAlojamentoBungalow AS
 	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
-			EXEC dbo.inserts
+			INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
+				VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
+	
+			SELECT * FROM dbo.Alojamento
+			SELECT * FROM dbo.Bungalow
 
 			EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Teste', 'Lote teste', 'bungalow teste', 60, 12, 'T0'
 
@@ -70,7 +132,11 @@ CREATE PROCEDURE dbo.testaInsertAlojamentoTenda AS
 	SET NOCOUNT ON
 	BEGIN TRY
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
-			EXEC dbo.inserts
+			INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
+				VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
+	
+			SELECT * FROM dbo.Alojamento
+			SELECT * FROM dbo.Tenda
 
 			EXEC dbo.InsertAlojamentoTenda 'Glampinho', 'teste tenda', 'Lote teste tenda', 'bonito', 12, 4, 50
 
@@ -745,7 +811,9 @@ CREATE PROC dbo.testeAlineaK AS
 						(2, 2, 'false'),
 						(3, 3, 'true')
 
-			EXEC dbo.sendEmails 365
+			DECLARE @messages NVARCHAR(255)
+			EXEC dbo.sendEmails 365, @messages OUTPUT
+			PRINT @messages
 		ROLLBACK
 	END TRY
 	BEGIN CATCH
@@ -890,7 +958,9 @@ CREATE PROC dbo.testeAlineaM AS
 
 			SELECT preçoTotal FROM dbo.Factura
 
-			EXEC dbo.mediaPagamentos 2
+			DECLARE @pagamento NVARCHAR(30)
+			EXEC dbo.mediaPagamentos 2, @pagamento OUTPUT
+			PRINT @pagamento
 		ROLLBACK
 	END TRY
 	BEGIN CATCH

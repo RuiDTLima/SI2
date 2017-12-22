@@ -55,6 +55,3 @@ SELECT * FROM dbo.ParqueCampismo
 SELECT * FROM dbo.Hóspede
 SELECT * FROM dbo.Paga
 SELECT * FROM dbo.Actividades
-
-INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
-VALUES(@nomeParque, @númeroSequencial, @nome, @descrição, @lotaçãoMáxima, @preçoParticipante, @dataRealização)

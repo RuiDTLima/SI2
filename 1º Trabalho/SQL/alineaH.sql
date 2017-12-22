@@ -58,11 +58,13 @@ CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT,
 			DECLARE @localização NVARCHAR(30)
 			DECLARE @preçoBase INT
 
-			SELECT @nomeParque = AlojEst.nomeParque, @localização = AlojEst.localização, @preçoBase = Aloj.preçoBase FROM dbo.Alojamento AS Aloj LEFT JOIN dbo.AlojamentoEstada AS AlojEst 
+			SELECT @nomeParque = Aloj.nomeParque, @localização = Aloj.localização, @preçoBase = Aloj.preçoBase FROM dbo.Alojamento AS Aloj LEFT JOIN dbo.AlojamentoEstada AS AlojEst 
 				ON Aloj.nomeParque = AlojEst.nomeParque AND Aloj.localização = AlojEst.localização 
-				JOIN dbo.Estada as Est ON Est.id = AlojEst.id
-				WHERE Aloj.tipoAlojamento = @tipoAlojamento AND Aloj.númeroMáximoPessoas = @lotação AND Est.dataFim < GETDATE()
-
+				LEFT JOIN dbo.Estada as Est ON Est.id = AlojEst.id
+				WHERE Aloj.tipoAlojamento = @tipoAlojamento AND Aloj.númeroMáximoPessoas <= @lotação AND (Est.dataFim < GETDATE() OR Est.id IS NULL)
+			PRINT @nomeParque
+			PRINT @localização
+			PRINT @preçoBase
 			INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
 				VALUES(@nomeParque, @localização, @idEstada, @preçoBase)
 
@@ -165,13 +167,13 @@ CREATE PROCEDURE dbo.createEstadaInTime @NIFResponsável INT, @NIFHóspede INT, @t
 		BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL SERIALIZABLE	-- durante a criação de uma estada não pode haver nenhuma alteração ao estado da base de dados devido em especial ao preços
 			DECLARE @id INT
 			EXEC dbo.createEstada @NIFResponsável, @tempoEstada, @id OUTPUT
-
+			
 			EXEC dbo.addAlojamento @tipoAlojamento, @lotação, @id
-
+			
 			EXEC dbo.addHóspede @NIFHóspede, @id
-
+			
 			EXEC dbo.addExtraToAlojamento @idExtraAlojamento, @id
-
+			
 			EXEC dbo.addExtraToEstada @idExtraPessoal, @id
 		COMMIT
 	END TRY
@@ -243,4 +245,4 @@ EXEC dbo.addExtraToAlojamento 3, @idTemp
 EXEC dbo.addExtraToEstada 2, @idTemp
 
 /* Testar procedure final */
-EXEC dbo.createEstadaInTime 112233445, 566778899, 5, 'tenda', 10, 2, 3
+EXEC dbo.createEstadaInTime 112233445, 566778899, 5, 'bungalow', 10, 2, 3

@@ -136,7 +136,5 @@ INSERT INTO dbo.Paga(nomeParque, númeroSequencial, ano, NIF, preçoParticipante)
 
 
 DECLARE @pagamento NVARCHAR(30)
-EXEC dbo.mediaPagamentos 2,@pagamento OUTPUT
+EXEC dbo.mediaPagamentos 2, @pagamento OUTPUT
 SELECT @pagamento
-
-

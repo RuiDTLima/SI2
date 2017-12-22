@@ -22,7 +22,7 @@ namespace Glampinho.concrete {
 
         protected override string SelectAllCommandText => "SELECT nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização FROM dbo.Actividades";
 
-        protected override string SelectCommandText => String.Format("{0} WHERE nomeParque = @nomeParque, númeroSequencial = @númeroSequencial, ano = @ano", SelectAllCommandText);
+        protected override string SelectCommandText => String.Format("{0} WHERE nomeParque = @nomeParque AND númeroSequencial = @númeroSequencial AND ano = @ano", SelectAllCommandText);
 
         protected override string UpdateCommandText => "UPDATE dbo.Actividades SET nomeParque = @nomeParque, númeroSequencial = @númeroSequencial, ano = @ano, nome = @nome, descrição = @descrição, lotaçãoMáxima = @lotaçãoMáxima, preçoParticipante = @preçoParticipante, dataRealização = @dataRealização WHERE nomeParque = @nomeParque AND númeroSequencial = @númeroSequencial AND ano = @ano";
 
@@ -95,51 +95,6 @@ namespace Glampinho.concrete {
             s.dataRealização = record.GetDateTime(7);
 
             return s;
-        }
-
-        public void InscreverHospede(Actividades actividade, Hóspede hóspede)
-        {
-            EnsureContext();
-
-            using (IDbCommand command = context.createCommand())
-            {
-                command.CommandText = "dbo.inscreverHóspede";
-                command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nifHosp = new SqlParameter("@NIFHóspede", hóspede.NIF);
-                SqlParameter numSeq = new SqlParameter("@númeroSequencial", actividade.númeroSequencial);
-                SqlParameter nomeParq = new SqlParameter("@nomeParque", actividade.nomeParque);
-                SqlParameter year = new SqlParameter("@ano", actividade.ano);
-
-                command.Parameters.Add(nifHosp);
-                command.Parameters.Add(numSeq);
-                command.Parameters.Add(nomeParq);
-                command.Parameters.Add(year);
-
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        internal Actividades Read(int numeroSeq, int ano, string nomeParqe)
-        {
-       
-            EnsureContext();
-            using (IDbCommand cmd = context.createCommand())
-            {
-                cmd.CommandText = SelectCommandText;
-                cmd.CommandType = SelectCommandType;
-
-                SqlParameter numSeq = new SqlParameter("@númeroSequencial", numeroSeq);
-                SqlParameter nomeParq = new SqlParameter("@nomeParque", nomeParqe);
-                SqlParameter year = new SqlParameter("@ano", ano);
-
-                cmd.Parameters.Add(numSeq);
-                cmd.Parameters.Add(nomeParq);
-                cmd.Parameters.Add(year);
-
-                using (IDataReader reader = cmd.ExecuteReader())
-                    return reader.Read() ? Map(reader) : null;
-            }
         }
     }
 }

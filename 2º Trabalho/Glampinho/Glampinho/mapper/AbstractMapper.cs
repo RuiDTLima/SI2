@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace Glampinho.mapper
-{
-    public static class CollectionExtensions
-    {
-        public static void AddRange(this IDataParameterCollection collection, IEnumerable<IDataParameter> newItems)
-        {
-            foreach (IDataParameter item in newItems)
-            {
+namespace Glampinho.mapper {
+    public static class CollectionExtensions {
+        public static void AddRange(this IDataParameterCollection collection, IEnumerable<IDataParameter> newItems) {
+            foreach (IDataParameter item in newItems) {
                 collection.Add(item);
             }
         }
     }
 
-    abstract class AbstractMapper<T, Tid, TCol> : IMapper<T, Tid, TCol> where T : class, new() where TCol : IList<T>, IEnumerable<T>, new()
-    {
+    abstract class AbstractMapper<T, Tid, TCol> : IMapper<T, Tid, TCol> where T : class, new() where TCol : IList<T>, IEnumerable<T>, new() {
         protected IContext context;
 
         protected abstract T Map(IDataRecord record); //    How to map entity
@@ -41,31 +36,25 @@ namespace Glampinho.mapper
         protected virtual CommandType InsertCommandType { get { return System.Data.CommandType.Text; } }
         protected abstract void InsertParameters(IDbCommand command, T e);
 
-        protected TCol MapAll(IDataReader reader)
-        {
+        protected TCol MapAll(IDataReader reader) {
             TCol collection = new TCol();
-            while (reader.Read())
-            {
-                try
-                {
+            while (reader.Read()) {
+                try {
                     collection.Add(Map(reader));
                 }
-                catch
-                {
+                catch {
                     throw;
                 }
             }
             return collection;
         }
 
-        protected void EnsureContext()
-        {
+        protected void EnsureContext() {
             if (context == null)
                 throw new InvalidOperationException("Data Context not set.");
         }
 
-        protected IDataReader ExecuteReader(String commandText, List<IDataParameter> parameters)
-        {
+        protected IDataReader ExecuteReader(String commandText, List<IDataParameter> parameters) {
             using (IDbCommand cmd = context.createCommand())
             {
                 if (parameters != null)

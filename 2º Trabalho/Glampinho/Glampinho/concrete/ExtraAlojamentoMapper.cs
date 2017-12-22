@@ -17,7 +17,7 @@ namespace Glampinho.concrete {
 
         protected override string DeleteCommandText {
             get {
-                return "dbo.deleteExtra"; // chamar procedimento armazenado
+                return "dbo.deleteExtra";
             }
         }
 

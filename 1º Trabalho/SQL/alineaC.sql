@@ -114,7 +114,8 @@ END CATCH
 /******************************* TESTE ***************************************************************/
 
 INSERT INTO dbo.ParqueCampismo(nome, morada, estrelas, email)
-	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com')
+	VALUES('Glampinho', 'campo dos parques', 3, 'parque1@email.com'),
+			('testec#', 'campo de teste', 4, 'teste@c#.com')
 
 EXEC dbo.InsertAlojamentoTenda    'Glampinho', 'tenda pequena',  'Rua 1', 'bonito',			   12, 4,  50
 EXEC dbo.InsertAlojamentoTenda    'Glampinho', 'tenda grande',	 'Rua 2', 'grande',			   15, 10, 50
@@ -123,6 +124,7 @@ EXEC dbo.InsertAlojamentoTenda	  'Glampinho', 'tenda vazia',	 'Rua 4', 'vazia',	
 EXEC dbo.InsertAlojamentoTenda	  'Glampinho', 'tenda nova',     'Rua 5', 'por estrear',	   15, 10, 50
 EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow hoje',  'Rua 6', 'primeiro bungalow', 15, 10, 'T3'
 EXEC dbo.InsertAlojamentoBungalow 'Glampinho', 'Bungalow ontem', 'Rua 7', 'segundo bungalow',  15, 9,  'T3'
+EXEC dbo.InsertAlojamentoBungalow 'testec#', 'teste', 'rua de testes', 'teste de c#', 10, 5, 'T3'
 
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES (1, 'descricao', 10, 'alojamento'), 
@@ -137,14 +139,16 @@ INSERT INTO dbo.AlojamentoExtra(nomeParque, localização, id)
 -- executar insert hospede primeiro
 INSERT INTO	dbo.Estada(id, dataInício, dataFim, idFactura, ano)
 	VALUES (1, '2017-11-09 13:00:00', '2017-11-11 13:00:00', null, null),
-		   (2, '2017-11-17 10:00:00', '2017-11-18 13:00:00', null, null)
+		   (2, '2017-11-17 10:00:00', '2017-11-18 13:00:00', null, null),
+		   (3, '2017-12-22 11:00:00', '2017-12-23 11:00:00', null, null)
 
 INSERT INTO dbo.HóspedeEstada(NIF, id, hóspede)
 	VALUES (112233445, 1, 'false'),
 		   (566778899, 1, 'true' ),
 		   (123456789, 2, 'true' ),
 		   (123243546, 2, 'false'),
-		   (112233445, 2, 'false')
+		   (112233445, 2, 'false'),
+		   (566778899, 3, 'true')
 
 INSERT INTO dbo.EstadaExtra(estadaId, extraId, preçoDia)
 	VALUES (1, 1, 10),
@@ -156,7 +160,8 @@ INSERT INTO dbo.EstadaExtra(estadaId, extraId, preçoDia)
 
 INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
 	VALUES ('Glampinho', 'Rua 1', 1, 12),
-		   ('Glampinho', 'Rua 2', 2, 15)
+		   ('Glampinho', 'Rua 2', 2, 15),
+		   ('testec#', 'rua de testes', 3, 20)
 
 INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)
 	VALUES ('Glampinho', 1, 2017, 'FUT7', 'Jogo de futebol 7vs7', '14', 3, '2017-03-15 10:30:00'),
@@ -178,6 +183,4 @@ SELECT * FROM dbo.EstadaExtra
 SELECT * FROM dbo.Paga
 
 EXEC dbo.deleteHospede 112233445
-EXEC dbo.deleteHospede 123456789
-
-DELETE FROM dbo.HóspedeEstada WHERE NIF = 112233445
+EXEC dbo.deleteHospede 123456789      
