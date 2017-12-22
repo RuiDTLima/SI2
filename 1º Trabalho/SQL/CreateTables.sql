@@ -39,7 +39,7 @@ CREATE TABLE dbo.Factura(
 	id INT,
 	ano INT, 
 	nomeHóspede NVARCHAR(30),
-	NIFHóspede INT FOREIGN KEY REFERENCES dbo.Hóspede(NIF),
+	NIFHóspede INT,
 	preçoTotal INT,
 	CONSTRAINT pk_Factura PRIMARY KEY(id, ano)
 )

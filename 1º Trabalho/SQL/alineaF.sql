@@ -11,7 +11,6 @@
 USE Glampinho
 
 /************************************** INSERT *******************************************************/
-
 INSERT INTO dbo.Extra(id, descrição, preçoDia, associado)
 	VALUES(3, 'descricao', 12, 'pessoa')
 

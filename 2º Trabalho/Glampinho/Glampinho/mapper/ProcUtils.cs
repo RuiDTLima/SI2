@@ -45,7 +45,7 @@ namespace Glampinho.mapper {
                 return "SELECT preçoTotal, idFactura FROM dbo.Factura INNER JOIN (\n" +
                         "SELECT idFactura FROM dbo.Estada INNER JOIN(\n" +
                         "SELECT A.id FROM dbo.HóspedeEstada INNER JOIN(\n" +
-                        "SELECT Distinct id FROM dbo.ParqueCampismo INNER JOIN dbo.AlojamentoEstada ON dbo.ParqueCampismo.nome = @parqueCampismo) AS A \n" + 
+                        "SELECT Distinct id FROM dbo.ParqueCampismo INNER JOIN dbo.AlojamentoEstada ON dbo.ParqueCampismo.nome = @parqueCampismo) AS A \n" +
                         "ON dbo.HóspedeEstada.id = A.id and dbo.HóspedeEstada.NIF = @NIF) AS B ON B.id = dbo.Estada.id and dbo.Estada.dataInício BETWEEN @dataInicio and @dataFim) AS C ON dbo.Factura.id = C.idFactura";
             }
         }
@@ -54,14 +54,14 @@ namespace Glampinho.mapper {
             get {
                 return "SELECT DISTINCT NIF FROM dbo.HóspedeEstada \n" +
                         "EXCEPT\n" +
-                        "SELECT DISTINCT NIF FROM dbo.HóspedeEstada INNER JOIN ( " + 
+                        "SELECT DISTINCT NIF FROM dbo.HóspedeEstada INNER JOIN ( " +
                         "SELECT id FROM dbo.AlojamentoEstada WHERE nomeParque <> @nomeParque ) AS A ON A.id = dbo.HóspedeEstada.id";
             }
         }
 
         private string DeleteParkCommandText {
             get {
-                return "DELETE FROM dbo.ParqueCampismo WHERE nome=@nome";
+                return "DELETE FROM dbo.ParqueCampismo WHERE nome = @nome";
             }
         }
 
@@ -165,7 +165,7 @@ namespace Glampinho.mapper {
             command.Parameters.Add(periodoTemporal);
         }
 
-        public void FillParametersListarActividades(IDbCommand command, DateTime dataInicio, DateTime dataFim) {
+        private void FillParametersListarActividades(IDbCommand command, DateTime dataInicio, DateTime dataFim) {
             SqlParameter dtInicio = new SqlParameter("@dataInicio", dataInicio);
             SqlParameter dtFim = new SqlParameter("@dataFim", dataFim);
 
@@ -293,7 +293,7 @@ namespace Glampinho.mapper {
             }
         }
 
-        public Tuple<int, int> FindFacturas(Hóspede hóspede, DateTime dataInicio, DateTime dataFim, string parqueCampismo) {
+        public Tuple<int, int> FindFacturas(Hóspede hóspede, DateTime dataInicio, DateTime dataFim, ParqueCampismo parqueCampismo) {
             if (hóspede == null)
                 throw new ArgumentException("The hóspede cannot be null");
 
@@ -303,7 +303,7 @@ namespace Glampinho.mapper {
                 command.CommandText = FindFacturaCommandText;
                 command.CommandType = FindFacturaCommandType;
 
-                FillParametersFindFactura(command, hóspede, dataInicio, dataFim, parqueCampismo);
+                FillParametersFindFactura(command, hóspede, dataInicio, dataFim, parqueCampismo.nome);
 
                 IDataReader reader = command.ExecuteReader();
 

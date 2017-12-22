@@ -6,6 +6,9 @@ using System.Data;
 using System.Data.SqlClient;
 
 namespace Glampinho.concrete {
+    /**
+     * In Tuple first element is nomeParque, second element is númeroSequencial and third is ano
+     */
     class ActividadesMapper : AbstractMapper<Actividades, Tuple<String, int, int>, List<Actividades>>, IAtividadesMapper {
         protected override CommandType DeleteCommandType {
             get {
@@ -17,7 +20,7 @@ namespace Glampinho.concrete {
 
         protected override string DeleteCommandText => "dbo.deleteAtividades";
 
-        protected override string InsertCommandText => "INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)" + 
+        protected override string InsertCommandText => "INSERT INTO dbo.Actividades(nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização)" +
                                                 "VALUES(@nomeParque, @númeroSequencial, @ano, @nome, @descrição, @lotaçãoMáxima, @preçoParticipante, @dataRealização)";
 
         protected override string SelectAllCommandText => "SELECT nomeParque, númeroSequencial, ano, nome, descrição, lotaçãoMáxima, preçoParticipante, dataRealização FROM dbo.Actividades";

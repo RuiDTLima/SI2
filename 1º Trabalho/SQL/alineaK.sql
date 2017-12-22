@@ -25,7 +25,7 @@ GO
 IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'SendEmails')
 	DROP PROCEDURE dbo.SendEmails;
 GO
-CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT/*, @text NVARCHAR(2555) OUTPUT*/ AS
+CREATE PROCEDURE dbo.SendEmails @periodoTemporal INT AS
 BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
     BEGIN TRY
 	DECLARE @NIF INT
@@ -50,9 +50,9 @@ BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 			FETCH NEXT FROM iterate_NIFs INTO @NIF, @email
 		END
 		
-	SELECT mensagem FROM @Notificações
 	CLOSE iterate_NIFs
 	DEALLOCATE iterate_NIFs
+	SELECT mensagem FROM @Notificações
 	COMMIT
 END TRY
 BEGIN CATCH
@@ -62,9 +62,9 @@ END CATCH
 
 /*************************************** Teste ************************************************************************/
 INSERT INTO dbo.Estada(id, dataInício, dataFim)
-	VALUES	(2, '2017-12-22 13:00:00', '2017-12-27 13:00:00'),
-			(3, '2017-12-22 13:00:00', '2017-12-27 13:00:00'),
-			(4, '2017-12-22 13:00:00', '2017-12-30 13:00:00')
+	VALUES	(2, '2017-12-23 13:00:00', '2017-12-27 13:00:00'),
+			(3, '2017-12-23 13:00:00', '2017-12-27 13:00:00'),
+			(4, '2017-12-23 13:00:00', '2017-12-30 13:00:00')
 
 INSERT INTO dbo.Hóspede(NIF, nome, morada, email, númeroIdentificação)
 	VALUES (112233445, 'José', 'Rua 1', 'jose@gmail.com', 11223344),

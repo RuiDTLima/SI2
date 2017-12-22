@@ -57,15 +57,27 @@ BEGIN CATCH
 END CATCH
 
 /******************************* UPDATE ***********************************************************/
-
-UPDATE dbo.Alojamento SET preçoBase = 80 WHERE nome = 'Parque 1' and localização = 'Lote 1'
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'UpdateAlojamento')
+	DROP PROCEDURE dbo.UpdateAlojamento;
+GO
+CREATE PROCEDURE dbo.UpdateAlojamento @preçoBase INT, @númeroMáximoPessoas TINYINT, @descrição NVARCHAR(30), @nomeParque NVARCHAR(30), @localização NVARCHAR(30) AS
+SET NOCOUNT ON
+BEGIN TRY
+	BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+		UPDATE dbo.Alojamento SET preçoBase = @preçoBase, númeroMáximoPessoas = @númeroMáximoPessoas, descrição = @descrição WHERE nomeParque = @nomeParque AND localização = @localização
+	COMMIT
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT !=0
+		ROLLBACK;
+	THROW
+END CATCH	 
 
 /****************************** DELETE ***********************************************************/
 /********************************** DELETE HÓSPEDES ASSOCIADOS ************************************************************/
 GO
 IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'eliminaHóspedesAssociados')
 	DROP PROCEDURE dbo.eliminaHóspedesAssociados;
-
 GO
 CREATE PROCEDURE dbo.eliminaHóspedesAssociados @idEstada INT AS
 SET NOCOUNT ON
@@ -200,3 +212,5 @@ SELECT * FROM dbo.EstadaExtra
 
 EXEC dbo.deleteAlojamento 'Lote 1','Glampinho'
 EXEC dbo.deleteAlojamento 'Lote 2','Glampinho'
+
+EXEC dbo.UpdateAlojamento 50, 10, 'bst', 'Glampinho', 'Lote 1'

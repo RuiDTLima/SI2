@@ -25,11 +25,13 @@ RETURNS  @rtnTable TABLE (
 
 BEGIN
 	INSERT INTO @rtnTable(nome, descrição)
-		SELECT nome, descrição FROM dbo.Actividades INNER JOIN (
-			SELECT númeroSequencial, ano, count(númeroSequencial) AS participantes FROM dbo.Paga 
-			GROUP BY númeroSequencial, ano) AS A 
+		
+SELECT nome, descrição FROM dbo.Actividades INNER JOIN (
+			SELECT Actividades.númeroSequencial, Actividades.ano, count(Actividades.númeroSequencial) AS participantes FROM dbo.Actividades 
+			LEFT JOIN dbo.Paga AS P ON P.númeroSequencial = Actividades.númeroSequencial AND P.ano = Actividades.ano
+			GROUP BY Actividades.númeroSequencial, Actividades.ano) AS A 
 			ON A.númeroSequencial = Actividades.númeroSequencial AND A.ano = Actividades.ano AND lotaçãoMáxima > participantes 
-				AND dataRealização BETWEEN @dataInicio AND @dataFim 
+				AND dataRealização BETWEEN @dataInicio AND @dataFim
 	RETURN
 END
 

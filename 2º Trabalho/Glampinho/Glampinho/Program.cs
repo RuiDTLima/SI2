@@ -7,288 +7,700 @@ using System.Configuration;
 
 namespace Glampinho {
     class Program {
-        static void Main(string[] args) {
-            string connectionString = ConfigurationManager.ConnectionStrings["glampinho"].ConnectionString;
-            /* ---------- Teste Hóspede ---------- */
-           /* using (Context context = new Context(connectionString)) {
-                Hóspede hóspede = new Hóspede();
+        private static string connectionString = ConfigurationManager.ConnectionStrings["glampinho"].ConnectionString;
 
-                hóspede.NIF = 112233445;
+        public static void Main(string[] args) {
+            while (true) {
+                PrintOptions();
+                string command = Console.ReadLine();
+                switch (command) {
+                    case "1":
+                        Console.Write("Indique a operação (Create/Delete/Update): ");
 
-                HóspedeMapper hóspedeMapper = new HóspedeMapper(context);
+                        switch (Console.ReadLine()) {
+                            case "Create":
+                                CreateHóspede();
+                                Console.WriteLine("\nHóspede criado com sucesso.\n");
+                                break;
 
-                foreach (var h in hóspedeMapper.ReadAll()) {
-                    Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", h.NIF, h.nome, h.morada, h.email, h.númeroIdentificação);
+                            case "Delete":
+                                DeleteHóspede();
+                                Console.WriteLine("\nHóspede eliminado com sucesso.\n");
+                                break;
+
+                            case "Update":
+                                UpdateHóspede();
+                                Console.WriteLine("\nHóspede actualizado com sucesso.\n");
+                                break;
+                        }
+                        break;
+
+                    case "2":
+                        Console.Write("Indique a operação (Create/Delete/Update): ");
+                        string commandAloj = Console.ReadLine();
+
+                        Console.Write("Sobre um bungalow ou tenda: ");
+                        string tipoAlojamento = Console.ReadLine();
+
+                        if (tipoAlojamento.Equals("tenda")) {
+                            switch (commandAloj) {
+                                case "Create":
+                                    CreateTenda();
+                                    Console.WriteLine("\nTenda criada com sucesso.\n");
+                                    break;
+                                case "Delete":
+                                    DeleteTenda();
+                                    Console.WriteLine("\nTenda eliminada com sucesso.\n");
+                                    break;
+                                case "Update":
+                                    UpdateTenda();
+                                    Console.WriteLine("\nTenda actualizada com sucesso.\n");
+                                    break;
+                            }
+                        }
+                        else {
+                            switch (commandAloj) {
+                                case "Create":
+                                    CreateBungalow();
+                                    Console.WriteLine("\nBungalow criado com sucesso.\n");
+                                    break;
+                                case "Delete":
+                                    DeleteBungalow();
+                                    Console.WriteLine("\nBungalow eliminado com sucesso.\n");
+                                    break;
+                                case "Update":
+                                    UpdateBungalow();
+                                    Console.WriteLine("\nBungalow actualizado com sucesso.\n");
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case "3" :case "4":
+                        Console.Write("Indique a operação (Create/Delete/Update): ");
+                        
+                        switch (Console.ReadLine()) {
+                            case "Create":
+                                CreateExtra(command);
+                                Console.WriteLine("\nExtra criado com sucesso.\n");
+                                break;
+                            case "Delete":
+                                DeleteExtra(command);
+                                Console.WriteLine("\nExtra eliminado com sucesso.\n");
+                                break;
+                            case "Update":
+                                UpdateExtra(command);
+                                Console.WriteLine("\nExtra actualizado com sucesso.\n");
+                                break;
+                        }
+
+                        break;
+                    case "5":
+                        Console.Write("Indique a operação (Create/Delete/Update): ");
+
+                        switch (Console.ReadLine()) {
+                            case "Create":
+                                CreateActividade();
+                                Console.WriteLine("\nActividade criada com sucesso.\n");
+                                break;
+                            case "Delete":
+                                DeleteActividade();
+                                Console.WriteLine("\nActividade eliminada com sucesso.\n");
+                                break;
+                            case "Update":
+                                UpdateActividade();
+                                Console.WriteLine("\nActividade actualizada com sucesso.\n");
+                                break;
+                        }
+
+                        break;
+                    case "6":
+                        CreateEstadaInTime();
+                        Console.WriteLine("\nEstada criada com sucesso.\n");
+                        break;
+                    case "7":
+                        InscreverHóspede();
+                        Console.WriteLine("\nHóspede inscrito com sucesso.\n");
+                        break;
+                    case "8":
+                        FinishEstadaWithFactura();
+                        Console.WriteLine("\nCalculo de factura feito com sucesso.\n");
+                        break;
+                    case "9":
+                        SendEmails();
+                        break;
+                    case "10":
+                        ListarActividades();
+                        break;
+                    case "11":
+                        FindFacturas();
+                        break;
+                    case "12":
+                        DeleteParque();
+                        Console.WriteLine("\nParque eliminado com sucesso.\n");
+                        break;
+                    case "exit":
+                        Environment.Exit(0);
+                        break;
                 }
+            }
+        }
 
-                Hóspede newHóspede = new Hóspede();
-                newHóspede.nome = "teste C#";
-                newHóspede.NIF = 1;
-                newHóspede.morada = "teste";
-                newHóspede.email = "teste@c#.com";
-                newHóspede.númeroIdentificação = 12;
+        private static void PrintOptions() {
+            Console.WriteLine("/************************************* Comandos **************************************/");
+            Console.WriteLine("1 - Inserir/Remover/Atualizar Hóspede");
+            Console.WriteLine("2 - Inserir/Remover/Atualizar Alojamento num Parque");
+            Console.WriteLine("3 - Inserir/Remover/Atualizar Extra de Alojamento");
+            Console.WriteLine("4 - Inserir/Remover/Atualizar Extra de Pessoa");
+            Console.WriteLine("5 - Inserir/Remover/Atualizar Actividade");
+            Console.WriteLine("6 - Criar uma estada para um dado período de tempo");
+            Console.WriteLine("7 - Inscrever um hóspede numa atividade");
+            Console.WriteLine("8 - Pagamento devido por uma estada, com emissão da respetiva fatura");
+            Console.WriteLine("9 - Enviar emails a todos os hóspedes responsáveis");
+            Console.WriteLine("10 - Listar todas as atividades com lugares disponíveis para um intervalo de datas especificado");
+            Console.WriteLine("11 - Obter o total pago por hóspede");
+            Console.WriteLine("12 - Eliminar um dos parques");
+            Console.WriteLine("exit - Desligar\n");
+        }
 
-                newHóspede = hóspedeMapper.Create(newHóspede);
+        private static void CreateHóspede() {
+            Hóspede newHóspede = new Hóspede();
 
-                Console.WriteLine("Hóspede: {0} || {1} || {2} || {3} || {4}", newHóspede.NIF, newHóspede.nome, newHóspede.morada, newHóspede.email, newHóspede.númeroIdentificação);
-                
-                newHóspede.morada = "update";
-                newHóspede.nome = "teste C#";
-                newHóspede.NIF = 1;
-                newHóspede.email = "teste@c#.com";
-                newHóspede.númeroIdentificação = 12;
-                hóspedeMapper.Update(newHóspede);
+            Console.Write("Nome: ");
+            newHóspede.nome = Console.ReadLine();
 
-                Hóspede deleteHóspede = new Hóspede();
-                deleteHóspede.NIF = 112233445;
+            Console.Write("NIF: ");
+            newHóspede.NIF = int.Parse(Console.ReadLine());
+
+            Console.Write("Morada: ");
+            newHóspede.morada = Console.ReadLine();
+
+            Console.Write("Email: ");
+            newHóspede.email = Console.ReadLine();
+
+            Console.Write("Numero Identificação: ");
+            newHóspede.númeroIdentificação = int.Parse(Console.ReadLine());
+
+            using (Context context = new Context(connectionString)) {
+                HóspedeMapper hóspedeMapper = new HóspedeMapper(context);
+                hóspedeMapper.Create(newHóspede);
+            }
+        }
+
+        private static void DeleteHóspede() {
+            Hóspede deleteHóspede = new Hóspede();
+
+            Console.Write("NIF: ");
+            deleteHóspede.NIF = int.Parse(Console.ReadLine());
+
+            using (Context context = new Context(connectionString)) {
+                HóspedeMapper hóspedeMapper = new HóspedeMapper(context);
                 hóspedeMapper.Delete(deleteHóspede);
-            }*/
+            }
+        }
 
-            /* ---------- Teste Bungalow ---------- */
-            /*using (Context context = new Context(connectionString)) {
-                BungalowMapper bungalowMapper = new BungalowMapper(context);
+        private static void UpdateHóspede()  {
+            Hóspede updateHóspede = new Hóspede();
 
-                foreach(var bungalow in bungalowMapper.ReadAll()) {
-                    Console.WriteLine("Bungalow: {0} || {1} || {2} || {3} || {4} || {5} || {6}", bungalow.nomeParque, bungalow.nome, bungalow.localização, bungalow.descrição, bungalow.preçoBase, bungalow.númeroMáximoPessoas, bungalow.tipologia);
-                }
+            Console.Write("Nome: ");
+            updateHóspede.nome = Console.ReadLine();
 
-                Bungalow newBungalow = new Bungalow();
-                newBungalow.nomeParque = "Glampinho";
-                newBungalow.nome = "test c#";
-                newBungalow.localização = "Rua c#";
-                newBungalow.descrição = "bungalow de teste de c#";
-                newBungalow.preçoBase = 50;
-                newBungalow.númeroMáximoPessoas = 0;
-                newBungalow.tipologia = "T0";
+            Console.Write("NIF: ");
+            updateHóspede.NIF = int.Parse(Console.ReadLine());
 
-                newBungalow = bungalowMapper.Create(newBungalow);
+            Console.Write("Morada: ");
+            updateHóspede.morada = Console.ReadLine();
 
-                Console.WriteLine("Bungalow: {0} || {1} || {2} || {3} || {4} || {5} || {6}", newBungalow.nomeParque, newBungalow.nome, newBungalow.localização, newBungalow.descrição, newBungalow.preçoBase, newBungalow.númeroMáximoPessoas, newBungalow.tipologia);
+            Console.Write("Email: ");
+            updateHóspede.email = Console.ReadLine();
 
-                newBungalow.preçoBase = 0;
-                bungalowMapper.Update(newBungalow);
+            Console.Write("Numero Identificação: ");
+            updateHóspede.númeroIdentificação = int.Parse(Console.ReadLine());
 
-                bungalowMapper.Delete(newBungalow);
-            }*/
-
-            /* ---------- Teste Tenda ---------- */
-            /*using (Context context = new Context(connectionString)) {
-                TendaMapper tendaMapper = new TendaMapper(context);
-
-                foreach (var tenda in tendaMapper.ReadAll()) {
-                    Console.WriteLine("Tenda: {0} || {1} || {2} || {3} || {4} || {5} || {6}", tenda.nomeParque, tenda.nome, tenda.localização, tenda.descrição, tenda.preçoBase, tenda.númeroMáximoPessoas, tenda.área);
-                }
-
-                Tenda newTenda = new Tenda();
-                newTenda.nomeParque = "Glampinho";
-                newTenda.nome = "Tenda c#";
-                newTenda.localização = "Rua tenda c#";
-                newTenda.descrição = "tenda de teste de c#";
-                newTenda.preçoBase = 50;
-                newTenda.númeroMáximoPessoas = 1;
-                newTenda.área = 25;
-
-                newTenda = tendaMapper.Create(newTenda);
-
-                Console.WriteLine("Tenda: {0} || {1} || {2} || {3} || {4} || {5} || {6}", newTenda.nomeParque, newTenda.nome, newTenda.localização, newTenda.descrição, newTenda.preçoBase, newTenda.númeroMáximoPessoas, newTenda.área);
-
-                newTenda.preçoBase = 0;
-                tendaMapper.Update(newTenda);
-
-                tendaMapper.Delete(newTenda);
-            }*/
-
-            /* ---------- Teste Extra Alojamento ---------- */
-            /*using(Context context = new Context(connectionString)) {
-                ExtraAlojamentoMapper extraAlojamentoMapper = new ExtraAlojamentoMapper(context);
-
-                foreach(var extra in extraAlojamentoMapper.ReadAll()) {
-                    Console.WriteLine("Extra Alojamento: {0} || {1} || {2} || {3}", extra.id, extra.descrição, extra.preçoDia, extra.associado);
-                }
-
-                Extra newExtraAlojamento = new Extra();
-                newExtraAlojamento.id = 3;
-                newExtraAlojamento.descrição = "extra de alojamento de teste";
-                newExtraAlojamento.preçoDia = 0;
-                newExtraAlojamento.associado = "alojamento";
-
-                newExtraAlojamento = extraAlojamentoMapper.Create(newExtraAlojamento);
-                Console.WriteLine("Extra Alojamento: {0} || {1} || {2} || {3}", newExtraAlojamento.id, newExtraAlojamento.descrição, newExtraAlojamento.preçoDia, newExtraAlojamento.associado);
-
-                newExtraAlojamento.preçoDia = 50;
-                extraAlojamentoMapper.Update(newExtraAlojamento);
-
-                Extra deletedExtra = new Extra();
-                deletedExtra.id = 1;
-                deletedExtra.descrição = "descricao";
-                deletedExtra.preçoDia = 12;
-                deletedExtra.associado = "alojamento";
-
-                extraAlojamentoMapper.Delete(deletedExtra);
-            }*/
-
-            /* ---------- Teste Extra Pessoal ---------- */
-            /*using (Context context = new Context(connectionString)) {
-                ExtraPessoalMapper extraPessoalMapper = new ExtraPessoalMapper(context);
-
-                foreach (var extra in extraPessoalMapper.ReadAll()) {
-                    Console.WriteLine("Extra Pessoa: {0} || {1} || {2} || {3}", extra.id, extra.descrição, extra.preçoDia, extra.associado);
-                }
-
-                Extra newExtraPessoa = new Extra();
-                newExtraPessoa.id = 3;
-                newExtraPessoa.descrição = "extra de pessoa de teste";
-                newExtraPessoa.preçoDia = 0;
-                newExtraPessoa.associado = "pessoa";
-
-                newExtraPessoa = extraPessoalMapper.Create(newExtraPessoa);
-                Console.WriteLine("Extra Pessoa: {0} || {1} || {2} || {3}", newExtraPessoa.id, newExtraPessoa.descrição, newExtraPessoa.preçoDia, newExtraPessoa.associado);
-
-                newExtraPessoa.preçoDia = 50;
-                extraPessoalMapper.Update(newExtraPessoa);
-
-                Extra deletedExtra = new Extra();
-                deletedExtra.id = 2;
-                deletedExtra.descrição = "erro";
-                deletedExtra.preçoDia = 20;
-                deletedExtra.associado = "pessoa";
-
-                extraPessoalMapper.Delete(deletedExtra);
-            }*/
-
-            /* ---------- Teste Actividades ---------- */
-            /*using (Context context = new Context(connectionString)) {
-                ActividadesMapper actividadesMapper = new ActividadesMapper(context);
-
-                foreach(var actividade in actividadesMapper.ReadAll()) {
-                    Console.WriteLine("Actividade: {0} || {1} || {2} || {3} || {4} || {5} || {6} || {7}", actividade.nomeParque, actividade.númeroSequencial, actividade.ano, actividade.nome, actividade.descrição, actividade.lotaçãoMáxima, actividade.preçoParticipante, actividade.dataRealização);
-                }
-
-                Actividades newActividade = new Actividades();
-                newActividade.nomeParque = "Glampinho";
-                newActividade.númeroSequencial = 2;
-                newActividade.ano = 2017;
-                newActividade.nome = "actividade de teste";
-                newActividade.descrição = "actividade para teste no c#";
-                newActividade.lotaçãoMáxima = 2;
-                newActividade.preçoParticipante = 10;
-                newActividade.dataRealização = new DateTime(2017, 12, 18, 10, 30, 0);
-
-                newActividade = actividadesMapper.Create(newActividade);
-                Console.WriteLine("Actividade: {0} || {1} || {2} || {3} || {4} || {5} || {6} || {7}", newActividade.nomeParque, newActividade.númeroSequencial, newActividade.ano, newActividade.nome, newActividade.descrição, newActividade.lotaçãoMáxima, newActividade.preçoParticipante, newActividade.dataRealização);
-
-                newActividade.preçoParticipante = 50;
-                actividadesMapper.Update(newActividade);
-
-                Actividades deleteActividade = new Actividades();
-                deleteActividade.nomeParque = "Glampinho";
-                deleteActividade.númeroSequencial = 1;
-                deleteActividade.ano = 2017;
-                deleteActividade.nome = "FUT7";
-                deleteActividade.descrição = "Jogo de futebol 7vs7";
-                deleteActividade.lotaçãoMáxima = 14;
-                deleteActividade.preçoParticipante = 3;
-                deleteActividade.dataRealização = new DateTime(2017, 03, 15, 10, 30, 0);
-
-                actividadesMapper.Delete(deleteActividade);
-            }*/
-
-            /* --------- Teste EstadaInTime ---------- */
-           /* using(Context context = new Context(connectionString)) {
-                ProcUtils procedimentos = new ProcUtils(context);
-                Hóspede responsável = new Hóspede();
-                responsável.NIF = 112233445;
-                responsável.nome = "Teste";
-                responsável.morada = "Rua teste";
-                responsável.email = "teste@teste.com";
-                responsável.númeroIdentificação = 11223344;
-
-                Hóspede hóspede = new Hóspede();
-                hóspede.NIF = 566778899;
-                hóspede.nome = "Maria";
-                hóspede.morada = "Rua 2";
-                hóspede.email = "maria@gmail.com";
-                hóspede.númeroIdentificação = 55667788;
-
-                Estada estada = new Estada();
-                estada.id = 5;
-                estada.dataInício = new DateTime(2017, 12, 20, 13, 00, 00);
-                estada.dataFim = new DateTime(2017, 12, 25, 13, 00, 00);
-
-                BungalowMapper bungalowMapper = new BungalowMapper(context);
-                Bungalow bungalow = bungalowMapper.Read(new Tuple<string, string>("Glampinho", "Rua 7"));
-
-                Extra extraPessoal = new Extra();
-                extraPessoal.id = 2;
-                extraPessoal.descrição = "teste";
-                extraPessoal.preçoDia = 15;
-                extraPessoal.associado = "pessoa";
-
-                Extra extraAlojamento = new Extra();
-                extraAlojamento.id = 3;
-                extraAlojamento.descrição = "metodo";
-                extraAlojamento.preçoDia = 20;
-                extraAlojamento.associado = "alojamento";
-
-                procedimentos.createEstadaInTime(responsável, hóspede, estada, bungalow, extraPessoal, extraAlojamento);
-            }*/
-
-            /* --------- Teste InscreverHospede ---------- */
-           /* using(Context context = new Context(connectionString)) {
+            using (Context context = new Context(connectionString)) {
                 HóspedeMapper hóspedeMapper = new HóspedeMapper(context);
-                Hóspede hóspede = hóspedeMapper.Read(112233445);
+                hóspedeMapper.Update(updateHóspede);
+            }
+        }
 
+        private static void CreateTenda() {
+            Tenda tenda = new Tenda();
+
+            Console.Write("Nome do parque: ");
+            tenda.nomeParque = Console.ReadLine();
+
+            Console.Write("Nome: ");
+            tenda.nome = Console.ReadLine();
+
+            Console.Write("Localização: ");
+            tenda.localização = Console.ReadLine();
+
+            Console.Write("Descrição: ");
+            tenda.descrição = Console.ReadLine();
+
+            Console.Write("Preço Base: ");
+            tenda.preçoBase = int.Parse(Console.ReadLine());
+
+            Console.Write("Número Máximo de Pessoas: ");
+            tenda.númeroMáximoPessoas = int.Parse(Console.ReadLine());
+
+            Console.Write("Área: ");
+            tenda.área = int.Parse(Console.ReadLine());
+            
+            using (Context context = new Context(connectionString)) {
+                TendaMapper tendaMapper = new TendaMapper(context);
+                tendaMapper.Create(tenda);
+            }
+        }
+
+        private static void UpdateTenda() {
+            Tenda tenda = new Tenda();
+
+            Console.Write("Nome do parque: ");
+            tenda.nomeParque = Console.ReadLine();
+
+            Console.Write("Nome: ");
+            tenda.nome = Console.ReadLine();
+
+            Console.Write("Localização: ");
+            tenda.localização = Console.ReadLine();
+
+            Console.Write("Descrição: ");
+            tenda.descrição = Console.ReadLine();
+
+            Console.Write("Preço Base: ");
+            tenda.preçoBase = int.Parse(Console.ReadLine());
+
+            Console.Write("Número Máximo de Pessoas: ");
+            tenda.númeroMáximoPessoas = int.Parse(Console.ReadLine());
+
+            Console.Write("Área: ");
+            tenda.área = int.Parse(Console.ReadLine());
+
+            using (Context context = new Context(connectionString)) {
+                TendaMapper tendaMapper = new TendaMapper(context);
+                tendaMapper.Update(tenda);
+            }
+        }
+
+        private static void DeleteTenda() {
+            Tenda tenda = new Tenda();
+
+            Console.Write("Nome do parque: ");
+            tenda.nomeParque = Console.ReadLine();
+
+            Console.Write("Localização: ");
+            tenda.localização = Console.ReadLine();
+
+            using (Context context = new Context(connectionString)) {
+                TendaMapper tendaMapper = new TendaMapper(context);
+                tendaMapper.Delete(tenda);
+            }
+        }
+
+        private static void CreateBungalow() {
+            Bungalow bungalow = new Bungalow();
+
+            Console.Write("Nome do parque: ");
+            bungalow.nomeParque = Console.ReadLine();
+
+            Console.Write("Nome: ");
+            bungalow.nome = Console.ReadLine();
+
+            Console.Write("Localização: ");
+            bungalow.localização = Console.ReadLine();
+
+            Console.Write("Descrição: ");
+            bungalow.descrição = Console.ReadLine();
+
+            Console.Write("Preço Base: ");
+            bungalow.preçoBase = int.Parse(Console.ReadLine());
+
+            Console.Write("Número Máximo de Pessoas: ");
+            bungalow.númeroMáximoPessoas = int.Parse(Console.ReadLine());
+
+            Console.Write("Tipologia: ");
+            bungalow.tipologia = Console.ReadLine();
+
+            using (Context context = new Context(connectionString)) {
+                BungalowMapper bungalowMapper = new BungalowMapper(context);
+                bungalowMapper.Create(bungalow);
+            }
+        }
+
+        private static void UpdateBungalow() {
+            Bungalow bungalow = new Bungalow();
+
+            Console.Write("Nome do parque: ");
+            bungalow.nomeParque = Console.ReadLine();
+
+            Console.Write("Nome: ");
+            bungalow.nome = Console.ReadLine();
+
+            Console.Write("Localização: ");
+            bungalow.localização = Console.ReadLine();
+
+            Console.Write("Descrição: ");
+            bungalow.descrição = Console.ReadLine();
+
+            Console.Write("Preço Base: ");
+            bungalow.preçoBase = int.Parse(Console.ReadLine());
+
+            Console.Write("Número Máximo de Pessoas: ");
+            bungalow.númeroMáximoPessoas = int.Parse(Console.ReadLine());
+
+            Console.Write("Tipologia: ");
+            bungalow.tipologia = Console.ReadLine();
+
+            using (Context context = new Context(connectionString)) {
+                BungalowMapper bungalowMapper = new BungalowMapper(context);
+                bungalowMapper.Update(bungalow);
+            }
+        }
+
+        private static void DeleteBungalow() {
+            Bungalow bungalow = new Bungalow();
+
+            Console.Write("Nome do parque: ");
+            bungalow.nomeParque = Console.ReadLine();
+
+            Console.Write("Localização: ");
+            bungalow.localização = Console.ReadLine();
+
+            using (Context context = new Context(connectionString)) {
+                BungalowMapper bungalowMapper = new BungalowMapper(context);
+                bungalowMapper.Delete(bungalow);
+            }
+        }
+
+        private static void CreateExtra(string tipoExtra) {
+            Extra extra = new Extra();
+
+            Console.Write("Id: ");
+            extra.id = int.Parse(Console.ReadLine());
+
+            Console.Write("Descrição: ");
+            extra.descrição = Console.ReadLine();
+
+            Console.Write("Preço Dia: ");
+            extra.preçoDia = int.Parse(Console.ReadLine());
+
+            if (tipoExtra.Equals("3")) {
+                using (Context context = new Context(connectionString)) {
+                    extra.associado = "alojamento";
+
+                    ExtraAlojamentoMapper extraAlojamentoMapper = new ExtraAlojamentoMapper(context);
+                    extraAlojamentoMapper.Create(extra);
+                }
+            }
+            else {
+                using (Context context = new Context(connectionString)) {
+                    extra.associado = "pessoa";
+
+                    ExtraPessoalMapper extraPessoalMapper = new ExtraPessoalMapper(context);
+                    extraPessoalMapper.Create(extra);
+                }
+            }
+        }
+
+        private static void UpdateExtra(string tipoExtra) {
+            Extra extra = new Extra();
+
+            Console.Write("Id: ");
+            extra.id = int.Parse(Console.ReadLine());
+
+            Console.Write("Descrição: ");
+            extra.descrição = Console.ReadLine();
+
+            Console.Write("Preço Dia: ");
+            extra.preçoDia = int.Parse(Console.ReadLine());
+
+            if (tipoExtra.Equals("3")) {
+                using (Context context = new Context(connectionString)) {
+                    extra.associado = "alojamento";
+
+                    ExtraAlojamentoMapper extraAlojamentoMapper = new ExtraAlojamentoMapper(context);
+                    extraAlojamentoMapper.Update(extra);
+                }
+            }
+            else {
+                using (Context context = new Context(connectionString)) {
+                    extra.associado = "pessoa";
+                    ExtraPessoalMapper extraPessoalMapper = new ExtraPessoalMapper(context);
+                    extraPessoalMapper.Update(extra);
+                }
+            }
+        }
+
+        private static void DeleteExtra(string tipoExtra) {
+            Extra extra = new Extra();
+
+            Console.Write("Id: ");
+            extra.id = int.Parse(Console.ReadLine());
+
+            if (tipoExtra.Equals("3")) {
+                using (Context context = new Context(connectionString)) {
+                    extra.associado = "alojamento";
+
+                    ExtraAlojamentoMapper extraAlojamentoMapper = new ExtraAlojamentoMapper(context);
+                    extraAlojamentoMapper.Delete(extra);
+                }
+            }
+            else {
+                using (Context context = new Context(connectionString)) {
+                    extra.associado = "pessoa";
+
+                    ExtraPessoalMapper extraPessoalMapper = new ExtraPessoalMapper(context);
+                    extraPessoalMapper.Delete(extra);
+                }
+            }
+        }
+
+        private static void CreateActividade() {
+            Actividades actividade = new Actividades();
+
+            Console.Write("Nome Actividade: ");
+            actividade.nome = Console.ReadLine();
+
+            Console.Write("Nome Parque: ");
+            actividade.nomeParque = Console.ReadLine();
+
+            Console.Write("Número Sequencial: ");
+            actividade.númeroSequencial = int.Parse(Console.ReadLine());
+
+            Console.Write("Descrição: ");
+            actividade.descrição = Console.ReadLine();
+
+            Console.Write("Lotação: ");
+            actividade.lotaçãoMáxima = int.Parse(Console.ReadLine());
+
+            Console.Write("Preço participante: ");
+            actividade.preçoParticipante = int.Parse(Console.ReadLine());
+
+            Console.Write("Data Realização(YYYY-MM-DD HH:MM:SS): ");
+            string dataRealização = Console.ReadLine();
+
+            actividade.ano = int.Parse(dataRealização.Substring(0, 4));
+            actividade.dataRealização = Convert.ToDateTime(dataRealização);
+
+            using(Context context = new Context(connectionString)) {
                 ActividadesMapper actividadesMapper = new ActividadesMapper(context);
-                Actividades actividade = actividadesMapper.Read(new Tuple<string, int, int>("Glampinho", 1, 2017));
+                actividadesMapper.Create(actividade);
+            }
+        }
 
+        private static void UpdateActividade() {
+            Actividades actividade = new Actividades();
+
+            Console.Write("Nome Actividade: ");
+            actividade.nome = Console.ReadLine();
+
+            Console.Write("Nome Parque: ");
+            actividade.nomeParque = Console.ReadLine();
+
+            Console.Write("Número Sequencial: ");
+            actividade.númeroSequencial = int.Parse(Console.ReadLine());
+
+            Console.Write("Descrição: ");
+            actividade.descrição = Console.ReadLine();
+
+            Console.Write("Lotação: ");
+            actividade.lotaçãoMáxima = int.Parse(Console.ReadLine());
+
+            Console.Write("Preço participante: ");
+            actividade.preçoParticipante = int.Parse(Console.ReadLine());
+
+            Console.Write("Data Realização(YYYY-MM-DD HH:MM:SS): ");
+            string dataRealização = Console.ReadLine();
+
+            actividade.ano = int.Parse(dataRealização.Substring(0, 4));
+            actividade.dataRealização = Convert.ToDateTime(dataRealização);
+
+            using (Context context = new Context(connectionString)) {
+                ActividadesMapper actividadesMapper = new ActividadesMapper(context);
+                actividadesMapper.Update(actividade);
+            }
+        }
+
+        private static void DeleteActividade() {
+            Actividades actividade = new Actividades();
+            Console.Write("Nome Parque: ");
+            actividade.nomeParque = Console.ReadLine();
+
+            Console.Write("Número Sequencial: ");
+            actividade.númeroSequencial = int.Parse(Console.ReadLine());
+
+            Console.Write("Ano(YYYY): ");
+            actividade.ano = int.Parse(Console.ReadLine());
+
+            using (Context context = new Context(connectionString)) {
+                ActividadesMapper actividadesMapper = new ActividadesMapper(context);
+                actividadesMapper.Delete(actividade);
+            }
+        }
+
+        private static void CreateEstadaInTime() {
+            Hóspede responsável = new Hóspede();
+            Hóspede hóspede = new Hóspede();
+            Estada estada = new Estada();
+            Extra extraPessoal = new Extra();
+            Extra extraAlojamento = new Extra();
+
+            Console.Write("NIF Hóspede Responsável: ");
+            responsável.NIF = int.Parse(Console.ReadLine());
+
+            Console.Write("NIF Hóspede Acompanhante: ");
+            hóspede.NIF = int.Parse(Console.ReadLine());
+            
+            Console.Write("Data Inicial da Estada(YYYY-MM-DD HH:MM:SS): ");
+            estada.dataInício = Convert.ToDateTime(Console.ReadLine());
+            
+            Console.Write("Data Final da Estada(YYYY-MM-DD HH:MM:SS): ");
+            estada.dataFim = Convert.ToDateTime(Console.ReadLine());
+
+            Console.Write("Tipo de Alojamento(tenda/bungalow): ");
+            string tipoAloj = Console.ReadLine();
+
+            Console.Write("Lotação de pessoas: ");
+            int lot = int.Parse(Console.ReadLine());
+
+            Console.Write("Identificador extra pessoal: ");
+            extraPessoal.id = int.Parse(Console.ReadLine());
+            extraPessoal.associado = "pessoa";
+
+            Console.Write("Identificador extra alojamento: ");
+            extraAlojamento.id = int.Parse(Console.ReadLine());
+            extraAlojamento.associado = "alojamento";
+
+            if (tipoAloj.Equals("tenda")) {
+                using (Context context = new Context(connectionString)) {
+                    Tenda tenda = new Tenda();
+                    tenda.númeroMáximoPessoas = lot;
+                    tenda.tipoAlojamento = "tenda";
+                    ProcUtils procedimento = new ProcUtils(context);
+                    procedimento.createEstadaInTime(responsável, hóspede, estada, tenda, extraPessoal, extraAlojamento);
+                }
+            }
+            else {
+                using (Context context = new Context(connectionString)) {
+                    Bungalow bungalow = new Bungalow();
+                    bungalow.númeroMáximoPessoas = lot;
+                    bungalow.tipoAlojamento = "bungalow";
+                    ProcUtils procedimento = new ProcUtils(context);
+                    procedimento.createEstadaInTime(responsável, hóspede, estada, bungalow, extraPessoal, extraAlojamento);
+                }
+            }
+        }
+        
+        private static void InscreverHóspede() {
+            Hóspede hóspede = new Hóspede();
+            Actividades actividade;
+            
+            Console.Write("NIF Hospede: ");
+            hóspede.NIF = int.Parse(Console.ReadLine());
+
+            Console.Write("Nome Parque: ");
+            string nomeParq = Console.ReadLine();
+
+            Console.Write("Numero Sequencial: ");
+            int numeroSeq = int.Parse(Console.ReadLine());
+
+            Console.Write("Ano(YYYY): ");
+            int ano = int.Parse(Console.ReadLine());
+
+            using (Context context = new Context(connectionString)) {
+                ActividadesMapper actividadesMapper = new ActividadesMapper(context);
+                actividade = actividadesMapper.Read(new Tuple<string, int, int>(nomeParq, numeroSeq, ano));
                 ProcUtils procedimento = new ProcUtils(context);
                 procedimento.InscreverHospede(actividade, hóspede);
-            }*/
+            }
+        }
 
-            /* --------- Teste finishEstadaWithFactura ---------- */
-            /*using(Context context = new Context(connectionString)) {
-                ProcUtils procedimento = new ProcUtils(context);
-                Estada estada = new Estada();
-                estada.id = 3;
-                procedimento.finishEstadaWithFactura(estada);
-            }*/
+        private static void FinishEstadaWithFactura() {
+            Estada estada = new Estada();
 
-            /* --------- Teste sendEmails ---------- */
-            /*using(Context context = new Context(connectionString)) {
-                ProcUtils procedimento = new ProcUtils(context);
-                List<string> messages = procedimento.SendEmails(1);
-                messages.ForEach((string message) => {
-                    Console.Write(message);
-                });
-            }*/
-
-            /* --------- Teste listarActividades ---------- */
+            Console.Write("ID Estada: ");
+            estada.id = int.Parse(Console.ReadLine());
             using(Context context = new Context(connectionString)) {
                 ProcUtils procedimento = new ProcUtils(context);
-                List<string> actividades = procedimento.ListarActividades(new DateTime(2016, 3, 12), new DateTime(2017, 3, 16));
+                procedimento.finishEstadaWithFactura(estada);
+            }
+        }
 
-                actividades.ForEach((string actividade) => {
-                    Console.WriteLine(actividade);
-                });
+        private static void SendEmails() {
+            List<string> messages;
+            Console.Write("Intervalo: ");
+            int intervalo = int.Parse(Console.ReadLine());
+
+            using (Context context = new Context(connectionString)) {
+                ProcUtils procedimento = new ProcUtils(context);
+                messages = procedimento.SendEmails(intervalo);
             }
 
-            /* --------- Teste FindFacturas ---------- */
-            /*using (Context context = new Context(connectionString)) {
-                ProcUtils procedimento = new ProcUtils(context);
-                Hóspede hóspede = new Hóspede();
-                hóspede.NIF = 123456789;
-                Tuple<int, int> pair = procedimento.FindFacturas(hóspede, new DateTime(2017, 3, 15, 13, 0, 0), new DateTime(2017, 11, 12, 13, 0, 0), "Glampinho");
+            Console.WriteLine("\nEmails enviados: \n");
 
-                Console.WriteLine("Despedas totais do hóspede com NIF: {0} - {1}", pair.Item1, pair.Item2);
-            }*/
-            
-            /* --------- Teste DeletePark ---------- */
-            /*using(Context context = new Context(connectionString)) {
+            messages.ForEach((string message) =>
+            {
+                Console.Write(message);
+            });
+        }
+
+        private static void ListarActividades()  {
+            List<string> actividades;
+            Console.Write("Data Inicio(YYYY-MM-DD): ");
+            DateTime dataInicio = Convert.ToDateTime(Console.ReadLine());
+
+            Console.Write("Data Fim(YYYY-MM-DD): ");
+            DateTime dataFim = Convert.ToDateTime(Console.ReadLine());
+
+            using(Context context = new Context(connectionString)) {
                 ProcUtils procedimento = new ProcUtils(context);
-                ParqueCampismo park = new ParqueCampismo();
-                park.nome = "Glampinho";
-                procedimento.DeletePark(park);
-            }*/
+                 actividades = procedimento.ListarActividades(dataInicio, dataFim);
+            }
+
+            Console.WriteLine("\nActividades disponiveis: \n");
+
+            actividades.ForEach((string actividade) => {
+                Console.WriteLine(actividade);
+            });
+        }
+
+        private static void FindFacturas() {
+            Hóspede hóspede = new Hóspede();
+            ParqueCampismo parque = new ParqueCampismo();
+
+            Tuple<int, int> pair;
+
+            Console.Write("NIF: ");
+            hóspede.NIF = int.Parse(Console.ReadLine());
+
+            Console.Write("Data Inicio(YYYY-MM-DD): ");
+            DateTime dataInicio = Convert.ToDateTime(Console.ReadLine());
+
+            Console.Write("Data Fim(YYYY-MM-DD): ");
+            DateTime dataFim = Convert.ToDateTime(Console.ReadLine());
+
+            Console.Write("Nome Parque: ");
+            parque.nome = Console.ReadLine();
+
+            using (Context context = new Context(connectionString)) {
+                ProcUtils procedimento = new ProcUtils(context);
+
+                pair = procedimento.FindFacturas(hóspede, dataInicio, dataFim, parque);
+            }
+            Console.WriteLine("Despedas totais do hóspede com NIF: {0} - {1} Euros\n", pair.Item1, pair.Item2);
+        }
+        
+        private static void DeleteParque() {
+            ParqueCampismo parque = new ParqueCampismo();
+
+            Console.Write("Nome Parque: ");
+            parque.nome = Console.ReadLine();
+
+            using(Context context = new Context(connectionString)) {
+                ProcUtils procedimento = new ProcUtils(context);
+                procedimento.DeletePark(parque);
+            }
         }
     }
 }

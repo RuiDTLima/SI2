@@ -55,8 +55,7 @@ namespace Glampinho.mapper {
         }
 
         protected IDataReader ExecuteReader(String commandText, List<IDataParameter> parameters) {
-            using (IDbCommand cmd = context.createCommand())
-            {
+            using (IDbCommand cmd = context.createCommand()) {
                 if (parameters != null)
                     cmd.Parameters.AddRange(parameters);
 
@@ -65,10 +64,8 @@ namespace Glampinho.mapper {
             }
         }
 
-        protected void ExecuteNonQuery(String commandText, List<IDataParameter> parameters)
-        {
-            using (IDbCommand cmd = context.createCommand())
-            {
+        protected void ExecuteNonQuery(String commandText, List<IDataParameter> parameters) {
+            using (IDbCommand cmd = context.createCommand()) {
                 if (parameters != null)
                     cmd.Parameters.AddRange(parameters);
 
@@ -78,16 +75,13 @@ namespace Glampinho.mapper {
             }
         }
 
-        public AbstractMapper(IContext ctx)
-        {
+        public AbstractMapper(IContext ctx) {
             context = ctx;
         }
 
-        public virtual T Create(T entity)
-        {
+        public virtual T Create(T entity) {
             EnsureContext();
-            using (IDbCommand cmd = context.createCommand())
-            {
+            using (IDbCommand cmd = context.createCommand()) {
                 cmd.CommandText = InsertCommandText;
                 cmd.CommandType = InsertCommandType;
                 InsertParameters(cmd, entity);
@@ -98,15 +92,13 @@ namespace Glampinho.mapper {
             }
         }
 
-        public virtual T Delete(T entity)
-        {
+        public virtual T Delete(T entity) {
             if (entity == null)
                 throw new ArgumentException("The " + typeof(T) + " to delete cannot be null");
 
             EnsureContext();
 
-            using (IDbCommand cmd = context.createCommand())
-            {
+            using (IDbCommand cmd = context.createCommand()) {
                 cmd.CommandText = DeleteCommandText;
                 cmd.CommandType = DeleteCommandType;
                 DeleteParameters(cmd, entity);
@@ -115,11 +107,9 @@ namespace Glampinho.mapper {
             }
         }
 
-        public virtual T Read(Tid id)
-        {
+        public virtual T Read(Tid id) {
             EnsureContext();
-            using (IDbCommand cmd = context.createCommand())
-            {
+            using (IDbCommand cmd = context.createCommand()) {
                 cmd.CommandText = SelectCommandText;
                 cmd.CommandType = SelectCommandType;
                 SelectParameters(cmd, id);
@@ -128,12 +118,10 @@ namespace Glampinho.mapper {
             }
         }
 
-        public virtual TCol ReadAll()
-        {
+        public virtual TCol ReadAll() {
             EnsureContext();
 
-            using (IDbCommand cmd = context.createCommand())
-            {
+            using (IDbCommand cmd = context.createCommand()) {
                 cmd.CommandText = SelectAllCommandText;
                 cmd.CommandType = SelectAllCommandType;
                 SelectAllParameters(cmd);
@@ -142,15 +130,13 @@ namespace Glampinho.mapper {
             }
         }
 
-        public virtual T Update(T entity)
-        {
+        public virtual T Update(T entity) {
             if (entity == null)
                 throw new ArgumentException("The " + typeof(T) + " to update cannot be null");
 
             EnsureContext();
 
-            using (IDbCommand cmd = context.createCommand())
-            {
+            using (IDbCommand cmd = context.createCommand()) {
                 cmd.CommandText = UpdateCommandText;
                 cmd.CommandType = UpdateCommandType;
                 UpdateParameters(cmd, entity);

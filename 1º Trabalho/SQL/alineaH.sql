@@ -61,10 +61,8 @@ CREATE PROCEDURE dbo.addAlojamento @tipoAlojamento VARCHAR(8), @lotação TINYINT,
 			SELECT @nomeParque = Aloj.nomeParque, @localização = Aloj.localização, @preçoBase = Aloj.preçoBase FROM dbo.Alojamento AS Aloj LEFT JOIN dbo.AlojamentoEstada AS AlojEst 
 				ON Aloj.nomeParque = AlojEst.nomeParque AND Aloj.localização = AlojEst.localização 
 				LEFT JOIN dbo.Estada as Est ON Est.id = AlojEst.id
-				WHERE Aloj.tipoAlojamento = @tipoAlojamento AND Aloj.númeroMáximoPessoas <= @lotação AND (Est.dataFim < GETDATE() OR Est.id IS NULL)
-			PRINT @nomeParque
-			PRINT @localização
-			PRINT @preçoBase
+				WHERE Aloj.tipoAlojamento = @tipoAlojamento AND Aloj.númeroMáximoPessoas >= @lotação AND (Est.dataFim < GETDATE() OR Est.id IS NULL)
+
 			INSERT INTO dbo.AlojamentoEstada(nomeParque, localização, id, preçoBase)
 				VALUES(@nomeParque, @localização, @idEstada, @preçoBase)
 
