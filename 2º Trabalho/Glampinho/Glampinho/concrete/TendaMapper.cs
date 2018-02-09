@@ -19,6 +19,12 @@ namespace Glampinho.concrete {
             }
         }
 
+        protected override CommandType UpdateCommandType {
+            get {
+                return CommandType.StoredProcedure;
+            }
+        }
+
         public TendaMapper(IContext ctx) : base(ctx) { }
 
         protected override string DeleteCommandText {
@@ -49,8 +55,7 @@ namespace Glampinho.concrete {
 
         protected override string UpdateCommandText {
             get {
-                return "UPDATE dbo.Alojamento SET preçoBase = @preçoBase, descrição = @descrição, númeroMáximoPessoas = @númeroMáximoPessoas, nome = @nome WHERE nomeParque = @nomeParque AND localização = @localização AND tipoAlojamento='tenda'\n" + 
-                        "UPDATE dbo.Tenda SET área = @área WHERE nomeParque = @nomeParque and localização = @localização";
+                return "dbo.UpdateAlojamentoTenda";
             }
         }
 
@@ -92,7 +97,6 @@ namespace Glampinho.concrete {
             SqlParameter basePrice = new SqlParameter("@preçoBase", e.preçoBase);
             SqlParameter description = new SqlParameter("@descrição", e.descrição);
             SqlParameter maxPeople = new SqlParameter("@númeroMáximoPessoas", e.númeroMáximoPessoas);
-            SqlParameter name = new SqlParameter("@nome", e.nome);
             SqlParameter parkName = new SqlParameter("@nomeParque", e.nomeParque);
             SqlParameter location = new SqlParameter("@localização", e.localização);
             SqlParameter area = new SqlParameter("@área", e.área);
@@ -100,7 +104,6 @@ namespace Glampinho.concrete {
             command.Parameters.Add(basePrice);
             command.Parameters.Add(description);
             command.Parameters.Add(maxPeople);
-            command.Parameters.Add(name);
             command.Parameters.Add(parkName);
             command.Parameters.Add(location);
             command.Parameters.Add(area);

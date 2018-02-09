@@ -22,6 +22,12 @@ namespace Glampinho.concrete {
             }
         }
 
+        protected override CommandType UpdateCommandType {
+            get {
+                return CommandType.StoredProcedure;
+            }
+        }
+
         public BungalowMapper(IContext ctx) : base(ctx) { }
 
         protected override string DeleteCommandText {
@@ -52,8 +58,7 @@ namespace Glampinho.concrete {
 
         protected override string UpdateCommandText {
             get {
-                return "UPDATE dbo.Alojamento SET preçoBase = @preçoBase, descrição = @descrição, númeroMáximoPessoas = @númeroMáximoPessoas, nome = @nome WHERE nomeParque = @nomeParque AND localização = @localização AND tipoAlojamento='bungalow'\n"+
-                        "UPDATE dbo.Bungalow SET tipologia = @tipologia WHERE nomeParque = @nomeParque AND localização = @localização";
+                return "dbo.UpdateAlojamentoBungalow";
             }
         }
 
@@ -93,9 +98,8 @@ namespace Glampinho.concrete {
 
         protected override void UpdateParameters(IDbCommand command, Bungalow e) {
             SqlParameter basePrice = new SqlParameter("@preçoBase", e.preçoBase);
-            SqlParameter description = new SqlParameter("@descrição", e.descrição);
             SqlParameter maxPeople = new SqlParameter("@númeroMáximoPessoas", e.númeroMáximoPessoas);
-            SqlParameter name = new SqlParameter("@nome", e.nome);
+            SqlParameter description = new SqlParameter("@descrição", e.descrição);
             SqlParameter parkName = new SqlParameter("@nomeParque", e.nomeParque);
             SqlParameter location = new SqlParameter("@localização", e.localização);
             SqlParameter typology = new SqlParameter("@tipologia", e.tipologia);
@@ -103,7 +107,6 @@ namespace Glampinho.concrete {
             command.Parameters.Add(basePrice);
             command.Parameters.Add(description);
             command.Parameters.Add(maxPeople);
-            command.Parameters.Add(name);
             command.Parameters.Add(parkName);
             command.Parameters.Add(location);
             command.Parameters.Add(typology);

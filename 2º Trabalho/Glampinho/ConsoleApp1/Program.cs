@@ -50,7 +50,7 @@ namespace Glampinho {
                                         Console.WriteLine("\nTenda eliminada com sucesso.\n");
                                         break;
                                     case "Update":
-                                        UpdateAlojamento();
+                                        UpdateTenda();
                                         Console.WriteLine("\nTenda actualizada com sucesso.\n");
                                         break;
                                 }
@@ -66,7 +66,7 @@ namespace Glampinho {
                                         Console.WriteLine("\nBungalow eliminado com sucesso.\n");
                                         break;
                                     case "Update":
-                                        UpdateAlojamento();
+                                        UpdateBungalow();
                                         Console.WriteLine("\nBungalow actualizado com sucesso.\n");
                                         break;
                                 }
@@ -258,6 +258,35 @@ namespace Glampinho {
             }
         }
 
+        private static void UpdateTenda() {
+            string descrição, nomeParque, localização;
+            int preçoBase, área;
+            byte númeroMáximoPessoas;
+
+            Console.Write("Nome do parque: ");
+            nomeParque = Console.ReadLine();
+
+            Console.Write("Localização: ");
+            localização = Console.ReadLine();
+
+            Console.Write("Descrição: ");
+            descrição = Console.ReadLine();
+
+            Console.Write("Preço Base: ");
+            preçoBase = int.Parse(Console.ReadLine());
+
+            Console.Write("Número Máximo de Pessoas: ");
+            númeroMáximoPessoas = byte.Parse(Console.ReadLine());
+
+            Console.Write("Área: ");
+            área = int.Parse(Console.ReadLine());
+
+            using (var context = new GlampinhoEF())
+            {
+                context.UpdateAlojamentoTenda(preçoBase, númeroMáximoPessoas, descrição, nomeParque, localização, área);
+            }
+        }
+
         private static void DeleteTenda() {
             string nomeParque, localização;
 
@@ -303,8 +332,8 @@ namespace Glampinho {
             }
         }
 
-        private static void UpdateAlojamento() {
-            string descrição, nomeParque, localização;
+        private static void UpdateBungalow() {
+            string descrição, nomeParque, localização, tipologia;
             int preçoBase;
             byte númeroMáximoPessoas;
 
@@ -323,8 +352,11 @@ namespace Glampinho {
             Console.Write("Número Máximo de Pessoas: ");
             númeroMáximoPessoas = byte.Parse(Console.ReadLine());
 
+            Console.Write("Tipologia: ");
+            tipologia = Console.ReadLine();
+
             using (var context = new GlampinhoEF()) {
-                context.UpdateAlojamento(preçoBase, númeroMáximoPessoas, descrição, nomeParque, localização);
+                context.UpdateAlojamentoBungalow(preçoBase, númeroMáximoPessoas, descrição, nomeParque, localização, tipologia);
             }
         }
 

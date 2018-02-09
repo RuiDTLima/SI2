@@ -56,15 +56,35 @@ BEGIN CATCH
 	THROW
 END CATCH
 
-/******************************* UPDATE ***********************************************************/
+/******************************* UPDATES ***********************************************************/
+/******************************* UPDATE Tenda ***********************************************************/
 IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'UpdateAlojamento')
 	DROP PROCEDURE dbo.UpdateAlojamento;
 GO
-CREATE PROCEDURE dbo.UpdateAlojamento @preçoBase INT, @númeroMáximoPessoas TINYINT, @descrição NVARCHAR(30), @nomeParque NVARCHAR(30), @localização NVARCHAR(30) AS
+CREATE PROCEDURE dbo.UpdateAlojamentoTenda @preçoBase INT, @númeroMáximoPessoas TINYINT, @descrição NVARCHAR(30), @nomeParque NVARCHAR(30), @localização NVARCHAR(30), @área INT AS
 SET NOCOUNT ON
 BEGIN TRY
 	BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
 		UPDATE dbo.Alojamento SET preçoBase = @preçoBase, númeroMáximoPessoas = @númeroMáximoPessoas, descrição = @descrição WHERE nomeParque = @nomeParque AND localização = @localização
+		UPDATE dbo.Tenda SET área = @área WHERE nomeParque = @nomeParque and localização = @localização
+	COMMIT
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT !=0
+		ROLLBACK;
+	THROW
+END CATCH	 
+
+/******************************* UPDATE Bungalow ***********************************************************/
+IF EXISTS(SELECT 1 FROM sys.objects WHERE type_desc = 'SQL_STORED_PROCEDURE' AND name = 'UpdateAlojamento')
+	DROP PROCEDURE dbo.UpdateAlojamento;
+GO
+CREATE PROCEDURE dbo.UpdateAlojamentoBungalow @preçoBase INT, @númeroMáximoPessoas TINYINT, @descrição NVARCHAR(30), @nomeParque NVARCHAR(30), @localização NVARCHAR(30), @tipologia CHAR(2) AS
+SET NOCOUNT ON
+BEGIN TRY
+	BEGIN TRANSACTION SET TRANSACTION ISOLATION LEVEL READ COMMITTED
+		UPDATE dbo.Alojamento SET preçoBase = @preçoBase, númeroMáximoPessoas = @númeroMáximoPessoas, descrição = @descrição WHERE nomeParque = @nomeParque AND localização = @localização
+		UPDATE dbo.Bungalow SET tipologia = @tipologia WHERE nomeParque = @nomeParque AND localização = @localização
 	COMMIT
 END TRY
 BEGIN CATCH
@@ -213,4 +233,4 @@ SELECT * FROM dbo.EstadaExtra
 EXEC dbo.deleteAlojamento 'Lote 1','Glampinho'
 EXEC dbo.deleteAlojamento 'Lote 2','Glampinho'
 
-EXEC dbo.UpdateAlojamento 50, 10, 'bst', 'Glampinho', 'Lote 1'
+EXEC dbo.UpdateAlojamentoBungalow 50, 10, 'bst', 'Glampinho', 'Lote 1', 'T0'

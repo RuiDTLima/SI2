@@ -706,5 +706,63 @@ namespace ConsoleApp1
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAlojamento", preçoBaseParameter, númeroMáximoPessoasParameter, descriçãoParameter, nomeParqueParameter, localizaçãoParameter);
         }
+    
+        public virtual int UpdateAlojamentoBungalow(Nullable<int> preçoBase, Nullable<byte> númeroMáximoPessoas, string descrição, string nomeParque, string localização, string tipologia)
+        {
+            var preçoBaseParameter = preçoBase.HasValue ?
+                new ObjectParameter("preçoBase", preçoBase) :
+                new ObjectParameter("preçoBase", typeof(int));
+    
+            var númeroMáximoPessoasParameter = númeroMáximoPessoas.HasValue ?
+                new ObjectParameter("númeroMáximoPessoas", númeroMáximoPessoas) :
+                new ObjectParameter("númeroMáximoPessoas", typeof(byte));
+    
+            var descriçãoParameter = descrição != null ?
+                new ObjectParameter("descrição", descrição) :
+                new ObjectParameter("descrição", typeof(string));
+    
+            var nomeParqueParameter = nomeParque != null ?
+                new ObjectParameter("nomeParque", nomeParque) :
+                new ObjectParameter("nomeParque", typeof(string));
+    
+            var localizaçãoParameter = localização != null ?
+                new ObjectParameter("localização", localização) :
+                new ObjectParameter("localização", typeof(string));
+    
+            var tipologiaParameter = tipologia != null ?
+                new ObjectParameter("tipologia", tipologia) :
+                new ObjectParameter("tipologia", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAlojamentoBungalow", preçoBaseParameter, númeroMáximoPessoasParameter, descriçãoParameter, nomeParqueParameter, localizaçãoParameter, tipologiaParameter);
+        }
+    
+        public virtual int UpdateAlojamentoTenda(Nullable<int> preçoBase, Nullable<byte> númeroMáximoPessoas, string descrição, string nomeParque, string localização, Nullable<int> área)
+        {
+            var preçoBaseParameter = preçoBase.HasValue ?
+                new ObjectParameter("preçoBase", preçoBase) :
+                new ObjectParameter("preçoBase", typeof(int));
+    
+            var númeroMáximoPessoasParameter = númeroMáximoPessoas.HasValue ?
+                new ObjectParameter("númeroMáximoPessoas", númeroMáximoPessoas) :
+                new ObjectParameter("númeroMáximoPessoas", typeof(byte));
+    
+            var descriçãoParameter = descrição != null ?
+                new ObjectParameter("descrição", descrição) :
+                new ObjectParameter("descrição", typeof(string));
+    
+            var nomeParqueParameter = nomeParque != null ?
+                new ObjectParameter("nomeParque", nomeParque) :
+                new ObjectParameter("nomeParque", typeof(string));
+    
+            var localizaçãoParameter = localização != null ?
+                new ObjectParameter("localização", localização) :
+                new ObjectParameter("localização", typeof(string));
+    
+            var áreaParameter = área.HasValue ?
+                new ObjectParameter("área", área) :
+                new ObjectParameter("área", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateAlojamentoTenda", preçoBaseParameter, númeroMáximoPessoasParameter, descriçãoParameter, nomeParqueParameter, localizaçãoParameter, áreaParameter);
+        }
     }
 }

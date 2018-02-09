@@ -557,12 +557,21 @@
         <Function Name="SendEmails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="periodoTemporal" Type="int" Mode="In" />
         </Function>
-        <Function Name="UpdateAlojamento" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="UpdateAlojamentoBungalow" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="preçoBase" Type="int" Mode="In" />
           <Parameter Name="númeroMáximoPessoas" Type="tinyint" Mode="In" />
           <Parameter Name="descrição" Type="nvarchar" Mode="In" />
           <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
           <Parameter Name="localização" Type="nvarchar" Mode="In" />
+          <Parameter Name="tipologia" Type="char" Mode="In" />
+        </Function>
+        <Function Name="UpdateAlojamentoTenda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="preçoBase" Type="int" Mode="In" />
+          <Parameter Name="númeroMáximoPessoas" Type="tinyint" Mode="In" />
+          <Parameter Name="descrição" Type="nvarchar" Mode="In" />
+          <Parameter Name="nomeParque" Type="nvarchar" Mode="In" />
+          <Parameter Name="localização" Type="nvarchar" Mode="In" />
+          <Parameter Name="área" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="GlampinhoModelStoreContainer">
           <EntitySet Name="Actividades" EntityType="Self.Actividades" Schema="dbo" store:Type="Tables" />
@@ -1363,6 +1372,22 @@
             <Parameter Name="nomeParque" Mode="In" Type="String" />
             <Parameter Name="localização" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="UpdateAlojamentoBungalow">
+            <Parameter Name="preçoBase" Mode="In" Type="Int32" />
+            <Parameter Name="númeroMáximoPessoas" Mode="In" Type="Byte" />
+            <Parameter Name="descrição" Mode="In" Type="String" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+            <Parameter Name="localização" Mode="In" Type="String" />
+            <Parameter Name="tipologia" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateAlojamentoTenda">
+            <Parameter Name="preçoBase" Mode="In" Type="Int32" />
+            <Parameter Name="númeroMáximoPessoas" Mode="In" Type="Byte" />
+            <Parameter Name="descrição" Mode="In" Type="String" />
+            <Parameter Name="nomeParque" Mode="In" Type="String" />
+            <Parameter Name="localização" Mode="In" Type="String" />
+            <Parameter Name="área" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="listarAtividades_Result">
           <Property Type="String" Name="nome" Nullable="false" MaxLength="30" />
@@ -1739,7 +1764,8 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sendEmail" FunctionName="GlampinhoModel.Store.sendEmail" />
           <FunctionImportMapping FunctionImportName="SendEmails1" FunctionName="GlampinhoModel.Store.SendEmails" />
-          <FunctionImportMapping FunctionImportName="UpdateAlojamento" FunctionName="GlampinhoModel.Store.UpdateAlojamento" />
+          <FunctionImportMapping FunctionImportName="UpdateAlojamentoBungalow" FunctionName="GlampinhoModel.Store.UpdateAlojamentoBungalow" />
+          <FunctionImportMapping FunctionImportName="UpdateAlojamentoTenda" FunctionName="GlampinhoModel.Store.UpdateAlojamentoTenda" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

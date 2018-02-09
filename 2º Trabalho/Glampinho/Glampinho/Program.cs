@@ -259,9 +259,6 @@ namespace Glampinho {
             Console.Write("Nome do parque: ");
             tenda.nomeParque = Console.ReadLine();
 
-            Console.Write("Nome: ");
-            tenda.nome = Console.ReadLine();
-
             Console.Write("Localização: ");
             tenda.localização = Console.ReadLine();
 
@@ -333,9 +330,6 @@ namespace Glampinho {
 
             Console.Write("Nome do parque: ");
             bungalow.nomeParque = Console.ReadLine();
-
-            Console.Write("Nome: ");
-            bungalow.nome = Console.ReadLine();
 
             Console.Write("Localização: ");
             bungalow.localização = Console.ReadLine();
@@ -639,8 +633,7 @@ namespace Glampinho {
 
             Console.WriteLine("\nEmails enviados: \n");
 
-            messages.ForEach((string message) =>
-            {
+            messages.ForEach((string message) => {
                 Console.Write(message);
             });
         }
@@ -655,7 +648,7 @@ namespace Glampinho {
 
             using(Context context = new Context(connectionString)) {
                 ProcUtils procedimento = new ProcUtils(context);
-                 actividades = procedimento.ListarActividades(dataInicio, dataFim);
+                actividades = procedimento.ListarActividades(dataInicio, dataFim);
             }
 
             Console.WriteLine("\nActividades disponiveis: \n");
